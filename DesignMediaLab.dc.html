@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700&amp;family=Archivo+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #FFFFFF; color: #000000; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #000000; text-decoration: none; }
+  a:hover { color: #E20031; }
+  input, textarea, select, button { font-family: inherit; }
+  ::selection { background: #E20031; color: #FFFFFF; }
+  /* Selecting text inside a publication card highlights it in that paper's own
+     accent colour. ::selection cannot read --pub-accent reliably across
+     browsers, so the two colours are spelled out and picked by data-pub-kind. */
+  [data-pub-kind="conference"]::selection,
+  [data-pub-kind="conference"] ::selection { background: #2F05FF; color: #FFFFFF; }
+  [data-pub-kind="journal"]::selection,
+  [data-pub-kind="journal"] ::selection { background: #E20031; color: #FFFFFF; }
+  /* Same idea on the patents page, keyed to the Registered / Filed badge. */
+  [data-pat-kind="registered"]::selection,
+  [data-pat-kind="registered"] ::selection { background: #E20031; color: #FFFFFF; }
+  [data-pat-kind="filed"]::selection,
+  [data-pat-kind="filed"] ::selection { background: #595959; color: #FFFFFF; }
+  /* PDF / DOI / VIDEO buttons borrow the paper's own accent colour on hover.
+     --pub-accent is set per card from the same value as its type badge, so a
+     journal button turns red and a conference button turns blue. The
+     !important is needed because the button sets its border and colour
+     inline, and inline styles otherwise win over this rule. */
+  a[data-dml="pub-link"]:hover {
+    border-color: var(--pub-accent, #2F05FF) !important;
+    color: var(--pub-accent, #2F05FF) !important;
+  }
+  /* Hovering a publication thumbnail zooms the photo 10% inside its frame. The
+     frame itself does not move: the card already clips with overflow: hidden,
+     so only the image grows and the excess is cropped. */
+  [data-dml="pub-thumb"] img { transition: transform 0.25s ease; }
+  [data-dml="pub-thumb"]:hover img { transform: scale(1.1); }
+  @media (prefers-reduced-motion: reduce) {
+    [data-dml="pub-thumb"] img { transition: none; }
+  }
+  /* Publication authors who are lab members link to their own page. The
+     transparent border keeps the baseline from shifting on hover. */
+  a[data-dml="author-link"] { border-bottom: 2px solid transparent; }
+  a[data-dml="author-link"]:hover { border-bottom-color: #E20031; }
+  /* Profile layout: photo column capped at 300px, text column takes the rest.
+     Stacks into one column on narrow screens. */
+  [data-dml="profile-split"] {
+    display: grid;
+    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+    gap: clamp(28px, 4vw, 64px);
+    align-items: start;
+  }
+  @media (max-width: 800px) {
+    [data-dml="profile-split"] { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 880px) {
+    [data-dml="nav-desktop"] { display: none !important; }
+    [data-dml="nav-toggle"] { display: flex !important; }
+  }
+  /* Phones: the publication thumbnail is dropped and the text takes the full
+     width. The !important is needed because the card sizes itself inline. */
+  @media (max-width: 640px) {
+    [data-dml="pub-thumb"] { display: none !important; }
+    [data-dml="pub-card"] { grid-template-columns: minmax(0, 1fr) !important; }
+  }
+</style>
+</helmet>
+<div style="font-family: 'Interstate', 'Archivo', Helvetica, Arial, sans-serif; font-weight: 400; color: #000000; background: #FFFFFF; min-height: 100vh; display: flex; flex-direction: column;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid #E5E5E5;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 24px; height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+      <a href="#/" style="display: flex; align-items: center; gap: 10px; flex: 0 0 auto;">
+        <img src="assets/logo_black.png" alt="DesignMediaLab" style="height: 19px; width: auto; display: block;">
+      </a>
+      <nav data-dml="nav-desktop" style="display: flex; align-items: center; gap: 28px;">
+        <sc-for list="{{ navMain }}" as="item" hint-placeholder-count="3">
+          <a href="{{ item.href }}" style="font-size: 15px; font-weight: 700; letter-spacing: 0.01em; padding: 6px 0; border-bottom: 2px solid {{ item.bar }}; color: {{ item.color }};" style-hover="color: #E20031;">{{ item.label }}</a>
+        </sc-for>
+        <span style="width: 1px; height: 16px; background: #E5E5E5;"></span>
+        <sc-for list="{{ navPeople }}" as="item" hint-placeholder-count="3">
+          <a href="{{ item.href }}" style="font-size: 15px; font-weight: 700; letter-spacing: 0.01em; padding: 6px 0; border-bottom: 2px solid {{ item.bar }}; color: {{ item.color }};" style-hover="color: #E20031;">{{ item.label }}</a>
+        </sc-for>
+      </nav>
+      <button data-dml="nav-toggle" onClick="{{ toggleMenu }}" aria-label="Menu" style="display: none; align-items: center; justify-content: center; width: 46px; height: 46px; margin-right: -10px; background: none; border: none; cursor: pointer; padding: 0;">
+        <span style="display: flex; flex-direction: column; gap: 5px; width: 24px;">
+          <span style="height: 2px; background: #000000; border-radius: 1px;"></span>
+          <span style="height: 2px; background: #000000; border-radius: 1px;"></span>
+          <span style="height: 2px; background: #000000; border-radius: 1px;"></span>
+        </span>
+      </button>
+    </div>
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="border-top: 1px solid #E5E5E5; background: #FFFFFF; padding: 8px 24px 24px;">
+        <div style="display: flex; flex-direction: column;">
+          <sc-for list="{{ navAll }}" as="item" hint-placeholder-count="6">
+            <a href="{{ item.href }}" onClick="{{ closeMenu }}" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 0; font-size: 20px; font-weight: 700; border-bottom: 1px solid #F0F0F0; color: {{ item.color }};">
+              {{ item.label }}
+              <span style="font-family: 'Archivo Mono', monospace; font-size: 11px; color: #595959;">{{ item.num }}</span>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+  </header>
+
+  <main style="flex: 1 0 auto; max-width: 1240px; width: 100%; margin: 0 auto; padding: 0 24px;">
+
+    <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+      <section style="position: relative; isolation: isolate; padding: clamp(48px, 8vw, 104px) 40px clamp(36px, 5vw, 64px);">
+        <div style="position: absolute; inset: 0 -24px; z-index: -1; overflow: hidden;">
+          <div style="position: absolute; inset: -20px; background-image: url('mainpageImage/01.png'); background-size: cover; background-position: center; filter: blur(5px); opacity: 0.7;"></div>
+        </div>
+          
+          <h1 style="font-size: clamp(34px, 5.6vw, 52px); font-weight: 700; line-height: 1.04; letter-spacing: -0.02em; margin: 0 0 26px; text-wrap: pretty">Designing a new medium <br>for human-technology interaction</h1>
+          <p style="font-size: clamp(16px, 1.5vw, 20px); line-height: 1.55; color: #595959; margin: 0; max-width: 62ch; text-wrap: pretty; width: 787px; height: 54px">Design Media Lab explores this vision by designing, prototyping, and deploying novel interfaces for real-world use.</p>
+          
+        </section><div>
+        <section style="padding: 0 0 96px;">
+          <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: flex-end; gap: 16px; width: 1189px; height: 50px">
+            <a href="#/news" style="font-family: 'Archivo Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #595959; padding-bottom: 10px;" style-hover="color: #E20031;">MORE →</a>
+            <sc-if value="{{ admin }}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;">
+                <button onClick="{{ newPost }}" style="background: #2F05FF; color: #FFFFFF; border: none; font-weight: 700; font-size: 13px; padding: 12px 18px; cursor: pointer;">+ New post</button>
+                <button onClick="{{ exportJson }}" style="background: #FFFFFF; color: #000000; border: 2px solid #000000; font-weight: 700; font-size: 13px; padding: 10px 16px; cursor: pointer;">Copy news.json</button>
+                <button onClick="{{ resetNews }}" style="background: #FFFFFF; color: #595959; border: 1px solid #E5E5E5; font-weight: 400; font-size: 13px; padding: 11px 16px; cursor: pointer;">Reset to file</button>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="border-top: 2px solid #000000;">
+            <sc-for list="{{ newsList }}" as="post" hint-placeholder-count="5">
+              <article style="padding: 26px 4px; display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 8px 24px; align-items: start;">
+                <span style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; padding-top: 4px;">{{ post.date }}</span>
+                <div style="display: grid; gap: 8px; min-width: 0;">
+                  <a href="{{ post.href }}" style="font-size: clamp(19px, 2.1vw, 18px); font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; text-wrap: pretty" style-hover="color: #E20031;">{{ post.title }}</a>
+                  <p style="font-size: 12px; line-height: 1.6; color: #595959; margin: 0; max-width: 100ch; text-wrap: pretty">{{ post.excerpt }}</p>
+                </div>
+                <sc-if value="{{ admin }}" hint-placeholder-val="{{ false }}">
+                  <div style="grid-column: 2; display: flex; gap: 8px; margin-top: 4px;">
+                    <button onClick="{{ post.onEdit }}" style="background: none; border: 1px solid #E5E5E5; color: #000000; font-size: 12px; font-weight: 700; padding: 8px 14px; cursor: pointer;">Edit</button>
+                    <button onClick="{{ post.onDelete }}" style="background: none; border: 1px solid #E5E5E5; color: #E20031; font-size: 12px; font-weight: 700; padding: 8px 14px; cursor: pointer;">Delete</button>
+                  </div>
+                </sc-if>
+              </article>
+            </sc-for>
+          </div>
+        </section>
+
+        
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isNewsIndex }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
+        <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 14px;">News</h1>
+        <sc-if value="{{ admin }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;">
+            <button onClick="{{ newPost }}" style="background: #2F05FF; color: #FFFFFF; border: none; font-weight: 700; font-size: 13px; padding: 12px 18px; cursor: pointer;">+ New post</button>
+            <button onClick="{{ exportJson }}" style="background: #FFFFFF; color: #000000; border: 2px solid #000000; font-weight: 700; font-size: 13px; padding: 10px 16px; cursor: pointer;">Copy news.json</button>
+            <button onClick="{{ resetNews }}" style="background: #FFFFFF; color: #595959; border: 1px solid #E5E5E5; font-weight: 400; font-size: 13px; padding: 11px 16px; cursor: pointer;">Reset to file</button>
+          </div>
+        </sc-if>
+        <div style="border-top: 2px solid #000000;">
+          <sc-for list="{{ newsAll }}" as="post" hint-placeholder-count="5">
+            <article style="padding: 26px 4px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px;">
+              <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+                <span style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959;">{{ post.date }}</span>
+                <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FFFFFF; background: {{ post.tagColor }}; padding: 4px 9px;">{{ post.category }}</span>
+                <sc-if value="{{ post.pinned }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-family: 'Archivo Mono', monospace; font-size: 11px; color: #E20031; letter-spacing: 0.08em;">PINNED</span>
+                </sc-if>
+              </div>
+              <a href="{{ post.href }}" onClick="{{ post.onToggle }}" style="font-size: clamp(19px, 2.1vw, 18px); font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; text-wrap: pretty; cursor: pointer;" style-hover="color: #E20031;">{{ post.title }}</a>
+              <sc-if value="{{ post.isClosed }}" hint-placeholder-val="{{ true }}">
+                <p style="font-size: 12px; line-height: 1.6; color: #595959; margin: 0; max-width: 100ch; text-wrap: pretty;">{{ post.excerpt }}</p>
+              </sc-if>
+              <sc-if value="{{ post.isOpen }}" hint-placeholder-val="{{ false }}">
+                <p style="font-size: 15px; line-height: 1.7; color: #000000; margin: 0; max-width: 76ch; white-space: pre-wrap; text-wrap: pretty;">{{ post.body }}</p>
+              </sc-if>
+              <sc-if value="{{ admin }}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; gap: 8px; margin-top: 4px;">
+                  <button onClick="{{ post.onEdit }}" style="background: none; border: 1px solid #E5E5E5; color: #000000; font-size: 12px; font-weight: 700; padding: 8px 14px; cursor: pointer;">Edit</button>
+                  <button onClick="{{ post.onDelete }}" style="background: none; border: 1px solid #E5E5E5; color: #E20031; font-size: 12px; font-weight: 700; padding: 8px 14px; cursor: pointer;">Delete</button>
+                </div>
+              </sc-if>
+            </article>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isNewsDetail }}" hint-placeholder-val="{{ false }}">
+      <article style="padding: clamp(40px, 6vw, 80px) 0 96px; max-width: 76ch;">
+        <a href="#/news" style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; letter-spacing: 0.06em;" style-hover="color: #E20031;">← ALL NEWS</a>
+        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 28px 0 18px;">
+          <span style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959;">{{ post.date }}</span>
+          <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FFFFFF; background: {{ post.tagColor }}; padding: 4px 9px;">{{ post.category }}</span>
+        </div>
+        <h1 style="font-size: clamp(28px, 4vw, 46px); font-weight: 700; line-height: 1.12; letter-spacing: -0.02em; margin: 0 0 28px; text-wrap: pretty;">{{ post.title }}</h1>
+        <p style="font-size: 18px; line-height: 1.7; color: #000000; margin: 0; white-space: pre-wrap; text-wrap: pretty;">{{ post.body }}</p>
+      </article>
+    </sc-if>
+
+    <sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
+        
+        <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 32px; max-width: 26ch; text-wrap: pretty;">We prototype new interactive media to support everyday life.</h1>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; padding-bottom: 56px; border-bottom: 1px solid #E5E5E5;">
+          <div style="font-size: 18px; line-height: 1.65; margin: 0; text-wrap: pretty;">DesignMediaLab is a research group in the <a href="https://www.sungshin.ac.kr/serdesign/" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">Department of Service and Design Engineering</a> at <a href="https://www.sungshin.ac.kr/" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">Sungshin Women's University</a>.&nbsp;<br><span style="text-wrap-mode: initial;">We envision a future where people can benefit from emerging technologies in their everyday lives. To make this possible, we design ways for new technologies to meaningfully support people in real-world contexts.</span><p>While there are many possible approaches, our research focuses on three key directions:</p><p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 20px 0 0;">DesignMediaLab 은 <a href="https://www.sungshin.ac.kr/" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">성신여자대학교</a> <a href="https://www.sungshin.ac.kr/serdesign/" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">서비스디자인공학과</a>의 디자인 연구실입니다. 우리는 새로운 기술들을 사람들의 일상생활에 녹이기 위한 인터랙티브 디자인을 고민합니다. 이를 위해, 우리는 기술들을 사람들이 의미있게 사용할 수 있는 형태로 디자인하고, 실제로 사용할 수 있음을 보이기 위해 프로토타입으로 만듭니다. DesignMediaLab에는 미래에 사용될 수 있는 기술을 직접 디자인으로 만드는 사람들이 모여있습니다.</p><p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 16px 0 0;">수 많은 방법들이 있겠지만, 우리는 지금 아래 3가지 주제에 집중하고 있습니다.</p></div>
+          
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: #E5E5E5; margin: 56px 0 64px;">
+          <sc-for list="{{ researchAreas }}" as="area" hint-placeholder-count="3">
+            <div style="background: #FFFFFF; padding: 32px 26px 40px;">
+              <p style="font-family: 'Archivo Mono', monospace; font-size: 14px; color: #E20031; margin: 0 0 18px">{{ area.num }}</p>
+              <div style="box-sizing: border-box; display: flex; flex-direction: column; gap: 12px"><h3 style="font-size: 22px; font-weight: 700; line-height: 1.25; margin: 0 0 14px; text-wrap: pretty">{{ area.title }}</h3></div>
+              <p style="font-size: 15px; line-height: 1.65; color: #595959; margin: 0; text-wrap: pretty;">{{ area.text }}</p>
+              <sc-if value="{{ area.hasTextKo }}" hint-placeholder-val="{{ false }}">
+                <p style="font-size: 15px; line-height: 1.75; color: #595959; margin: 12px 0 0; text-wrap: pretty;">{{ area.textKo }}</p>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <section style="margin: 0 0 64px;">
+          <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 6px;">Featured publications</p>
+          <sc-for list="{{ featuredPubs }}" as="pub" hint-placeholder-count="3">
+            <p style="font-size: 16px; line-height: 1.5; border-top: 1px solid #E5E5E5; margin: 0; padding: 14px 0; text-wrap: pretty;"><a href="{{ pub.href }}" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">{{ pub.title }}</a> <span style="font-family: 'Archivo Mono', monospace; font-size: 13px; color: #595959; white-space: nowrap;">({{ pub.year }})</span></p>
+          </sc-for>
+        </section>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px; border-top: 2px solid #000000; padding-top: 28px;">
+          <div>
+            <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 8px;">Lab</p>
+            <p style="font-size: 16px; line-height: 1.6; margin: 0;">DesignMediaLab<br>Dept. of Service and Design Engineering<br>Sungshin Women's University</p>
+          </div>
+          <div>
+            <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 8px;">Address</p>
+            <p style="font-size: 16px; line-height: 1.6; margin: 0;">2 Bomun-ro 34da-gil, Seongbuk-gu<br>Seoul 02844, Republic of Korea</p>
+          </div>
+          <div>
+            <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 8px;">Contact</p>
+            <p style="font-size: 16px; line-height: 1.6; margin: 0;"><a href="mailto:hwan.kim@sungshin.ac.kr" style="border-bottom: 2px solid #E20031;">hwan.kim@sungshin.ac.kr</a></p>
+            <p style="font-size: 16px; line-height: 1.6; margin: 4px 0 0;"><a href="tel:+82229207254" style="border-bottom: 2px solid #E20031;">+82-2-920-7254</a></p>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isPublications }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
+        
+        
+        
+        <sc-for list="{{ pubGroups }}" as="group" hint-placeholder-count="2">
+          <section style="margin-bottom: 56px;">
+            <div style="display: flex; align-items: center; gap: 16px; border-bottom: 2px solid #000000; padding-bottom: 10px; margin-bottom: 4px;">
+              <h2 style="font-size: 30px; font-weight: 700; letter-spacing: -0.01em; margin: 0;">{{ group.year }}</h2>
+              
+            </div>
+            <sc-for list="{{ group.items }}" as="pub" hint-placeholder-count="3">
+              <article data-dml="pub-card" data-pub-kind="{{ pub.typeKind }}" style="--pub-accent: {{ pub.typeColor }}; border-bottom: 1px solid #E5E5E5; padding: 26px 4px; display: grid; grid-template-columns: minmax(200px, 300px) minmax(0, 1fr); gap: 10px 28px; align-items: start;">
+                <div data-dml="pub-thumb" style="position: relative; width: 100%; max-width: 300px; aspect-ratio: 3 / 2; background-color: #FAFAFA; background-image: repeating-linear-gradient(135deg, #F0F0F0 0 8px, #FFFFFF 8px 16px); border: 1px solid #E5E5E5; overflow: hidden;">
+                  <span style="position: absolute; left: 12px; bottom: 10px; font-family: 'Archivo Mono', monospace; font-size: 10px; color: #595959;">{{ pub.thumbLabel }}</span>
+                  {{ pub.thumbImg }}
+                </div>
+                <!-- One text column: the 60ch measure lives here, so the title, the
+                     optional Korean/English sub-title, authors, venue and the link
+                     row all wrap at exactly the same width. font-size is the title's
+                     size only so that "ch" resolves against it; every child sets its
+                     own font-size. -->
+                <div style="display: grid; gap: 10px; align-content: start; font-size: clamp(18px, 2vw, 23px); max-width: 60ch;">
+                  <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                    <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FFFFFF; background: {{ pub.typeColor }}; padding: 4px 9px;">{{ pub.typeLabel }}</span>
+                    <span style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959;">{{ pub.venueShort }}</span>
+                    <sc-if value="{{ pub.hasAward }}" hint-placeholder-val="{{ false }}">
+                      <span style="font-size: 12px; font-weight: 700; color: {{ pub.typeColor }};">★ {{ pub.award }}</span>
+                    </sc-if>
+                  </div>
+                  <div style="display: grid; gap: 5px;">
+                    <h3 style="font-size: clamp(18px, 2vw, 23px); font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; margin: 0; text-wrap: pretty;">{{ pub.titleMain }}</h3>
+                    <sc-if value="{{ pub.hasSubTitle }}" hint-placeholder-val="{{ false }}">
+                      <p style="font-size: 15px; line-height: 1.45; color: #595959; margin: 0; text-wrap: pretty;">{{ pub.titleSub }}</p>
+                    </sc-if>
+                  </div>
+                  <p style="font-size: 15px; line-height: 1.55; color: #000000; margin: 0;">{{ pub.authorList }}</p>
+                  <p style="font-size: 15px; line-height: 1.55; color: #595959; margin: 0; font-style: italic;">{{ pub.venue }}</p>
+                  <sc-if value="{{ pub.hasLinks }}" hint-placeholder-val="{{ false }}">
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;">
+                      <sc-for list="{{ pub.linkList }}" as="link" hint-placeholder-count="2">
+                        <a href="{{ link.href }}" data-dml="pub-link" style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.08em; border: 1px solid #E5E5E5; padding: 7px 12px; color: #000000;">{{ link.label }}</a>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </div>
+              </article>
+            </sc-for>
+          </section>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isPatents }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
+        
+        <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 14px;">Patents</h1>
+        
+        <div style="border-top: 2px solid #000000;">
+          <sc-for list="{{ patents }}" as="pat" hint-placeholder-count="3">
+            <article data-pat-kind="{{ pat.statusKind }}" style="border-bottom: 1px solid #E5E5E5; padding: 26px 4px; display: grid; gap: 16px; align-items: start;">
+              <div style="display: grid; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                  <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FFFFFF; background: {{ pat.statusColor }}; padding: 4px 9px;">{{ pat.status }}</span>
+                  <span style="font-family: 'Archivo Mono', monospace; font-size: 12px; line-height: 1.4; color: #000000;">{{ pat.number }}</span>
+                  <span style="font-family: 'Archivo Mono', monospace; font-size: 12px; line-height: 1.4; color: #595959;">{{ pat.country }}</span>
+                </div>
+                <div style="display: grid; gap: 5px;">
+                  <h3 style="font-size: clamp(18px, 2vw, 23px); font-weight: 700; line-height: 1.3; margin: 0; width: 100%; text-wrap: pretty;">{{ pat.titleMain }}</h3>
+                  <sc-if value="{{ pat.hasSubTitle }}" hint-placeholder-val="{{ false }}">
+                    <p style="font-size: 15px; line-height: 1.45; color: #595959; margin: 0; text-wrap: pretty;">{{ pat.titleSub }}</p>
+                  </sc-if>
+                </div>
+                <p style="font-size: 15px; line-height: 1.55; color: #000000; margin: 0;">{{ pat.inventorList }}</p>
+              </div>
+
+            </article>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isProfessor }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
+        <div data-dml="profile-split">
+          <div style="display: grid; gap: 20px; align-content: start; max-width: 300px;">
+            <div style="position: relative; overflow: hidden; aspect-ratio: 4 / 5; width: 100%; background-color: #FAFAFA; background-image: repeating-linear-gradient(135deg, #F0F0F0 0 8px, #FFFFFF 8px 16px); border: 1px solid #E5E5E5;">
+              <span style="position: absolute; left: 16px; bottom: 16px; font-family: 'Archivo Mono', monospace; font-size: 11px; color: #595959;">{{ professor.photoLabel }}</span>
+              {{ professor.photoImg }}
+            </div>
+            <div style="display: grid; gap: 4px;">
+              <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0;">Contact</p>
+              <a href="mailto:hwan.kim@sungshin.ac.kr" style="font-size: 15px; border-bottom: 2px solid #E20031; justify-self: start;">hwan.kim@sungshin.ac.kr</a>
+              <a href="tel:+82229207254" style="font-size: 15px; border-bottom: 2px solid #E20031; justify-self: start;">+82-2-920-7254</a>
+            </div>
+            <div style="display: grid; gap: 4px;">
+              <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0;">Office</p>
+              <p style="font-size: 15px; line-height: 1.6; margin: 0;">#403, Prime Bldg.,<br>Donam Sujung Campus</p>
+            </div>
+          </div>
+          <div style="display: grid; gap: 26px; align-content: start;">
+            <div>
+              <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #E20031; margin: 0 0 14px;">Director</p>
+              <h1 style="font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 8px; font-size: clamp(32px, 4.4vw,20px)">Hwan Kim</h1>
+              <p style="font-size: 14px; color: #595959; margin: 0">Assistant Professor<br>Department of Service and Design Engineering<br>Sungshin Women's University</p>
+            </div>
+            
+            <p style="font-size: 18px; line-height: 1.7; margin: 0; max-width: 73ch; white-space: pre-line; text-wrap: pretty;">{{ professor.bio }}</p><div>
+              <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 12px;">Research interests</p>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <sc-for list="{{ professor.interests }}" as="tag" hint-placeholder-count="4">
+                  <span style="display: inline-flex; font-size: 14px; line-height: 1.4; border: 1px solid #E5E5E5; padding: 8px 13px;">{{ tag }}</span>
+                </sc-for>
+              </div>
+            </div>
+            <div style="border-top: 1px solid #E5E5E5; padding-top: 22px;">
+              <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 12px;">Experience</p>
+              <div style="display: grid; gap: 14px;">
+                <sc-for list="{{ professor.experience }}" as="exp" hint-placeholder-count="4">
+                  <div style="display: grid; gap: 3px;">
+                    <p style="font-size: 16px; line-height: 1.5; margin: 0; text-wrap: pretty;">{{ exp.role }}</p>
+                    <sc-if value="{{ exp.hasOrg }}" hint-placeholder-val="{{ true }}">
+                      <p style="font-size: 15px; line-height: 1.5; color: #595959; margin: 0; text-wrap: pretty;">{{ exp.org }}</p>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="border-top: 1px solid #E5E5E5; padding-top: 22px;">
+              <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 12px;">Education</p>
+              <div style="display: grid; gap: 8px;">
+                <sc-for list="{{ professor.education }}" as="edu" hint-placeholder-count="3">
+                  <p style="font-size: 16px; line-height: 1.5; margin: 0;">{{ edu }}</p>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isMembers }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
+        
+        <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 14px;">Members</h1>
+        
+        <div>
+          <section style="margin-bottom: 56px;">
+            <div style="border-bottom: 2px solid #000000; margin-bottom: 28px;"></div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 32px 24px;">
+              <sc-for list="{{ memberList }}" as="m" hint-placeholder-count="8">
+                <a href="{{ m.href }}" style="display: grid; gap: 14px; align-content: start;" style-hover="color: #E20031;">
+                  <div style="position: relative; overflow: hidden; aspect-ratio: 4 / 5; background-color: #FAFAFA; background-image: repeating-linear-gradient(135deg, #F0F0F0 0 8px, #FFFFFF 8px 16px); border: 1px solid #E5E5E5;">
+                    <span style="position: absolute; left: 12px; bottom: 12px; font-family: 'Archivo Mono', monospace; font-size: 10px; color: #595959;">{{ m.photoLabel }}</span>
+                    {{ m.photoImg }}
+                  </div>
+                  <div style="display: grid; gap: 5px;">
+                    <p style="font-size: 19px; font-weight: 700; line-height: 1.2; margin: 0;">{{ m.name }}</p>
+                    <p style="font-size: 14px; color: #595959; margin: 0;">{{ m.position }}</p>
+                    
+                  </div>
+                </a>
+              </sc-for>
+            </div>
+          </section>
+          <sc-if value="{{ hasAlumni }}" hint-placeholder-val="{{ false }}">
+            <section>
+              <h2 style="font-size: 30px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 10px;">Alumni</h2>
+              <div style="border-bottom: 2px solid #000000; margin-bottom: 28px;"></div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 28px 24px;">
+                <sc-for list="{{ alumni }}" as="al" hint-placeholder-count="4">
+                  <div style="display: grid; gap: 5px; align-content: start;">
+                    <a href="{{ al.href }}" style="font-size: 17px; font-weight: 700; line-height: 1.2; justify-self: start;" style-hover="color: #E20031;">{{ al.name }}</a>
+                    <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; margin: 0;">{{ al.span }}</p>
+                    <p style="font-size: 14px; color: #595959; margin: 0; text-wrap: pretty;">{{ al.now }}</p>
+                  </div>
+                </sc-for>
+              </div>
+            </section>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isMemberDetail }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
+        <a href="#/members" style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; letter-spacing: 0.06em;" style-hover="color: #E20031;">← ALL MEMBERS</a>
+        <div data-dml="profile-split" style="margin-top: 32px;">
+          <div style="display: grid; gap: 20px; align-content: start; max-width: 300px;">
+            <div style="position: relative; overflow: hidden; aspect-ratio: 4 / 5; background-color: #FAFAFA; background-image: repeating-linear-gradient(135deg, #F0F0F0 0 8px, #FFFFFF 8px 16px); border: 1px solid #E5E5E5;">
+              <span style="position: absolute; left: 14px; bottom: 14px; font-family: 'Archivo Mono', monospace; font-size: 11px; color: #595959;">{{ member.photoLabel }}</span>
+              {{ member.photoImg }}
+            </div>
+            <sc-if value="{{ member.hasEmail }}" hint-placeholder-val="{{ false }}">
+              <div style="display: grid; gap: 4px;">
+                <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0;">Contact</p>
+                <a href="{{ member.mailto }}" style="font-size: 15px; border-bottom: 2px solid #E20031; justify-self: start;">{{ member.email }}</a>
+              </div>
+            </sc-if>
+          </div>
+          <div style="display: grid; gap: 24px; align-content: start;">
+            <div>
+              <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #E20031; margin: 0 0 14px;">{{ member.groupLabel }}</p>
+              <h1 style="font-size: clamp(30px, 4vw, 50px); font-weight: 700; line-height: 1.06; letter-spacing: -0.02em; margin: 0 0 8px;">{{ member.name }}</h1>
+              <p style="font-size: 17px; color: #595959; margin: 0;">{{ member.subtitle }}</p>
+            </div>
+            <p style="font-size: 18px; line-height: 1.7; margin: 0; max-width: 73ch; white-space: pre-line; text-wrap: pretty;">{{ member.bio }}</p>
+            <sc-if value="{{ member.hasInterests }}" hint-placeholder-val="{{ true }}">
+              <div>
+                <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 12px;">Research interests</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                  <sc-for list="{{ member.interests }}" as="tag" hint-placeholder-count="3">
+                    <span style="display: inline-flex; font-size: 14px; line-height: 1.4; border: 1px solid #E5E5E5; padding: 8px 13px;">{{ tag }}</span>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ member.hasNow }}" hint-placeholder-val="{{ false }}">
+              <div style="border-top: 1px solid #E5E5E5; padding-top: 22px;">
+                <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 12px;">Currently</p>
+                <p style="font-size: 16px; line-height: 1.5; margin: 0; text-wrap: pretty;">{{ member.now }}</p>
+              </div>
+            </sc-if>
+            <sc-if value="{{ member.hasExperience }}" hint-placeholder-val="{{ false }}">
+              <div style="border-top: 1px solid #E5E5E5; padding-top: 22px;">
+                <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 12px;">Experience</p>
+                <div style="display: grid; gap: 14px;">
+                  <sc-for list="{{ member.experience }}" as="exp" hint-placeholder-count="2">
+                    <div style="display: grid; gap: 3px;">
+                      <p style="font-size: 16px; line-height: 1.5; margin: 0; text-wrap: pretty;">{{ exp.role }}</p>
+                      <sc-if value="{{ exp.hasOrg }}" hint-placeholder-val="{{ true }}">
+                        <p style="font-size: 15px; line-height: 1.5; color: #595959; margin: 0; text-wrap: pretty;">{{ exp.org }}</p>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ member.hasEducation }}" hint-placeholder-val="{{ false }}">
+              <div style="border-top: 1px solid #E5E5E5; padding-top: 22px;">
+                <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 12px;">Education</p>
+                <div style="display: grid; gap: 8px;">
+                  <sc-for list="{{ member.education }}" as="edu" hint-placeholder-count="2">
+                    <p style="font-size: 16px; line-height: 1.5; margin: 0;">{{ edu }}</p>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ member.hasAwards }}" hint-placeholder-val="{{ false }}">
+              <div style="border-top: 1px solid #E5E5E5; padding-top: 22px;">
+                <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 12px;">Award &amp; exhibition</p>
+                <div style="display: grid; gap: 8px;">
+                  <sc-for list="{{ member.awards }}" as="award" hint-placeholder-count="2">
+                    <p style="font-size: 16px; line-height: 1.5; margin: 0; text-wrap: pretty;">{{ award }}</p>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ member.hasPubs }}" hint-placeholder-val="{{ false }}">
+              <div style="border-top: 1px solid #E5E5E5; padding-top: 22px;">
+                <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 14px;">Selected publications</p>
+                <div style="display: grid; gap: 16px;">
+                  <sc-for list="{{ member.pubs }}" as="pub" hint-placeholder-count="2">
+                    <div style="display: grid; gap: 5px; font-size: 16px; max-width: 58ch;">
+                      <sc-if value="{{ pub.hasDoi }}" hint-placeholder-val="{{ true }}">
+                        <a href="{{ pub.doi }}" target="_blank" rel="noopener noreferrer" style="font-size: 16px; font-weight: 700; line-height: 1.35; justify-self: start; text-wrap: pretty;" style-hover="color: #E20031;">{{ pub.titleMain }}</a>
+                      </sc-if>
+                      <sc-if value="{{ pub.noDoi }}" hint-placeholder-val="{{ false }}">
+                        <p style="font-size: 16px; font-weight: 700; line-height: 1.35; margin: 0; text-wrap: pretty;">{{ pub.titleMain }}</p>
+                      </sc-if>
+                      <sc-if value="{{ pub.hasSubTitle }}" hint-placeholder-val="{{ false }}">
+                        <p style="font-size: 14px; line-height: 1.4; color: #595959; margin: 0; text-wrap: pretty;">{{ pub.titleSub }}</p>
+                      </sc-if>
+                      <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; margin: 0;">{{ pub.venueShort }}</p>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ member.hasPatents }}" hint-placeholder-val="{{ false }}">
+              <div style="border-top: 1px solid #E5E5E5; padding-top: 22px;">
+                <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 14px;">Patents</p>
+                <div style="display: grid; gap: 16px;">
+                  <sc-for list="{{ member.patents }}" as="pat" hint-placeholder-count="2">
+                    <div style="display: grid; gap: 5px; font-size: 16px; max-width: 58ch;">
+                      <p style="font-size: 16px; font-weight: 700; line-height: 1.35; margin: 0; text-wrap: pretty;">{{ pat.titleMain }}</p>
+                      <sc-if value="{{ pat.hasSubTitle }}" hint-placeholder-val="{{ false }}">
+                        <p style="font-size: 14px; line-height: 1.4; color: #595959; margin: 0; text-wrap: pretty;">{{ pat.titleSub }}</p>
+                      </sc-if>
+                      <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; margin: 0;">{{ pat.number }} · {{ pat.status }}</p>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isJoin }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
+        
+        <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 28px; max-width: 24ch; text-wrap: pretty;">We are looking for people who like to make things and ask why.</h1>
+        <div style="font-size: 18px; line-height: 1.65; margin: 0 0 56px; text-wrap: pretty;">DesignMediaLab recruits undergraduate researchers, M.S. and Ph.D. students every semester. No single background is required — designers, engineers, and people from the humanities and social sciences all fit here. We're looking for someone who loves building their imagination with their own hands.<p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 20px 0 0;">DesignMediaLab은 매 학기 학부 연구생과 석·박사 과정 학생을 모집합니다. 특정한 전공 배경을 요구하지 않습니다 — 디자인, 공학, 인문학 및 사회과학을 전공한 사람 모두 함께할 수 있습니다. 우리는 자신의 상상을 직접 손으로 만들어내는 것을 좋아하는 사람을 찾고 있습니다.</p></div>
+        <section style="border-top: 2px solid #000000; padding-top: 36px; margin: 0 0 20px;">
+          <h2 style="font-size: 24px; font-weight: 700; margin: 0 0 18px;">Potential candidates</h2>
+          <p style="font-size: 18px; line-height: 1.65; text-wrap: pretty; margin: 0;">DesignMediaLab focuses on research that brings design together with emerging technology. People who love making things with their own hands. People who love to draw. Maybe people who lose themselves in books or films. We believe that the people who make new and interesting things are the ones with a clear sense of what they love. We hope DesignMediaLab can be a playground where you get to build whatever that is.</p>
+          <p style="font-size: 18px; line-height: 1.75; text-wrap: pretty; margin: 12px 0 0;">DesignMediaLab은 디자인과 새로운 기술을 결합하는 연구에 초점을 맞추고 있습니다. 손으로 직접 무언가를 만드는 것을 좋아하는 사람. 그림 그리는 것을 좋아하는 사람. 어쩌면 책을 읽거나 영화를 보는 것에 빠져 있는 사람. 저희는 자신만의 취향이 확고한 사람들이 새롭고 재미있는 것을 만들 수 있다고 믿습니다. DesignMediaLab이 당신이 좋아하는 것을 마음껏 만들 수 있는 놀이터가 되었으면 좋겠습니다.</p>
+          <p style="font-size: 18px; line-height: 1.65; text-wrap: pretty; margin: 24px 0 0;">Whether you apply as an undergraduate researcher or as a graduate student, <strong style="font-weight: 700;">your major, your grades, and your academic background do not matter at all. What matters is having the kind of taste that lets you lose yourself in the work you love.</strong> If you want to design something and build it yourself, please email me.</p>
+          <p style="font-size: 18px; line-height: 1.75; text-wrap: pretty; margin: 12px 0 0;">학부연구생으로 지원하든, 대학원생으로 지원하든, <strong style="font-weight: 700;">당신의 전공, 학점, 학력은 전혀 중요하지 않습니다. 다만, 좋아하는 일에 몰입할 수 있는 취향을 가진 사람이길 바랍니다.</strong> 직접 디자인을 만들어서 구현해보고 싶은 사람은 저에게 Email로 문의해주세요.</p>
+        </section>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: #E5E5E5; margin-bottom: 24px;">
+          <sc-for list="{{ openings }}" as="job" hint-placeholder-count="3">
+            <div style="background: #FFFFFF; padding: 14px 26px 16px; display: grid; gap: 14px; align-content: start;">
+              <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FFFFFF; background: {{ job.color }}; padding: 4px 9px; justify-self: start;">{{ job.status }}</span>
+              <h3 style="font-size: 21px; font-weight: 700; line-height: 1.25; margin: 0;">{{ job.title }}</h3>
+              <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0; text-wrap: pretty;">{{ job.text }}</p>
+              <sc-if value="{{ job.hasTextKo }}" hint-placeholder-val="{{ false }}">
+                <p style="font-size: 15px; line-height: 1.75; color: #595959; margin: 0; text-wrap: pretty;">{{ job.textKo }}</p>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <div style="border-top: 2px solid #000000; padding: 36px 0 64px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
+          <div>
+            <h2 style="font-size: 24px; font-weight: 700; margin: 0 0 18px;">How to apply</h2>
+            <p style="font-size: 18px; line-height: 1.65; margin: 0; text-wrap: pretty;">If you join the lab, we provide funding through research assistantships and project support, so that you can focus entirely on design and research.</p>
+            <p style="font-size: 18px; line-height: 1.75; margin: 8px 0 24px; text-wrap: pretty;">연구실 멤버로 조인하게 된다면, 아르바이트에 대한 걱정없이 디자인과 연구에만 매진할 수 있는 환경을 제공할 것입니다. 편하게 미팅을 요청해주세요.</p>
+            <div style="display: grid; gap: 14px;">
+              <sc-for list="{{ applySteps }}" as="step" hint-placeholder-count="3">
+                <div style="display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px; align-items: start;">
+                  <span style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #E20031; padding-top: 3px;">{{ step.num }}</span>
+                  <div>
+                    <p style="font-size: 16px; line-height: 1.6; margin: 0; text-wrap: pretty;">{{ step.text }}</p>
+                    <sc-if value="{{ step.hasTextKo }}" hint-placeholder-val="{{ false }}">
+                      <p style="font-size: 16px; line-height: 1.7; margin: 6px 0 0; text-wrap: pretty;">{{ step.textKo }}</p>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <a href="mailto:hwan.kim@sungshin.ac.kr?subject=DesignMediaLab%20Application" style="display: block; width: 100%; box-sizing: border-box; text-align: center; margin-top: 28px; background: #E20031; color: #FFFFFF; font-weight: 700; font-size: 15px; padding: 14px 24px;" style-hover="background: #2F05FF; color: #FFFFFF;">Contact: hwan.kim@sungshin.ac.kr</a>
+            <p style="font-size: 13px; line-height: 1.6; color: #595959; margin: 10px 0 0; text-align: center;">#403, Prime Bldg. 성신여자대학교 프라임관 403호</p>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+  </main>
+
+  <sc-if value="{{ editorOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.45); display: flex; align-items: flex-start; justify-content: center; padding: 24px; overflow: auto;">
+      <div style="background: #FFFFFF; width: 100%; max-width: 640px; padding: 30px; display: grid; gap: 18px; border-top: 4px solid #E20031;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+          <h2 style="font-size: 22px; font-weight: 700; margin: 0;">{{ editorTitle }}</h2>
+          <button onClick="{{ closeEditor }}" style="background: none; border: none; font-size: 22px; line-height: 1; cursor: pointer; color: #595959;">×</button>
+        </div>
+        <label style="display: grid; gap: 7px;">
+          <span style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959;">Date</span>
+          <input type="date" value="{{ draft.date }}" onChange="{{ setDate }}" style="border: 1px solid #E5E5E5; padding: 12px; font-size: 15px; color: #000000;">
+        </label>
+        <label style="display: grid; gap: 7px;">
+          <span style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959;">Category</span>
+          <select value="{{ draft.category }}" onChange="{{ setCategory }}" style="border: 1px solid #E5E5E5; padding: 12px; font-size: 15px; color: #000000; background: #FFFFFF;">
+            <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
+              <option value="{{ cat }}">{{ cat }}</option>
+            </sc-for>
+          </select>
+        </label>
+        <label style="display: grid; gap: 7px;">
+          <span style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959;">Title</span>
+          <input type="text" value="{{ draft.title }}" onChange="{{ setTitle }}" placeholder="Post title" style="border: 1px solid #E5E5E5; padding: 12px; font-size: 15px; font-weight: 700; color: #000000;">
+        </label>
+        <label style="display: grid; gap: 7px;">
+          <span style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959;">Body</span>
+          <textarea rows="6" value="{{ draft.body }}" onChange="{{ setBody }}" placeholder="Write the post…" style="border: 1px solid #E5E5E5; padding: 12px; font-size: 15px; line-height: 1.6; color: #000000; resize: vertical;"></textarea>
+        </label>
+        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+          <input type="checkbox" checked="{{ draft.pinned }}" onChange="{{ setPinned }}" style="width: 16px; height: 16px; accent-color: #E20031;">
+          <span style="font-size: 15px;">Pin to top of the board</span>
+        </label>
+        <div style="display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid #E5E5E5; padding-top: 18px;">
+          <button onClick="{{ closeEditor }}" style="background: #FFFFFF; border: 1px solid #E5E5E5; color: #595959; font-size: 14px; padding: 12px 18px; cursor: pointer;">Cancel</button>
+          <button onClick="{{ savePost }}" style="background: #E20031; border: none; color: #FFFFFF; font-weight: 700; font-size: 14px; padding: 12px 24px; cursor: pointer;">Save post</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <footer style="border-top: 1px solid #E5E5E5; margin-top: 40px;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 44px 24px 56px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; align-items: start;">
+      <div style="display: grid; gap: 12px; align-content: start;">
+        <img src="assets/logo_black.png" alt="DesignMediaLab" style="height: 15px; width: auto; justify-self: start;">
+        <p style="font-size: 13px; line-height: 1.6; color: #595959; margin: 0;">Dept. of Service and Design Engineering<br>Sungshin Women's University</p>
+      </div>
+      <div style="display: grid; gap: 8px; align-content: start;">
+        <sc-for list="{{ navMain }}" as="item" hint-placeholder-count="3">
+          <a href="{{ item.href }}" style="font-size: 13px; color: #595959;" style-hover="color: #E20031;">{{ item.label }}</a>
+        </sc-for>
+      </div>
+      <div style="display: grid; gap: 8px; align-content: start;">
+        <sc-for list="{{ navPeople }}" as="item" hint-placeholder-count="3">
+          <a href="{{ item.href }}" style="font-size: 13px; color: #595959;" style-hover="color: #E20031;">{{ item.label }}</a>
+        </sc-for>
+      </div>
+      <div style="display: grid; gap: 8px; align-content: start;">
+        <a href="mailto:hwan.kim@sungshin.ac.kr" style="font-size: 13px; color: #595959;" style-hover="color: #E20031;">hwan.kim@sungshin.ac.kr</a>
+        <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; color: #595959; margin: 0;">© 2026. Design Media Lab. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;adminMode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Board&quot;}}">
+const NEWS_KEY = 'dml_news_board_v1';
+const GROUPS = [
+  ['professor', 'Director'],
+  ['research-professor', 'Research Professor'],
+  ['postdoc', 'Postdoctoral Researcher'],
+  ['phd', 'Ph.D. Students'],
+  ['ms', 'M.S. Students'],
+  ['undergrad', 'Undergraduate Researchers']
+];
+const CATS = ['Notice', 'Award', 'People', 'Project', 'Patent', 'Talk', 'Publication', 'Activity'];
+// The three papers listed under "Featured publications" on the About page,
+// by their "id" in data/publications.json.
+const FEATURED_PUB_IDS = ['2026-HapBraille', '2025-HapShop', '2018-HapCube-CHI'];
+
+const TAG_COLORS = { Award: '#E20031', Publication: '#E20031', Patent: '#E20031', Project: '#E20031', Talk: '#2F05FF', Activity: '#2F05FF', People: '#2F05FF', Notice: '#595959' };
+
+class Component extends DCLogic {
+  state = {
+    route: (typeof location !== 'undefined' && location.hash) || '#/',
+    menuOpen: false,
+    news: null, fileNews: [], pubs: [], patents: [], members: [],
+    expanded: {},
+    editorOpen: false, draft: null, editingId: null
+  };
+
+  componentDidMount() {
+    this._onHash = () => this.setState({ route: location.hash || '#/', menuOpen: false });
+    window.addEventListener('hashchange', this._onHash);
+    ['news', 'publications', 'patents', 'members'].forEach((name) => {
+      fetch('data/' + name + '.json').then((r) => r.json()).then((json) => {
+        if (name === 'news') {
+          let stored = null;
+          try { stored = JSON.parse(localStorage.getItem(NEWS_KEY) || 'null'); } catch (e) { stored = null; }
+          this.setState({ fileNews: json, news: Array.isArray(stored) ? stored : json });
+        } else if (name === 'publications') this.setState({ pubs: json });
+        else if (name === 'patents') this.setState({ patents: json });
+        else this.setState({ members: json });
+      }).catch(() => {});
+    });
+  }
+  componentWillUnmount() { window.removeEventListener('hashchange', this._onHash); }
+
+  persist(news) {
+    this.setState({ news });
+    try { localStorage.setItem(NEWS_KEY, JSON.stringify(news)); } catch (e) {}
+  }
+
+  parts() { return (this.state.route || '#/').replace(/^#\/?/, '').split('/').filter(Boolean); }
+
+  navItem(label, href, num) {
+    const p = this.parts();
+    const base = href.replace(/^#\/?/, '');
+    const active = base === '' ? p.length === 0 : p[0] === base;
+    return { label, href, num, color: active ? '#E20031' : '#000000', bar: active ? '#E20031' : 'transparent' };
+  }
+
+  sortedNews() {
+    const list = (this.state.news || []).slice();
+    list.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || String(b.date).localeCompare(String(a.date)));
+    return list;
+  }
+
+  renderVals() {
+    const p = this.parts();
+    const page = p[0] || '';
+    const admin = this.props.adminMode ?? false;
+    const news = this.sortedNews();
+    const members = this.state.members || [];
+    // --- Current members vs. alumni ------------------------------------------
+    // Every entry in members.json carries a "status": "member" people get a photo
+    // card and a detail page, "alumni" people are listed as text at the bottom of
+    // the Members page. A missing status counts as "member", so an entry written
+    // before this field existed keeps behaving the way it used to.
+    const isAlumni = (m) => String(m.status || 'member').toLowerCase() === 'alumni';
+    const current = members.filter((m) => !isAlumni(m));
+    const pubs = (this.state.pubs || []).slice().sort((a, b) => b.year - a.year);
+    const patents = this.state.patents || [];
+
+    const navMain = [this.navItem('About', '#/about', '01'), this.navItem('Publications', '#/publications', '02'), this.navItem('Patents', '#/patents', '03')];
+    const navPeople = [this.navItem('Director', '#/professor', '04'), this.navItem('Members', '#/members', '05'), this.navItem('Join Our Team', '#/join', '06')];
+
+    const fmtDate = (s) => {
+      const m = String(s || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      return m ? m[3] + '-' + m[2] + '-' + m[1] : String(s || '');
+    };
+    const decorate = (n) => ({
+      ...n,
+      date: fmtDate(n.date),
+      href: '#/news/' + n.id,
+      tagColor: TAG_COLORS[n.category] || '#595959',
+      excerpt: String(n.body || '').slice(0, 180) + (String(n.body || '').length > 180 ? '…' : ''),
+      // News index: a post opens in place instead of navigating to its own page.
+      // "isOpen" swaps the trimmed excerpt for the full body; the detail route
+      // still works if someone opens #/news/<id> directly.
+      isOpen: String(n.body || '').length > 180 && !!(this.state.expanded || {})[n.id],
+      isClosed: !(String(n.body || '').length > 180 && (this.state.expanded || {})[n.id]),
+      hasMore: String(n.body || '').length > 180,
+      onToggle: (e) => {
+        e.preventDefault();
+        this.setState((st) => {
+          const ex = { ...(st.expanded || {}) };
+          if (ex[n.id]) delete ex[n.id]; else ex[n.id] = true;
+          return { expanded: ex };
+        });
+      },
+      onEdit: (e) => { e.preventDefault(); this.setState({ editorOpen: true, editingId: n.id, draft: { ...n } }); },
+      onDelete: (e) => {
+        e.preventDefault();
+        if (!window.confirm('Delete this post?')) return;
+        this.persist((this.state.news || []).filter((x) => x.id !== n.id));
+      }
+    });
+
+    // --- Image helpers -------------------------------------------------------
+    // One image per publication / member. The filename is taken from the JSON
+    // ("image" for publications, "photo" for members); if it is left blank the
+    // conventional name below is generated automatically:
+    //   Publications: YYYY_FirstThreeWordsOfTitle.png  (in publicationImage/)
+    //                 (Korean-only papers fall back to YYYY_<id>.png)
+    //   Members:      firstname_lastname.png           (in memberImage/)
+    const imgEl = (src, alt) => React.createElement('img', {
+      src, alt: alt || '',
+      onError: (e) => { e.target.style.display = 'none'; },
+      style: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }
+    });
+    const camelWords = (title, n) => String(title || '').split(/\s+/).filter(Boolean).slice(0, n)
+      .map((w) => w.replace(/[^A-Za-z0-9]/g, ''))
+      .filter(Boolean)
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join('');
+    const pubImgName = (pub) => pub.year + '_' + (camelWords(pub.title, 3)
+      || String(pub.id || 'untitled').replace(/[^A-Za-z0-9]/g, '')) + '.png';
+    const memberImgName = (m) => {
+      const parts = String(m.name || '').trim().split(/\s+/).filter(Boolean);
+      const clean = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+      const first = clean(parts[0]);
+      const last = clean(parts.slice(1).join(''));
+      return (last ? first + '_' + last : first) + '.png';
+    };
+    const withFolder = (folder, file) => (/\//.test(file) ? file : folder + '/' + file);
+    const pubImgFile = (pub) => pub.image || pubImgName(pub);
+    const memberImgFile = (m) => m.photo || memberImgName(m);
+    const pubImgSrc = (pub) => withFolder('publicationImage', pubImgFile(pub));
+    const memberImgSrc = (m) => withFolder('memberImage', memberImgFile(m));
+    // --- Inline links in free text -------------------------------------------
+    // Bio text may contain markdown-style links: [Wonder Lab](https://…).
+    // They render as underlined links that open in a new tab; plain text and the
+    // "\n" line breaks in the JSON are left untouched.
+    const richText = (text) => {
+      const src = String(text || '');
+      const re = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+      const out = [];
+      let last = 0;
+      let m;
+      while ((m = re.exec(src))) {
+        if (m.index > last) out.push(src.slice(last, m.index));
+        out.push(React.createElement('a', {
+          key: 'lnk' + m.index,
+          href: m[2],
+          target: '_blank',
+          rel: 'noopener noreferrer',
+          style: { borderBottom: '2px solid #E20031' }
+        }, m[1]));
+        last = m.index + m[0].length;
+      }
+      if (last < src.length) out.push(src.slice(last));
+      return out;
+    };
+
+    // Awards and exhibitions live under the "award & exhibition" key in
+    // members.json. A single entry may be written as a plain string; several are
+    // written as an array. Blank entries are dropped so the section disappears
+    // when there is nothing to show.
+    const awardList = (m) => {
+      const raw = m['award & exhibition'];
+      return (Array.isArray(raw) ? raw : [raw])
+        .map((s) => String(s == null ? '' : s).trim())
+        .filter(Boolean);
+    };
+
+    // Experience entries come in two shapes: an object with a "role" and an "org"
+    // line, or a single string when one line is enough. Both are normalised to
+    // { role, org, hasOrg } so the template only has to deal with one of them.
+    const experienceList = (m) => (m.experience || []).map((e) => {
+      if (e && typeof e === 'object') {
+        return { role: richText(e.role), org: richText(e.org), hasOrg: !!String(e.org || '').trim() };
+      }
+      return { role: richText(e), org: [], hasOrg: false };
+    });
+
+    const decorateMember = (m, extra) => {
+      const hasImg = !!(m.photo || (m.name && String(m.name).trim()));
+      const awards = awardList(m);
+      return Object.assign({
+        photoLabel: hasImg ? memberImgFile(m) : '',
+        photoImg: hasImg ? imgEl(memberImgSrc(m), m.name) : null
+      }, extra, {
+        bio: richText(m.bio),
+        education: (m.education || []).map(richText),
+        experience: experienceList(m),
+        awards: awards.map(richText),
+        hasAwards: awards.length > 0
+      });
+    };
+
+    // --- Bilingual titles ----------------------------------------------------
+    // Papers and patents alike carry an English title ("title") and an optional
+    // Korean one ("titleKo"). When both exist the Korean title is the headline
+    // and the English one is printed underneath as a sub-title; when only one of
+    // them is filled in, that one is simply used on its own.
+    const bilingualTitle = (item) => {
+      const ko = String(item.titleKo || '').trim();
+      const en = String(item.title || '').trim();
+      return {
+        titleMain: ko || en,
+        titleSub: ko && en ? en : '',
+        hasSubTitle: !!(ko && en)
+      };
+    };
+    // --- Author / inventor names ----------------------------------------------
+    // Authors in publications.json and inventors in patents.json are plain name
+    // strings. A name that exactly matches the "name" of someone in members.json
+    // is rendered as a link to that person's page — the director has his own
+    // /professor route — and picks up a red underline on hover. Outside
+    // collaborators are plain grey text, so the lab's own people stand out in a
+    // list. Alumni keep their detail page, so they are linked just like current
+    // members.
+    const memberByName = new Map();
+    members.forEach((m) => {
+      const key = String(m.name || '').trim();
+      if (key) memberByName.set(key, m);
+    });
+    const memberHref = (m) => (m.group === 'professor' ? '#/professor' : '#/members/' + m.id);
+    const personEls = (names) => (names || []).map((name, i, all) => {
+      const m = memberByName.get(String(name).trim());
+      const tail = i < all.length - 1 ? ', ' : '';
+      if (!m || (m.group !== 'professor' && !m.id)) {
+        return React.createElement('span', { key: 'au' + i },
+          React.createElement('span', { style: { color: '#595959' } }, name),
+          tail);
+      }
+      return React.createElement('span', { key: 'au' + i },
+        React.createElement('a', { href: memberHref(m), 'data-dml': 'author-link' }, name),
+        tail);
+    });
+
+    // --- Publication links ---------------------------------------------------
+    // "links" in publications.json is a map of label -> URL, rendered as buttons
+    // in the order the keys appear in the JSON. A placeholder value ("#" or an
+    // empty string) means the link does not exist yet, so that button is dropped
+    // instead of rendering a dead link; a paper whose links are all placeholders
+    // shows no button row at all.
+    const isRealLink = (href) => {
+      const v = String(href || '').trim();
+      return !!v && v !== '#';
+    };
+    const pubLinks = (pub) => Object.keys(pub.links || {})
+      .filter((k) => isRealLink(pub.links[k]))
+      .map((k) => ({ label: k.toUpperCase(), href: pub.links[k] }));
+
+    // --- Publication type badge ----------------------------------------------
+    // Journal papers are typed by their index in publications.json (SSCI, SCIE,
+    // A&HCI, SCOPUS, KCI); the badge spells that out as "JOURNAL-SSCI" and uses
+    // the red accent. "Conference" is the blue one. Any other value is shown as
+    // typed, in red. The badge itself is uppercased by CSS.
+    const JOURNAL_INDEXES = ['SSCI', 'SCIE', 'A&HCI', 'SCOPUS', 'KCI'];
+    const pubType = (pub) => {
+      const raw = String(pub.type || '').trim();
+      const key = raw.toUpperCase();
+      if (key === 'CONFERENCE') return { typeLabel: raw, typeColor: '#2F05FF', typeKind: 'conference' };
+      if (JOURNAL_INDEXES.includes(key)) return { typeLabel: 'Journal-' + raw, typeColor: '#E20031', typeKind: 'journal' };
+      return { typeLabel: raw, typeColor: '#E20031', typeKind: 'journal' };
+    };
+
+    const decoratePub = (pub) => {
+      const titles = bilingualTitle(pub);
+      const links = pubLinks(pub);
+      return {
+        ...pub,
+        ...titles,
+        ...pubType(pub),
+        authorsText: (pub.authors || []).join(', '),
+        authorList: personEls(pub.authors),
+        thumb: pubImgSrc(pub),
+        thumbLabel: pubImgFile(pub),
+        thumbImg: imgEl(pubImgSrc(pub), titles.titleMain),
+        hasAward: !!pub.award,
+        linkList: links,
+        hasLinks: links.length > 0,
+        // On a member's page the title itself is the DOI link. A paper without a
+        // real DOI keeps a plain, unclickable title.
+        doi: isRealLink((pub.links || {}).doi) ? pub.links.doi : '',
+        hasDoi: isRealLink((pub.links || {}).doi),
+        noDoi: !isRealLink((pub.links || {}).doi)
+      };
+    };
+
+    const decoratePatent = (pat) => ({
+      ...pat,
+      ...bilingualTitle(pat),
+      inventorsText: (pat.inventors || []).join(', '),
+      inventorList: personEls(pat.inventors),
+      statusColor: pat.status === 'Registered' ? '#E20031' : '#595959',
+      statusKind: pat.status === 'Registered' ? 'registered' : 'filed'
+    });
+
+    const yearMap = new Map();
+    pubs.forEach((pub) => {
+      if (!yearMap.has(pub.year)) yearMap.set(pub.year, []);
+      yearMap.get(pub.year).push(decoratePub(pub));
+    });
+    const pubGroups = Array.from(yearMap.entries()).map(([year, items]) => ({ year, items, count: items.length + (items.length > 1 ? ' papers' : ' paper') }));
+
+    const memberGroups = GROUPS.filter((g) => g[0] !== 'professor').map(([key, label]) => {
+      const items = current.filter((m) => m.group === key).map((m) => decorateMember(m, {
+        ...m,
+        href: '#/members/' + m.id
+      }));
+      return { key, label, items, count: String(items.length).padStart(2, '0') };
+    }).filter((g) => g.items.length > 0);
+
+    // --- Alumni --------------------------------------------------------------
+    // Three lines of plain text per person: the name, the years spent in the lab
+    // with the degree taken, and where they are now. The degree comes from an
+    // explicit "degree" field, or failing that from the group they belonged to.
+    // Most recent leavers are listed first.
+    const DEGREE_BY_GROUP = { phd: 'PhD', ms: 'MS', undergrad: 'BS', postdoc: 'Postdoc' };
+    const alumniList = members.filter(isAlumni)
+      .slice()
+      .sort((a, b) => String(b.until || '').localeCompare(String(a.until || ''))
+        || String(a.name || '').localeCompare(String(b.name || '')))
+      .map((m) => {
+        const degree = String(m.degree || DEGREE_BY_GROUP[m.group] || '').trim();
+        const years = [m.since, m.until].filter(Boolean).join('-');
+        return {
+          id: m.id,
+          name: m.name,
+          href: '#/members/' + m.id,
+          span: years + (degree ? (years ? ' ' : '') + '(' + degree + ')' : ''),
+          now: m.now || ''
+        };
+      });
+
+    const prof = current.find((m) => m.group === 'professor') || { bio: '', interests: [], experience: [], education: [] };
+
+    // Alumni keep their detail page, so the whole list is searched here. Every
+    // block below the bio is optional: an entry that only fills in interests and
+    // education simply shows those two, and the "Currently" and "Experience"
+    // blocks stay hidden until the JSON has something to put in them.
+    let member = null;
+    if (page === 'members' && p[1]) {
+      const m = members.find((x) => x.id === p[1]);
+      if (m) {
+        const label = isAlumni(m) ? 'Alumni' : (GROUPS.find((g) => g[0] === m.group) || ['', ''])[1];
+        // Papers and patents are matched to a person by their exact "name", the
+        // same string that appears in the authors / inventors lists.
+        const mine = pubs.filter((pub) => (pub.authors || []).some((a) => a === m.name));
+        const minePatents = patents.filter((pat) => (pat.inventors || []).some((a) => a === m.name));
+        member = decorateMember(m, {
+          ...m,
+          groupLabel: label,
+          subtitle: [m.nameKo, m.position].filter(Boolean).join(' · '),
+          email: m.email || '',
+          mailto: 'mailto:' + (m.email || ''),
+          hasEmail: !!m.email,
+          interests: m.interests || [],
+          hasInterests: (m.interests || []).length > 0,
+          now: m.now || '',
+          // "Currently" says where someone went after the lab, so it only makes
+          // sense for alumni — a current member's entry is ignored even if filled in.
+          hasNow: isAlumni(m) && !!String(m.now || '').trim(),
+          hasExperience: (m.experience || []).length > 0,
+          hasEducation: (m.education || []).length > 0,
+          hasPubs: mine.length > 0,
+          pubs: mine.map(decoratePub),
+          hasPatents: minePatents.length > 0,
+          patents: minePatents.map(decoratePatent)
+        });
+      }
+    }
+
+    let post = null;
+    if (page === 'news' && p[1]) {
+      const n = news.find((x) => x.id === p[1]);
+      if (n) post = decorate(n);
+    }
+
+    return {
+      admin,
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      navMain, navPeople, navAll: navMain.concat(navPeople),
+
+      isHome: page === '',
+      isNewsIndex: page === 'news' && !p[1],
+      isNewsDetail: page === 'news' && !!post,
+      isAbout: page === 'about',
+      isPublications: page === 'publications',
+      isPatents: page === 'patents',
+      isProfessor: page === 'professor',
+      isMembers: page === 'members' && !p[1],
+      isMemberDetail: page === 'members' && !!member,
+      isJoin: page === 'join',
+
+      newsList: news.slice(0, 5).map(decorate),
+      newsAll: news.map(decorate),
+      newsCount: String(news.length).padStart(2, '0'),
+      post: post || {},
+      pubGroups, pubCount: String(pubs.length).padStart(2, '0'),
+      patents: patents.map(decoratePatent),
+      patentCount: String(patents.length).padStart(2, '0'),
+      professor: decorateMember(prof, { ...prof }),
+      memberGroups,
+      memberList: memberGroups.reduce((acc, g) => acc.concat(g.items), []),
+      memberCount: String(current.length).padStart(2, '0'),
+      member: member || { interests: [], education: [], pubs: [] },
+      alumni: alumniList,
+      hasAlumni: alumniList.length > 0,
+
+      // Each research area may carry a Korean line ("textKo") printed under the
+      // English one. Leave it empty and the card simply shows the English text.
+      researchAreas: [
+        { num: '01', title: 'Designing novel interactive devices and products', text: 'We design interactive devices and products that enhance people\'s everyday experiences.\n', textKo: '사람들의 일상생활, 그들의 경험을 새롭게 만들어주는 새로운 인터랙티브 제품을 디자인합니다.' },
+        { num: '02', title: 'Improving digitial accessibility for people with disabilities', text: 'We develop inclusive technologies that improve digital accessibility for people with disabilities.', textKo: '디지털 정보에 취약한 분들을 위한, 접근성을 개선할 수 있는 모든 기술과 디자인을 연구합니다.' },
+        { num: '03', title: 'Developing novel haptic technologies for everyday use', text: 'We develop novel haptic technologies that communicate information through touch and enrich everyday interactions.', textKo: '촉감으로 정보를 전달할 수 있는 방법을 고민하고, 일상에서 사용될 수 있는 인터랙션을 디자인합니다.' }
+      ].map((a) => ({ ...a, hasTextKo: !!String(a.textKo || '').trim() })),
+
+      // Featured publications on the About page: three papers picked out of
+      // publications.json by id, so their titles, years, and DOI links stay in
+      // sync with the publications page. An id that is not in the JSON (or a
+      // paper with no DOI yet) is skipped rather than shown without a link.
+      featuredPubs: FEATURED_PUB_IDS
+        .map((id) => pubs.find((pub) => pub.id === id))
+        .filter((pub) => pub && isRealLink((pub.links || {}).doi))
+        .map((pub) => ({ title: pub.title, year: String(pub.year || ''), href: pub.links.doi })),
+      openings: [
+        { status: 'Open', color: '#E20031', title: 'Undergraduate Researchers', text: 'If there\'s something you want to make, or if you\'d like to experience research firsthand, you\'re welcome to apply at any time. Get in touch by email, and we\'ll meet to define a research topic and design project that interests you — from there, you can join as an undergraduate researcher.', textKo: '만들고 싶은 것이 있다면, 연구를 경험해보고 싶다면 언제든 지원할 수 있습니다. E-mail로 문의를 주시면 미팅을 통해 관심있는 연구 주제 및 디자인 프로젝트를 설정한 다음, 학부연구생으로 조인할 수 있습니다.' },
+        { status: 'Open', color: '#E20031', title: 'M.S. / Ph.D. Students', text: 'I will support you in growing into an independent researcher capable of carrying out design research. If you are interested in combining emerging technology with design, please apply to the M.S. or Ph.D. program. If you are considering applying, I encourage you to talk with me beforehand — please email me to request a conversation.', textKo: '디자인 연구를 수행할 수 있는 \'독립적인 연구자\'로 성장할 수 있도록 도울 것입니다. 새로운 기술과 디자인을 결합하고자 하는 분들께서는 대학원 프로그램에 지원해주세요. 지원을 고민하는 분들께는 미리 저와 상담하기를 권장합니다. Email로 상담 요청을 해주세요.' }
+      ].map((o) => ({ ...o, hasTextKo: !!String(o.textKo || '').trim() })),
+      applySteps: [
+        { num: '01', text: 'Send an email to the director, Hwan Kim, to request a meeting. Please include two or three time slots that work for you.', textKo: 'Director 김환에게 미팅을 요청하는 Email을 보내세요. 미팅이 가능한 2, 3가지 시간대를 함께 알려주세요.' },
+        { num: '02', text: 'Think about the kind of design you like and what you want to build. We will discuss this together at the meeting.', textKo: '어떤 디자인을 좋아하는지, 무엇을 만들고 싶은지 생각해주세요. 미팅에서 이를 함께 논의해보겠습니다.' },
+        { num: '03', text: '[Optional] Attach your CV, portfolio, or anything else that helps explain who you are.', textKo: '당신의 CV, 포트폴리오, 무엇이든 당신을 설명하기 위한 자료가 있다면 같이 첨부해주세요.' }
+      ].map((st) => ({ ...st, hasTextKo: !!String(st.textKo || '').trim() })),
+
+      categories: CATS,
+      editorOpen: this.state.editorOpen,
+      editorTitle: this.state.editingId ? 'Edit post' : 'New post',
+      draft: this.state.draft || { date: '', category: 'Notice', title: '', body: '', pinned: false },
+      closeEditor: () => this.setState({ editorOpen: false, draft: null, editingId: null }),
+      newPost: () => this.setState({
+        editorOpen: true, editingId: null,
+        draft: { id: 'n-' + Date.now(), date: new Date().toISOString().slice(0, 10), category: 'Notice', title: '', body: '', pinned: false }
+      }),
+      setDate: (e) => this.setState((s) => ({ draft: { ...s.draft, date: e.target.value } })),
+      setCategory: (e) => this.setState((s) => ({ draft: { ...s.draft, category: e.target.value } })),
+      setTitle: (e) => this.setState((s) => ({ draft: { ...s.draft, title: e.target.value } })),
+      setBody: (e) => this.setState((s) => ({ draft: { ...s.draft, body: e.target.value } })),
+      setPinned: (e) => this.setState((s) => ({ draft: { ...s.draft, pinned: e.target.checked } })),
+      savePost: () => {
+        const d = this.state.draft;
+        if (!d || !d.title) return;
+        const list = (this.state.news || []).slice();
+        const i = list.findIndex((x) => x.id === d.id);
+        if (i >= 0) list[i] = d; else list.unshift(d);
+        this.persist(list);
+        this.setState({ editorOpen: false, draft: null, editingId: null });
+      },
+      exportJson: () => {
+        const text = JSON.stringify(this.sortedNews(), null, 2);
+        if (navigator.clipboard) navigator.clipboard.writeText(text).then(() => window.alert('news.json copied — paste it into data/news.json'), () => window.alert(text));
+        else window.alert(text);
+      },
+      resetNews: () => {
+        if (!window.confirm('Discard local edits and reload data/news.json?')) return;
+        try { localStorage.removeItem(NEWS_KEY); } catch (e) {}
+        this.setState({ news: this.state.fileNews });
+      }
+    };
+  }
+}
+
+</script>
+</body>
+</html>

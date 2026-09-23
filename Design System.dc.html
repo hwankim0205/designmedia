@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700&family=Archivo+Mono:wght@400&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; background: #FFFFFF; color: #000000; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #000000; text-decoration: none; }
+  a:hover { color: #E20031; }
+</style>
+</helmet>
+<div style="font-family: 'Interstate', 'Archivo', Helvetica, Arial, sans-serif; color: #000000; background: #FFFFFF; padding: 0 24px 120px;">
+  <div style="max-width: 1180px; margin: 0 auto;">
+
+    <header style="padding: 72px 0 40px; border-bottom: 2px solid #000000; display: grid; gap: 22px;">
+      <img src="assets/logo_black.png" alt="DesignMediaLab" style="height: 24px; width: auto; justify-self: start;" />
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px;">
+        <h1 style="font-size: clamp(30px, 4vw, 50px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; margin: 0;">Design System</h1>
+        <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; margin: 0; letter-spacing: 0.06em;">v1.0 · 2026 · <a href="DesignMediaLab.dc.html" style="color: #E20031;">OPEN SITE →</a></p>
+      </div>
+      <p style="font-size: 17px; line-height: 1.6; color: #595959; margin: 0; max-width: 62ch; text-wrap: pretty;">Foundations and components for the DesignMediaLab website. White ground, one red for emphasis, one blue for the second voice, and a single grotesque held at two weights.</p>
+    </header>
+
+    <section style="padding: 64px 0 0;">
+      <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #595959; margin: 0 0 24px;">01 — Color</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+        <div style="display: grid; gap: 12px;">
+          <div style="height: 132px; background: #E20031;"></div>
+          <div>
+            <p style="font-size: 16px; font-weight: 700; margin: 0 0 4px;">Main</p>
+            <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; margin: 0;">#E20031</p>
+            <p style="font-size: 13px; color: #595959; margin: 6px 0 0; line-height: 1.5;">Primary action, active nav, emphasis rules, awards.</p>
+          </div>
+        </div>
+        <div style="display: grid; gap: 12px;">
+          <div style="height: 132px; background: #2F05FF;"></div>
+          <div>
+            <p style="font-size: 16px; font-weight: 700; margin: 0 0 4px;">Sub</p>
+            <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; margin: 0;">#2F05FF</p>
+            <p style="font-size: 13px; color: #595959; margin: 6px 0 0; line-height: 1.5;">Secondary tags, journal / registered states, hover on primary.</p>
+          </div>
+        </div>
+        <div style="display: grid; gap: 12px;">
+          <div style="height: 132px; background: #000000;"></div>
+          <div>
+            <p style="font-size: 16px; font-weight: 700; margin: 0 0 4px;">Text</p>
+            <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; margin: 0;">#000000</p>
+            <p style="font-size: 13px; color: #595959; margin: 6px 0 0; line-height: 1.5;">Headlines, body, section rules, inverted blocks.</p>
+          </div>
+        </div>
+        <div style="display: grid; gap: 12px;">
+          <div style="height: 132px; background: #595959;"></div>
+          <div>
+            <p style="font-size: 16px; font-weight: 700; margin: 0 0 4px;">Text Sub</p>
+            <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; margin: 0;">#595959</p>
+            <p style="font-size: 13px; color: #595959; margin: 6px 0 0; line-height: 1.5;">Supporting copy, metadata, labels, captions.</p>
+          </div>
+        </div>
+        <div style="display: grid; gap: 12px;">
+          <div style="height: 132px; background: #FFFFFF; border: 1px solid #E5E5E5;"></div>
+          <div>
+            <p style="font-size: 16px; font-weight: 700; margin: 0 0 4px;">Ground / Hairline</p>
+            <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; margin: 0;">#FFFFFF · #E5E5E5</p>
+            <p style="font-size: 13px; color: #595959; margin: 6px 0 0; line-height: 1.5;">Always white background. #E5E5E5 for dividers and card borders only.</p>
+          </div>
+        </div>
+      </div>
+      <p style="font-size: 14px; line-height: 1.6; color: #595959; margin: 24px 0 0; max-width: 76ch;">Rule: red and blue never sit adjacent at the same size. One red accent per screen region; blue appears only as the second category voice.</p>
+    </section>
+
+    <section style="padding: 72px 0 0;">
+      <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #595959; margin: 0 0 24px;">02 — Typography</p>
+      <div style="border-top: 2px solid #000000;">
+        <div style="border-bottom: 1px solid #E5E5E5; padding: 22px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 32px; align-items: baseline;">
+          <p style="font-size: clamp(34px, 5vw, 64px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.04; margin: 0;">Display / H1</p>
+          <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; margin: 0;">Interstate Bold · clamp(34–68px) · LH 1.04 · LS −0.02em</p>
+        </div>
+        <div style="border-bottom: 1px solid #E5E5E5; padding: 22px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 32px; align-items: baseline;">
+          <p style="font-size: clamp(26px, 3vw, 38px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; margin: 0;">Section / H2</p>
+          <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; margin: 0;">Interstate Bold · clamp(26–38px) · LH 1.15</p>
+        </div>
+        <div style="border-bottom: 1px solid #E5E5E5; padding: 22px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 32px; align-items: baseline;">
+          <p style="font-size: 23px; font-weight: 700; line-height: 1.3; margin: 0;">Item title / H3</p>
+          <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; margin: 0;">Interstate Bold · 19–23px · LH 1.3</p>
+        </div>
+        <div style="border-bottom: 1px solid #E5E5E5; padding: 22px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 32px; align-items: baseline;">
+          <p style="font-size: 18px; font-weight: 400; line-height: 1.7; margin: 0; max-width: 46ch;">Body — Interstate Regular at 18px with 1.7 line height carries long-form copy on About, Professor, and member pages.</p>
+          <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; margin: 0;">Interstate Regular · 18px · LH 1.7 · max 62ch</p>
+        </div>
+        <div style="border-bottom: 1px solid #E5E5E5; padding: 22px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 32px; align-items: baseline;">
+          <p style="font-size: 15px; font-weight: 400; line-height: 1.6; color: #595959; margin: 0;">Small — metadata, list descriptions, captions.</p>
+          <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; margin: 0;">Interstate Regular · 14–15px · #595959</p>
+        </div>
+        <div style="border-bottom: 1px solid #E5E5E5; padding: 22px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 32px; align-items: baseline;">
+          <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #595959; margin: 0;">Label / Eyebrow — 01 Publications</p>
+          <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; margin: 0;">Mono · 11–12px · LS 0.12em · UPPERCASE</p>
+        </div>
+      </div>
+      <p style="font-size: 14px; line-height: 1.6; color: #595959; margin: 22px 0 0; max-width: 76ch;">Interstate Bold and Regular only. Mono (Archivo Mono) is a utility face for dates, IDs, counts, and eyebrows — never for reading copy. Korean copy uses the same sizes; system Korean sans falls in behind Interstate.</p>
+    </section>
+
+    <section style="padding: 72px 0 0;">
+      <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #595959; margin: 0 0 24px;">03 — Logo</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+        <div style="border: 1px solid #E5E5E5; padding: 40px 32px; display: grid; gap: 24px; align-content: space-between; min-height: 200px;">
+          <img src="assets/logo_black.png" alt="DesignMediaLab" style="width: 100%; max-width: 320px;" />
+          <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; color: #595959; margin: 0;">logo_black.png · on white · header 19px tall, footer 15px</p>
+        </div>
+        <div style="background: #000000; padding: 40px 32px; display: grid; gap: 24px; align-content: space-between; min-height: 200px;">
+          <img src="assets/logo_white.png" alt="DesignMediaLab" style="width: 100%; max-width: 320px;" />
+          <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; color: #FFFFFF; margin: 0; opacity: 0.7;">logo_white.png · on black or #E20031 fields only</p>
+        </div>
+        <div style="border: 1px solid #E5E5E5; padding: 32px; display: grid; gap: 10px; align-content: start;">
+          <p style="font-size: 16px; font-weight: 700; margin: 0;">Clear space & don'ts</p>
+          <p style="font-size: 14px; line-height: 1.65; color: #595959; margin: 0;">Keep clear space equal to the cap height of “D” on all sides. Never recolor the wordmark, never set it in another face, never place the black mark on the red field.</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding: 72px 0 0;">
+      <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #595959; margin: 0 0 24px;">04 — Components</p>
+
+      <p style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #000000; margin: 0 0 14px;">Buttons</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; border: 1px solid #E5E5E5; padding: 26px; margin-bottom: 32px;">
+        <a href="#" style="display: inline-flex; align-items: center; gap: 10px; background: #E20031; color: #FFFFFF; font-weight: 700; font-size: 15px; padding: 15px 26px;" style-hover="background: #2F05FF; color: #FFFFFF;">Primary <span style="font-family: 'Archivo Mono', monospace; font-size: 12px;">→</span></a>
+        <a href="#" style="display: inline-flex; align-items: center; border: 2px solid #000000; color: #000000; font-weight: 700; font-size: 15px; padding: 13px 24px;" style-hover="border-color: #E20031; color: #E20031;">Secondary</a>
+        <a href="#" style="display: inline-flex; align-items: center; font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.08em; border: 1px solid #E5E5E5; padding: 7px 12px; color: #000000;" style-hover="border-color: #2F05FF; color: #2F05FF;">PDF</a>
+        <span style="font-family: 'Archivo Mono', monospace; font-size: 11px; color: #595959;">hover: red → blue, black → red</span>
+      </div>
+
+      <p style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #000000; margin: 0 0 14px;">Tags</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; border: 1px solid #E5E5E5; padding: 26px; margin-bottom: 32px;">
+        <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FFFFFF; background: #E20031; padding: 4px 9px;">Award</span>
+        <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FFFFFF; background: #2F05FF; padding: 4px 9px;">People</span>
+        <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FFFFFF; background: #000000; padding: 4px 9px;">Project</span>
+        <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FFFFFF; background: #595959; padding: 4px 9px;">Notice</span>
+        <span style="display: inline-flex; font-size: 14px; line-height: 1.4; border: 1px solid #E5E5E5; padding: 8px 13px;">Interest chip</span>
+      </div>
+
+      <p style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #000000; margin: 0 0 14px;">Board row (news)</p>
+      <div style="border-top: 2px solid #000000; margin-bottom: 32px;">
+        <article style="border-bottom: 1px solid #E5E5E5; padding: 26px 4px; display: grid; gap: 12px;">
+          <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+            <span style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959;">2026-07-14</span>
+            <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FFFFFF; background: #E20031; padding: 4px 9px;">Award</span>
+            <span style="font-family: 'Archivo Mono', monospace; font-size: 11px; color: #E20031; letter-spacing: 0.08em;">PINNED</span>
+          </div>
+          <a href="#" style="font-size: 25px; font-weight: 700; line-height: 1.25; letter-spacing: -0.01em;" style-hover="color: #E20031;">Board title sits at 19–25px bold and links to the post page</a>
+          <p style="font-size: 16px; line-height: 1.6; color: #595959; margin: 0; max-width: 78ch;">One 180-character excerpt in #595959. Date, category tag, and optional pin marker sit above the title on one metadata line.</p>
+        </article>
+      </div>
+
+      <p style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #000000; margin: 0 0 14px;">Publication row</p>
+      <div style="border-top: 2px solid #000000; margin-bottom: 32px;">
+        <article style="border-bottom: 1px solid #E5E5E5; padding: 26px 4px; display: grid; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FFFFFF; background: #E20031; padding: 4px 9px;">Conference</span>
+            <span style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959;">CHI 2026</span>
+            <span style="font-size: 12px; font-weight: 700; color: #E20031;">★ Best Paper Honorable Mention</span>
+          </div>
+          <h3 style="font-size: 23px; font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; margin: 0; max-width: 60ch;">Tangible Service Blueprints: Bridging Physical Prototypes and Service Design Workflows</h3>
+          <p style="font-size: 15px; line-height: 1.55; margin: 0;">Hwan Kim, Jiwoo Park, Seoyeon Han</p>
+          <p style="font-size: 15px; line-height: 1.55; color: #595959; margin: 0; font-style: italic;">ACM CHI Conference on Human Factors in Computing Systems (CHI '26)</p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;">
+            <a href="#" style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.08em; border: 1px solid #E5E5E5; padding: 7px 12px;" style-hover="border-color: #2F05FF; color: #2F05FF;">PDF</a>
+            <a href="#" style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.08em; border: 1px solid #E5E5E5; padding: 7px 12px;" style-hover="border-color: #2F05FF; color: #2F05FF;">DOI</a>
+          </div>
+        </article>
+      </div>
+
+      <p style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #000000; margin: 0 0 14px;">Member card & image placeholder</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 24px; border: 1px solid #E5E5E5; padding: 26px; margin-bottom: 32px;">
+        <a href="#" style="display: grid; gap: 14px; align-content: start;" style-hover="color: #E20031;">
+          <div style="aspect-ratio: 4 / 5; background-color: #FAFAFA; background-image: repeating-linear-gradient(135deg, #F0F0F0 0 8px, #FFFFFF 8px 16px); border: 1px solid #E5E5E5; display: flex; align-items: flex-end; padding: 12px;">
+            <span style="font-family: 'Archivo Mono', monospace; font-size: 10px; color: #595959;">photo — member_id.jpg</span>
+          </div>
+          <div style="display: grid; gap: 5px;">
+            <p style="font-size: 19px; font-weight: 700; line-height: 1.2; margin: 0;">Member Name</p>
+            <p style="font-size: 14px; color: #595959; margin: 0;">M.S. Student</p>
+            <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; color: #595959; margin: 0;">SINCE 2025</p>
+          </div>
+        </a>
+        <div style="display: grid; gap: 10px; align-content: start;">
+          <p style="font-size: 15px; line-height: 1.65; color: #595959; margin: 0;">All imagery is a 4:5 striped placeholder with a monospace file hint until a real photo is dropped in. Cards fill a <span style="font-family: 'Archivo Mono', monospace; font-size: 13px;">auto-fill minmax(210px, 1fr)</span> grid, so one grid serves desktop and mobile.</p>
+        </div>
+      </div>
+
+      <p style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #000000; margin: 0 0 14px;">Navigation</p>
+      <div style="border: 1px solid #E5E5E5; margin-bottom: 32px;">
+        <div style="border-bottom: 1px solid #E5E5E5; padding: 0 20px; height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 20px;">
+          <img src="assets/logo_black.png" alt="DesignMediaLab" style="height: 17px; width: auto;" />
+          <div style="display: flex; align-items: center; gap: 22px;">
+            <span style="font-size: 14px; font-weight: 700; color: #E20031; border-bottom: 2px solid #E20031; padding: 6px 0;">About</span>
+            <span style="font-size: 14px; font-weight: 700;">Publications</span>
+            <span style="font-size: 14px; font-weight: 700;">Patents</span>
+            <span style="width: 1px; height: 16px; background: #E5E5E5;"></span>
+            <span style="font-size: 14px; font-weight: 700;">Professor</span>
+            <span style="font-size: 14px; font-weight: 700;">Members</span>
+            <span style="font-size: 14px; font-weight: 700;">Join Our Team</span>
+          </div>
+        </div>
+        <div style="padding: 20px; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: start;">
+          <div style="border: 1px solid #E5E5E5;">
+            <div style="height: 60px; padding: 0 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #E5E5E5;">
+              <img src="assets/logo_black.png" alt="DesignMediaLab" style="height: 13px; width: auto;" />
+              <span style="display: grid; gap: 4px; width: 20px;">
+                <span style="height: 2px; background: #000000;"></span>
+                <span style="height: 2px; background: #000000;"></span>
+                <span style="height: 2px; background: #000000;"></span>
+              </span>
+            </div>
+            <div style="padding: 4px 14px 14px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #F0F0F0;"><span style="font-size: 16px; font-weight: 700; color: #E20031;">About</span><span style="font-family: 'Archivo Mono', monospace; font-size: 10px; color: #595959;">01</span></div>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #F0F0F0;"><span style="font-size: 16px; font-weight: 700;">Publications</span><span style="font-family: 'Archivo Mono', monospace; font-size: 10px; color: #595959;">02</span></div>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0;"><span style="font-size: 16px; font-weight: 700;">Patents</span><span style="font-family: 'Archivo Mono', monospace; font-size: 10px; color: #595959;">03</span></div>
+            </div>
+          </div>
+          <p style="font-size: 15px; line-height: 1.65; color: #595959; margin: 0;">Desktop: wordmark left, menu centred-right in one row, active item red with a 2px red underline. Below 880px the row collapses to a hamburger at the top right; the panel drops under the header, items at 20px bold with mono numbering. Header is sticky with a translucent white ground.</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding: 72px 0 0;">
+      <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #595959; margin: 0 0 24px;">05 — Layout & spacing</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1px; background: #E5E5E5;">
+        <div style="background: #FFFFFF; padding: 26px; display: grid; gap: 8px; align-content: start;">
+          <p style="font-size: 17px; font-weight: 700; margin: 0;">Container</p>
+          <p style="font-size: 14px; line-height: 1.6; color: #595959; margin: 0;">Max width 1240px, 24px side gutters at every size. Header height 76px.</p>
+        </div>
+        <div style="background: #FFFFFF; padding: 26px; display: grid; gap: 8px; align-content: start;">
+          <p style="font-size: 17px; font-weight: 700; margin: 0;">Spacing scale</p>
+          <p style="font-family: 'Archivo Mono', monospace; font-size: 13px; color: #595959; margin: 0;">4 · 8 · 12 · 16 · 24 · 32 · 56 · 80 · 96</p>
+          <p style="font-size: 14px; line-height: 1.6; color: #595959; margin: 0;">Section padding uses clamp(40px, 6vw, 80px) top, 96px bottom.</p>
+        </div>
+        <div style="background: #FFFFFF; padding: 26px; display: grid; gap: 8px; align-content: start;">
+          <p style="font-size: 17px; font-weight: 700; margin: 0;">Rules</p>
+          <p style="font-size: 14px; line-height: 1.6; color: #595959; margin: 0;">2px black rule opens a section or list; 1px #E5E5E5 divides items inside it. No shadows, no radii, no gradients.</p>
+        </div>
+        <div style="background: #FFFFFF; padding: 26px; display: grid; gap: 8px; align-content: start;">
+          <p style="font-size: 17px; font-weight: 700; margin: 0;">Responsive</p>
+          <p style="font-size: 14px; line-height: 1.6; color: #595959; margin: 0;">Content grids use auto-fit / auto-fill minmax, so they reflow without breakpoints. One breakpoint only: 880px for the nav.</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding: 72px 0 0;">
+      <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #595959; margin: 0 0 24px;">06 — Data & maintenance</p>
+      <div style="border-top: 2px solid #000000;">
+        <div style="border-bottom: 1px solid #E5E5E5; padding: 24px 4px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 32px;">
+          <p style="font-family: 'Archivo Mono', monospace; font-size: 14px; margin: 0; color: #2F05FF;">data/publications.json</p>
+          <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0;">id, year, type (Conference / Journal), title, authors[], venue, venueShort, award, links{pdf, doi, video}. Grouped by year automatically; author names matching a member surface on that member's page.</p>
+        </div>
+        <div style="border-bottom: 1px solid #E5E5E5; padding: 24px 4px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 32px;">
+          <p style="font-family: 'Archivo Mono', monospace; font-size: 14px; margin: 0; color: #2F05FF;">data/patents.json</p>
+          <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0;">id, title, inventors[], number, country, status (Filed / Registered), date.</p>
+        </div>
+        <div style="border-bottom: 1px solid #E5E5E5; padding: 24px 4px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 32px;">
+          <p style="font-family: 'Archivo Mono', monospace; font-size: 14px; margin: 0; color: #2F05FF;">data/members.json</p>
+          <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0;">id, name, nameKo, group (professor · research-professor · postdoc · phd · ms · undergrad), position, email, since, interests[], bio, education[], photo. Group order and headings are fixed; empty groups disappear. Each entry gets its own page at #/members/&lt;id&gt;.</p>
+        </div>
+        <div style="border-bottom: 1px solid #E5E5E5; padding: 24px 4px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 32px;">
+          <p style="font-family: 'Archivo Mono', monospace; font-size: 14px; margin: 0; color: #2F05FF;">data/news.json</p>
+          <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0;">id, date, category (Notice · Award · People · Project · Patent · Talk), title, body, pinned. Turn on Admin mode in Tweaks to write, edit, or delete posts in the browser, then “Copy news.json” and paste the result back into the file.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>

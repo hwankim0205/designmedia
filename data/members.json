@@ -1,0 +1,154 @@
+[
+  {
+    "id": "00",
+    "name": "Hwan Kim",
+    "nameKo": "김환",
+    "group": "professor",
+    "status": "member",
+    "position": "Assistant Professor, Director",
+    "email": "hwan.kim@sungshin.ac.kr",
+    "since": "2023",
+    "interests": ["Human-Computer Interaction", "Haptic Interactions", "I/O Interfaces"],
+    "bio": "Hwan Kim is an Assistant professor in the [Department of Service and Design Engineering](https://www.sungshin.ac.kr/serdesign/) at [Sungshin Women's University](https://www.sungshin.ac.kr/). He is a Human–Computer Interaction (HCI) researcher. He designs interactive technologies that support human cognition and everyday activities. His research spans wearable devices, VR/AR interfaces, digital accessibilities, and haptic technologies. His research combines emerging computing technologies with design to create interactive devices and products that enable new experiences and improve people's everyday lives.",
+    "experience": [
+      {
+        "role": "Assistant Professor (Sep. 2023 — Present)",
+        "org": "Department of Service and Design Engineering, Sungshin Women's University (Seoul, Republic of Korea)"
+      },
+      {
+        "role": "Research Assistant Professor (Sep. 2021 — Aug. 2023)",
+        "org": "Department of Interior Architecture Design, Hanyang University (Seoul, Republic of Korea)"
+      },
+      {
+        "role": "Senior Designer (Mar. 2019 — Aug. 2021)",
+        "org": "Wearable UX part, Samsung Electronics (Seoul, Republic of Korea)"
+      }
+    ],
+    "now": "",
+    "education": [
+      "Ph.D. in Industrial Design, KAIST (Mar. 2013 — Feb. 2019)",
+      "M.S. in Industrial Design, KAIST (Mar. 2011 — Feb. 2013)",
+      "B.S. in Industrial Design, KAIST (Mar. 2006 — Feb. 2011)"
+    ],
+    "photo": "hwan_kim.png"
+  },
+  {
+    "id": "01",
+    "name": "Inseo Kim",
+    "nameKo": "김인서",
+    "group": "ms",
+    "status": "alumni",
+    "degree": "MS",
+    "position": "M.S. Student",
+    "email": "inseo0927@naver.com",
+    "since": "2024",
+    "until": "2026",
+    "interests": ["Web Novel", "Quantitative Literary Analysis"],
+    "bio": "",
+    "experience": [],
+    "now": "-",
+    "education": [
+      "M.S. in Department of Service and Design Engineering, Sungshin Women's University (2024-2026)",
+      "M.A. in Department of Industrial Design, Sungshin Women's University (2019-2024)"
+    ],
+    "photo": "inseo_kim.png"
+  },
+  {
+    "id": "02",
+    "name": "Yeoeun Kim",
+    "nameKo": "김여은",
+    "group": "ms",
+    "status": "member",
+    "degree": "BS",
+    "position": "M.S. Student",
+    "email": "victoriadudms@gmail.com",
+    "since": "2024",
+    "until": "",
+    "interests": ["Accessibility", "Visually Impaired User"],
+    "bio": "",
+    "award & exhibition": "WideEye: 디자인코리아2024 전시 (WideEye: DesignKorea, 2024)",
+    "experience": [],
+    "now": "",
+    "education": [
+      "B.S. in Department of Service and Design Engineering, Sungshin Women's University (2020-2024)"
+    ],
+    "photo": "yeoeun_kim.png"
+  },
+  {
+    "id": "03",
+    "name": "Heewon Jeong",
+    "nameKo": "정희원",
+    "group": "undergrad",
+    "status": "undergraduate student",
+    "position": "Undergraduate Researcher",
+    "email": "jhw269753@naver.com",
+    "since": "2024",
+    "until": "2027",
+    "interests": ["Haptic Interactions", "Human-Computer Interaction"],
+    "bio": "",
+    "experience": [],
+    "now": "Research Intern, CS, Korea University ",
+    "education": [
+      "B.A. in Department of History, Sungshin Women's University (2020-2027)",
+      "B.S. in Department of Service and Design Engineering, Sungshin Women's University (2020-2027)"],
+    "photo": "heewon_jeong.png"
+  },
+  {
+    "id": "04",
+    "name": "Yunseo Chang",
+    "nameKo": "장윤서",
+    "group": "undergrad",
+    "status": "alumni",
+    "position": "Undergraduate Researcher",
+    "email": "siennachang1202@gmail.com",
+    "since": "2024",
+    "until": "2025",
+    "interests": ["Human-Computer Interaction", "Computer Science", "Haptic Interactions"],
+    "bio": "",
+    "award & exhibition": "2024년 캠퍼스 유니버시아드 장려상 (Campus Patent Universiad 2024)",
+    "experience": [],
+    "now": "Grad. Programe in CS., Korea University",
+    "education": ["B.S. in Department of Business Administration, Sungshin Women's University (2020-2025)"],
+    "photo": "yunseo_chang.png"
+  },
+  {
+    "id": "05",
+    "name": "Eunji Chun",
+    "nameKo": "전은지",
+    "group": "undergrad",
+    "status": "alumni",
+    "position": "Undergraduate Researcher",
+    "email": "20201184@sungshin.ac.kr",
+    "since": "2024",
+    "until": "2025",
+    "interests": ["Interaction Design", "Design Research"],
+    "bio": "",
+    "experience": [],
+    "now": "UX Researcher, Babitalk",
+    "education": ["B.S. in Department of Biotechnology, Sungshin Women's University (2020-2026)"],
+    "photo": "eunji_chun.png"
+  },
+  {
+    "id": "06",
+    "name": "Jee Hee Lee",
+    "nameKo": "이지희",
+    "group": "ms",
+    "degree": "AA",
+    "status": "member",
+    "position": "M.S. Student",
+    "email": "jhlee8568@gmail.com",
+    "since": "2026",
+    "interests": ["Data Literacy", "Design Research"],
+    "bio": "",
+    "experience": [
+      "UIUX Designer, Waywai (2024-2025)",
+      "Product Designer, Extriber (2019-2021)",
+      "Motion Graphic Designer, Cutting Edge (2015-2016)",
+      "Motion Graphic Designer, TIUM solutions (2013-2015)"
+    ],
+    "now": "",
+    "education": [
+      "A.A. in Visual Communication Design, Kaywon University of Art & Design (2027-2019)"],
+    "photo": "jeehee_lee.png"
+  }
+]

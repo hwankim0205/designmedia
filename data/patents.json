@@ -1,0 +1,132 @@
+[
+  {
+    "id": "KR-10-2025-0065740",
+    "title": "",
+    "titleKo": "햅틱 피드백 시스템 및 햅틱펜",
+    "inventors": ["Hwan Kim", "YeonWoo Lee", "Eunji Chun", "Heewon Jeong"],
+    "number": "KR 10-2025-0065740",
+    "country": "Republic of Korea",
+    "status": "Filed",
+    "date": "2025-05-20"
+  },
+  {
+    "id": "KR-10-2025-0025557",
+    "title": "",
+    "titleKo": "배송지 사진을 이용한 오배송 검출 시스템",
+    "inventors": ["Hwan Kim", "Hyelin Jang"],
+    "number": "KR 10-2025-0025557",
+    "country": "Republic of Korea",
+    "status": "Filed",
+    "date": "2025-02-27"
+  },
+  {
+    "id": "KR-10-2024-0127068",
+    "title": "",
+    "titleKo": "증강현실 글래스",
+    "inventors": ["Hwan Kim", "Yunseo Chang", "Seunghui Choi", "Dagyung Han"],
+    "number": "KR 10-2024-0127068",
+    "country": "Republic of Korea",
+    "status": "Filed",
+    "date": "2024-09-20"
+  },
+  {
+    "id": "KR-10-2024-0063552",
+    "title": "",
+    "titleKo": "통번역 월패드 시스템",
+    "inventors": ["Hwan Kim", "Heeju Na"],
+    "number": "KR 10-2024-0063552",
+    "country": "Republic of Korea",
+    "status": "Filed",
+    "date": "2024-05-16"
+  },
+  {
+    "id": "KR-10-2504720-0000",
+    "title": "METHOD AND SYSTEM FOR PROVIDING A 3D MODEL AUTOMATIC CREATION INTERFACE",
+    "titleKo": "3차원 모델 자동 생성 인터페이스 제공 방법 및 시스템",
+    "inventors": ["Kyungwon Yun", "Roger Blanco", "Kyung Hoon Hyun", "Seonghoon Ban", "Hwan Kim"],
+    "number": "KR 10-2504720-0000",
+    "country": "Republic of Korea",
+    "status": "Registered",
+    "date": "2023-02-23"
+  },
+  {
+    "id": "KR-3011739040000",
+    "title": "",
+    "titleKo": "화상디자인이 표시된 디스플레이 패널",
+    "inventors": ["Yongman Park","Hwan Kim"],
+    "number": "KR 3011739040000",
+    "country": "Republic of Korea",
+    "status": "Registered",
+    "date": "2022-07-18"
+  },
+  {
+    "id": "KR-3011739070000",
+    "title": "",
+    "titleKo": "화상디자인이 표시된 디스플레이 패널",
+    "inventors": ["Woongki Shin","Yongman Park","Hwan Kim"],
+    "number": "KR 3011739070000",
+    "country": "Republic of Korea",
+    "status": "Registered",
+    "date": "2022-07-18"
+  },
+  {
+    "id": "KR-3011716250000",
+    "title": "",
+    "titleKo": "화상디자인이 표시된 디스플레이 패널",
+    "inventors": ["Woongki Shin","Yongman Park","Hwan Kim"],
+    "number": "KR 3011716250000",
+    "country": "Republic of Korea",
+    "status": "Registered",
+    "date": "2022-07-04"
+  },
+  {
+    "id": "KR-10-2406715-0000",
+    "title": "VIBRATING ACTUATOR AND METHOD FOR SIMULATING HAPTIC FEEDBACK USING THE SAME",
+    "titleKo": "진동 액추에이터 및 이를 이용한 촉감 모사 방법",
+    "inventors": ["Hwan Kim", "Woohun Lee"],
+    "number": "KR 10-2406715-0000",
+    "country": "Republic of Korea",
+    "status": "Registered",
+    "date": "2022-06-02"
+  },
+  {
+    "id": "USD946619S1",
+    "title": "Display screen or portion thereof with animated graphical user interface",
+    "titleKo": "",
+    "inventors": ["Hwan Kim","Moonjeong Kim","Joonho Ok","Giyong Lee"],
+    "number": "USD946619S1",
+    "country": "US",
+    "status": "Registered",
+    "date": "2022-03-22"
+  },
+  {
+    "id": "USD944852S1",
+    "title": "Display screen or portion thereof with animated graphical user interface",
+    "titleKo": "",
+    "inventors": ["Moonjeong Kim","Hwan Kim","Giyong Lee","Joonho Ok"],
+    "number": "USD944852S1",
+    "country": "US",
+    "status": "Registered",
+    "date": "2022-03-01"
+  },
+  {
+    "id": "KR-10-2021-0103924",
+    "title": "",
+    "titleKo": "전자 장치 및 전자 장치에서 복수의 상태들의 우선 순위에 기반한 캐릭터 오브젝트 표시 방법",
+    "inventors": ["Hwan Kim","Meeji Park","Dongsoo Shin","Jihyun Ahn","Jinsoo Jang", "Eunsil Kim", "Mee Yeon Park"],
+    "number": "KR 10-2021-0103924",
+    "country": "Republic of Korea",
+    "status": "Registered",
+    "date": "2021-08-06"
+  },
+  {
+    "id": "KR-10-2020-0096414",
+    "title": "APPARATUS AND METHOD FOR DISPLAYING ALWAYS ON DISPLAY",
+    "titleKo": "화면을 표시하는 방법 및 그 장치",
+    "inventors": ["Meeju Lee","Hwan Kim","Jungsoo Kim","Joonho Ok"],
+    "number": "KR 10-2020-0096414",
+    "country": "Republic of Korea",
+    "status": "Registered",
+    "date": "2020-07-31"
+  }
+]
