@@ -14,6 +14,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700&amp;family=Archivo+Mono:wght@400&amp;display=swap" rel="stylesheet">
 <style>
   html, body { margin: 0; padding: 0; background: #FFFFFF; color: #000000; -webkit-font-smoothing: antialiased; }
+  /* Short pages (a research area, Members) fit without a scrollbar, and the
+     centred header would jump sideways by its width as you move between
+     pages. Reserving the gutter keeps every page aligned the same way. */
+  html { scrollbar-gutter: stable; overflow-y: scroll; }
   * { box-sizing: border-box; }
   a { color: #000000; text-decoration: none; }
   a:hover { color: #E20031; }
@@ -215,20 +219,22 @@
       <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
         
         <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 32px; max-width: 26ch; text-wrap: pretty;">We prototype new interactive media to support everyday life.</h1>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; padding-bottom: 56px; border-bottom: 1px solid #E5E5E5;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px;">
           <div style="font-size: 18px; line-height: 1.65; margin: 0; text-wrap: pretty;">DesignMediaLab is a research group in the <a href="https://www.sungshin.ac.kr/serdesign/" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">Department of Service and Design Engineering</a> at <a href="https://www.sungshin.ac.kr/" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">Sungshin Women's University</a>.&nbsp;<br><span style="text-wrap-mode: initial;">We envision a future where people can benefit from emerging technologies in their everyday lives. To make this possible, we design ways for new technologies to meaningfully support people in real-world contexts.</span><p>While there are many possible approaches, our research focuses on three key directions:</p><p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 20px 0 0;">DesignMediaLab 은 <a href="https://www.sungshin.ac.kr/" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">성신여자대학교</a> <a href="https://www.sungshin.ac.kr/serdesign/" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">서비스디자인공학과</a>의 디자인 연구실입니다. 우리는 새로운 기술들을 사람들의 일상생활에 녹이기 위한 인터랙티브 디자인을 고민합니다. 이를 위해, 우리는 기술들을 사람들이 의미있게 사용할 수 있는 형태로 디자인하고, 실제로 사용할 수 있음을 보이기 위해 프로토타입으로 만듭니다. DesignMediaLab에는 미래에 사용될 수 있는 기술을 직접 디자인으로 만드는 사람들이 모여있습니다.</p><p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 16px 0 0;">수 많은 방법들이 있겠지만, 우리는 지금 아래 3가지 주제에 집중하고 있습니다.</p></div>
           
         </div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: #E5E5E5; margin: 56px 0 64px;">
+        <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 56px 0 14px;">Research areas</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: #E5E5E5; margin: 0 0 64px;">
           <sc-for list="{{ researchAreas }}" as="area" hint-placeholder-count="3">
-            <div style="background: #FFFFFF; padding: 32px 26px 40px;">
+            <a href="{{ area.href }}" style="display: block; background: #FFFFFF; padding: 32px 26px 40px; color: inherit;" style-hover="color: #E20031;">
               <p style="font-family: 'Archivo Mono', monospace; font-size: 14px; color: #E20031; margin: 0 0 18px">{{ area.num }}</p>
               <div style="box-sizing: border-box; display: flex; flex-direction: column; gap: 12px"><h3 style="font-size: 22px; font-weight: 700; line-height: 1.25; margin: 0 0 14px; text-wrap: pretty">{{ area.title }}</h3></div>
               <p style="font-size: 15px; line-height: 1.65; color: #595959; margin: 0; text-wrap: pretty;">{{ area.text }}</p>
               <sc-if value="{{ area.hasTextKo }}" hint-placeholder-val="{{ false }}">
                 <p style="font-size: 15px; line-height: 1.75; color: #595959; margin: 12px 0 0; text-wrap: pretty;">{{ area.textKo }}</p>
               </sc-if>
-            </div>
+              <span style="display: inline-block; margin-top: 22px; font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #E20031;">Read more →</span>
+            </a>
           </sc-for>
         </div>
         <section style="margin: 0 0 64px;">
@@ -237,21 +243,38 @@
             <p style="font-size: 16px; line-height: 1.5; border-top: 1px solid #E5E5E5; margin: 0; padding: 14px 0; text-wrap: pretty;"><a href="{{ pub.href }}" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">{{ pub.title }}</a> <span style="font-family: 'Archivo Mono', monospace; font-size: 13px; color: #595959; white-space: nowrap;">({{ pub.year }})</span></p>
           </sc-for>
         </section>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px; border-top: 2px solid #000000; padding-top: 28px;">
-          <div>
-            <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 8px;">Lab</p>
-            <p style="font-size: 16px; line-height: 1.6; margin: 0;">DesignMediaLab<br>Dept. of Service and Design Engineering<br>Sungshin Women's University</p>
-          </div>
-          <div>
-            <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 8px;">Address</p>
-            <p style="font-size: 16px; line-height: 1.6; margin: 0;">2 Bomun-ro 34da-gil, Seongbuk-gu<br>Seoul 02844, Republic of Korea</p>
-          </div>
-          <div>
-            <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 8px;">Contact</p>
-            <p style="font-size: 16px; line-height: 1.6; margin: 0;"><a href="mailto:hwan.kim@sungshin.ac.kr" style="border-bottom: 2px solid #E20031;">hwan.kim@sungshin.ac.kr</a></p>
-            <p style="font-size: 16px; line-height: 1.6; margin: 4px 0 0;"><a href="tel:+82229207254" style="border-bottom: 2px solid #E20031;">+82-2-920-7254</a></p>
-          </div>
-        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isResearch }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
+        <a href="#/about" style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; letter-spacing: 0.06em;" style-hover="color: #E20031;">← ABOUT</a>
+        <sc-for list="{{ researchAreas }}" as="area" hint-placeholder-count="3">
+          <article id="{{ area.anchor }}" style="padding-top: 44px; scroll-margin-top: 96px;">
+            <p style="font-family: 'Archivo Mono', monospace; font-size: 14px; color: #E20031; margin: 0 0 14px;">{{ area.num }}</p>
+            <h2 style="font-size: clamp(26px, 3.4vw, 38px); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 24px; text-wrap: pretty;">{{ area.title }}</h2>
+            <p style="font-size: 18px; line-height: 1.65; margin: 0; text-wrap: pretty;">{{ area.text }}</p>
+            <sc-if value="{{ area.hasTextKo }}" hint-placeholder-val="{{ false }}">
+              <p style="font-size: 18px; line-height: 1.75; margin: 2px 0 0; text-wrap: pretty;">{{ area.textKo }}</p>
+            </sc-if>
+            <div style="border-top: 1px solid #E5E5E5; margin-top: 36px;"></div>
+            <sc-if value="{{ area.hasImages }}" hint-placeholder-val="{{ true }}">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 36px;">
+                <sc-for list="{{ area.images }}" as="pic" hint-placeholder-count="2">
+                  <img src="{{ pic.src }}" alt="{{ pic.alt }}" style="display: block; width: 100%; height: auto; aspect-ratio: 5 / 3; object-fit: cover; background: #FAFAFA;">
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-for list="{{ area.paras }}" as="para" hint-placeholder-count="2">
+              <sc-if value="{{ para.hasEn }}" hint-placeholder-val="{{ true }}">
+                <p style="font-size: 18px; line-height: 1.65; color: #595959; margin: 30px 0 0; text-wrap: pretty;">{{ para.en }}</p>
+              </sc-if>
+              <sc-if value="{{ para.hasKo }}" hint-placeholder-val="{{ true }}">
+                <p style="font-size: 18px; line-height: 1.75; color: #595959; margin: 2px 0 0; text-wrap: pretty;">{{ para.ko }}</p>
+              </sc-if>
+            </sc-for>
+          </article>
+        </sc-for>
       </div>
     </sc-if>
 
@@ -347,8 +370,18 @@
             </div>
             <div style="display: grid; gap: 4px;">
               <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0;">Contact</p>
-              <a href="mailto:hwan.kim@sungshin.ac.kr" style="font-size: 15px; border-bottom: 2px solid #E20031; justify-self: start;">hwan.kim@sungshin.ac.kr</a>
-              <a href="tel:+82229207254" style="font-size: 15px; border-bottom: 2px solid #E20031; justify-self: start;">+82-2-920-7254</a>
+              <div style="display: flex; align-items: baseline; gap: 10px;">
+                <button onClick="{{ copyProEmail }}" style="background: none; border: none; padding: 0; font: inherit; font-size: 15px; color: #000000; cursor: pointer; text-align: left;" style-hover="color: #E20031;">hwan.kim@sungshin.ac.kr</button>
+                <sc-if value="{{ proEmailCopied }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-family: 'Archivo Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: #E20031;">COPIED</span>
+                </sc-if>
+              </div>
+              <div style="display: flex; align-items: baseline; gap: 10px;">
+                <button onClick="{{ copyProPhone }}" style="background: none; border: none; padding: 0; font: inherit; font-size: 15px; color: #000000; cursor: pointer; text-align: left;" style-hover="color: #E20031;">+82-2-920-7254</button>
+                <sc-if value="{{ proPhoneCopied }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-family: 'Archivo Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: #E20031;">COPIED</span>
+                </sc-if>
+              </div>
             </div>
             <div style="display: grid; gap: 4px;">
               <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0;">Office</p>
@@ -443,23 +476,28 @@
       <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
         <a href="#/members" style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; letter-spacing: 0.06em;" style-hover="color: #E20031;">← ALL MEMBERS</a>
         <div data-dml="profile-split" style="margin-top: 32px;">
-          <div style="display: grid; gap: 20px; align-content: start; max-width: 300px;">
+          <div data-dml="photo-col" style="display: grid; gap: 20px; align-content: start; max-width: 300px;">
             <div style="position: relative; overflow: hidden; aspect-ratio: 4 / 5; background-color: #FAFAFA; background-image: repeating-linear-gradient(135deg, #F0F0F0 0 8px, #FFFFFF 8px 16px); border: 1px solid #E5E5E5;">
               <span style="position: absolute; left: 14px; bottom: 14px; font-family: 'Archivo Mono', monospace; font-size: 11px; color: #595959;">{{ member.photoLabel }}</span>
               {{ member.photoImg }}
             </div>
-            <sc-if value="{{ member.hasEmail }}" hint-placeholder-val="{{ false }}">
-              <div style="display: grid; gap: 4px;">
-                <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0;">Contact</p>
-                <a href="{{ member.mailto }}" style="font-size: 15px; border-bottom: 2px solid #E20031; justify-self: start;">{{ member.email }}</a>
-              </div>
-            </sc-if>
           </div>
           <div style="display: grid; gap: 24px; align-content: start;">
             <div>
               <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #E20031; margin: 0 0 14px;">{{ member.groupLabel }}</p>
               <h1 style="font-size: clamp(30px, 4vw, 50px); font-weight: 700; line-height: 1.06; letter-spacing: -0.02em; margin: 0 0 8px;">{{ member.name }}</h1>
               <p style="font-size: 17px; color: #595959; margin: 0;">{{ member.subtitle }}</p>
+              <sc-if value="{{ member.hasEmail }}" hint-placeholder-val="{{ false }}">
+                <div style="display: grid; gap: 4px; margin-top: 18px;">
+                  <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0;">Contact</p>
+                  <div style="display: flex; align-items: baseline; gap: 10px;">
+                    <button onClick="{{ member.copyEmail }}" style="background: none; border: none; padding: 0; font: inherit; font-size: 15px; color: #000000; cursor: pointer; text-align: left;" style-hover="color: #E20031;">{{ member.email }}</button>
+                    <sc-if value="{{ member.emailCopied }}" hint-placeholder-val="{{ false }}">
+                      <span style="font-family: 'Archivo Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: #E20031;">COPIED</span>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-if>
             </div>
             <p style="font-size: 18px; line-height: 1.7; margin: 0; max-width: 73ch; white-space: pre-line; text-wrap: pretty;">{{ member.bio }}</p>
             <sc-if value="{{ member.hasInterests }}" hint-placeholder-val="{{ true }}">
@@ -559,13 +597,13 @@
       <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
         
         <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 28px; max-width: 24ch; text-wrap: pretty;">We are looking for people who like to make things and ask why.</h1>
-        <div style="font-size: 18px; line-height: 1.65; margin: 0 0 56px; text-wrap: pretty;">DesignMediaLab recruits undergraduate researchers, M.S. and Ph.D. students every semester. No single background is required — designers, engineers, and people from the humanities and social sciences all fit here. We're looking for someone who loves building their imagination with their own hands.<p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 20px 0 0;">DesignMediaLab은 매 학기 학부 연구생과 석·박사 과정 학생을 모집합니다. 특정한 전공 배경을 요구하지 않습니다 — 디자인, 공학, 인문학 및 사회과학을 전공한 사람 모두 함께할 수 있습니다. 우리는 자신의 상상을 직접 손으로 만들어내는 것을 좋아하는 사람을 찾고 있습니다.</p></div>
+        <div style="font-size: 18px; line-height: 1.65; margin: 0 0 56px; text-wrap: pretty;">DesignMediaLab recruits undergraduate researchers, M.S. and Ph.D. students every semester. No single background is required — designers, engineers, and people from the humanities and social sciences all fit here. We're looking for someone who loves building their imagination with their own hands.<p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 20px 0 0;">DesignMediaLab은 매 학기 학부 연구생과 석·박사 과정 학생을 모집합니다. 특정한 전공 배경을 요구하지 않습니다 — 디자인, 공학, 인문학 및 사회과학을 전공한 분 모두 함께 연구할 수 있습니다. 우리는 자신의 상상을 직접 손으로 만들어내는 것을 좋아하는 사람을 찾고 있습니다.</p></div>
         <section style="border-top: 2px solid #000000; padding-top: 36px; margin: 0 0 20px;">
           <h2 style="font-size: 24px; font-weight: 700; margin: 0 0 18px;">Potential candidates</h2>
           <p style="font-size: 18px; line-height: 1.65; text-wrap: pretty; margin: 0;">DesignMediaLab focuses on research that brings design together with emerging technology. People who love making things with their own hands. People who love to draw. Maybe people who lose themselves in books or films. We believe that the people who make new and interesting things are the ones with a clear sense of what they love. We hope DesignMediaLab can be a playground where you get to build whatever that is.</p>
           <p style="font-size: 18px; line-height: 1.75; text-wrap: pretty; margin: 12px 0 0;">DesignMediaLab은 디자인과 새로운 기술을 결합하는 연구에 초점을 맞추고 있습니다. 손으로 직접 무언가를 만드는 것을 좋아하는 사람. 그림 그리는 것을 좋아하는 사람. 어쩌면 책을 읽거나 영화를 보는 것에 빠져 있는 사람. 저희는 자신만의 취향이 확고한 사람들이 새롭고 재미있는 것을 만들 수 있다고 믿습니다. DesignMediaLab이 당신이 좋아하는 것을 마음껏 만들 수 있는 놀이터가 되었으면 좋겠습니다.</p>
           <p style="font-size: 18px; line-height: 1.65; text-wrap: pretty; margin: 24px 0 0;">Whether you apply as an undergraduate researcher or as a graduate student, <strong style="font-weight: 700;">your major, your grades, and your academic background do not matter at all. What matters is having the kind of taste that lets you lose yourself in the work you love.</strong> If you want to design something and build it yourself, please email me.</p>
-          <p style="font-size: 18px; line-height: 1.75; text-wrap: pretty; margin: 12px 0 0;">학부연구생으로 지원하든, 대학원생으로 지원하든, <strong style="font-weight: 700;">당신의 전공, 학점, 학력은 전혀 중요하지 않습니다. 다만, 좋아하는 일에 몰입할 수 있는 취향을 가진 사람이길 바랍니다.</strong> 직접 디자인을 만들어서 구현해보고 싶은 사람은 저에게 Email로 문의해주세요.</p>
+          <p style="font-size: 18px; line-height: 1.75; text-wrap: pretty; margin: 12px 0 0;">학부연구생으로 지원하든, 대학원생으로 지원하든, <strong style="font-weight: 700;">당신의 전공, 학점, 학력은 전혀 중요하지 않습니다. 좋아하는 일에 몰입할 수 있는 취향을 가진 사람이길 바랍니다.</strong> 직접 디자인을 만들어서 구현해보고 싶은 분은 저에게 Email로 문의해주세요.</p>
         </section>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: #E5E5E5; margin-bottom: 24px;">
           <sc-for list="{{ openings }}" as="job" hint-placeholder-count="3">
@@ -583,15 +621,15 @@
           <div>
             <h2 style="font-size: 24px; font-weight: 700; margin: 0 0 18px;">How to apply</h2>
             <p style="font-size: 18px; line-height: 1.65; margin: 0; text-wrap: pretty;">If you join the lab, we provide funding through research assistantships and project support, so that you can focus entirely on design and research.</p>
-            <p style="font-size: 18px; line-height: 1.75; margin: 8px 0 24px; text-wrap: pretty;">연구실 멤버로 조인하게 된다면, 아르바이트에 대한 걱정없이 디자인과 연구에만 매진할 수 있는 환경을 제공할 것입니다. 편하게 미팅을 요청해주세요.</p>
+            <p style="font-size: 18px; line-height: 1.75; margin: 8px 0 24px; text-wrap: pretty;">연구실 멤버로 조인하게 된다면, 걱정없이 디자인과 연구에만 매진할 수 있는 펀딩과 환경을 제공할 것입니다. 편하게 미팅을 요청해주세요.</p>
             <div style="display: grid; gap: 14px;">
               <sc-for list="{{ applySteps }}" as="step" hint-placeholder-count="3">
                 <div style="display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px; align-items: start;">
                   <span style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #E20031; padding-top: 3px;">{{ step.num }}</span>
                   <div>
-                    <p style="font-size: 16px; line-height: 1.6; margin: 0; text-wrap: pretty;">{{ step.text }}</p>
+                    <p style="font-size: 16px; font-weight: 500; line-height: 1.6; margin: 0; text-wrap: pretty;">{{ step.text }}</p>
                     <sc-if value="{{ step.hasTextKo }}" hint-placeholder-val="{{ false }}">
-                      <p style="font-size: 16px; line-height: 1.7; margin: 6px 0 0; text-wrap: pretty;">{{ step.textKo }}</p>
+                      <p style="font-size: 16px; font-weight: 500; line-height: 1.7; margin: 6px 0 0; text-wrap: pretty;">{{ step.textKo }}</p>
                     </sc-if>
                   </div>
                 </div>
@@ -672,18 +710,53 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;adminMode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Board&quot;}}">
 const NEWS_KEY = 'dml_news_board_v1';
+// [key, heading on the Members page, label on one person's page]. The heading
+// names a group, so it is plural; a detail page describes one person.
+// The director's contact details, shown on the Director page. They are copied
+// to the clipboard rather than opening a mail or phone app.
+const PRO_EMAIL = 'hwan.kim@sungshin.ac.kr';
+const PRO_PHONE = '+82-2-920-7254';
+
 const GROUPS = [
-  ['professor', 'Director'],
-  ['research-professor', 'Research Professor'],
-  ['postdoc', 'Postdoctoral Researcher'],
-  ['phd', 'Ph.D. Students'],
-  ['ms', 'M.S. Students'],
-  ['undergrad', 'Undergraduate Researchers']
+  ['professor', 'Director', 'Director'],
+  ['research-professor', 'Research Professor', 'Research Professor'],
+  ['postdoc', 'Postdoctoral Researcher', 'Postdoctoral Researcher'],
+  ['phd', 'Ph.D. Students', 'Ph.D. Student'],
+  ['ms', 'M.S. Students', 'M.S. Student'],
+  ['undergrad', 'Undergraduate Researchers', 'Undergraduate Researcher']
 ];
 const CATS = ['Notice', 'Award', 'People', 'Project', 'Patent', 'Talk', 'Publication', 'Activity'];
 // The three papers listed under "Featured publications" on the About page,
 // by their "id" in data/publications.json.
 const FEATURED_PUB_IDS = ['2026-HapBraille', '2025-HapShop', '2018-HapCube-CHI'];
+
+// The three research directions shown on the About page. Each one also has its
+// own page at #/research/<id>; "detail" / "detailKo" hold the long-form text
+// written for that page and stay empty until it exists, in which case the page
+// simply shows the same summary as the card.
+const RESEARCH_AREAS = [
+  { id: 'interactive-devices', images: ['01_01.png', '01_02.png'], num: '01', title: 'Designing novel interactive devices and products', text: 'We design interactive devices and products that enhance people\'s everyday experiences.\n', textKo: '사람들의 일상생활, 그들의 경험을 새롭게 만들어주는 새로운 인터랙티브 제품을 디자인합니다.',
+    body: [
+      { en: 'We redesign the products we already use and encounter every day.', ko: '우리가 일상에서 이미 흔하게 사용하고 접하는 제품들을 새롭게 디자인합니다.' },
+      { en: 'Eyeglasses are tools for correcting vision. However, people with glaucoma or cataracts experience visual field loss, meaning they cannot see parts of their field of view. As a result, they may bump into obstacles while walking or struggle to find objects placed on a desk. If glasses could detect obstacles or objects in the areas where vision is lost and alert the wearer, they could help these people in their daily lives.', ko: '안경은 시력을 교정하기 위한 도구입니다. 그러나 녹내장이나 백내장을 앨고 있는 분들은 시야의 일부분을 볼 수 없는 시야결손을 겪고 있습니다. 이로 인해 길을 걷다가 장애물에 부딪히거나, 책상위에 놀인 물건을 바로 찾지 못하기도 합니다. 안경이 시야가 결손된 부위의 장애물 또는 물건을 인식해서 그들에게 알려줄 수 있다면, 그 분들의 일상생활을 도와줄 수 있을 것입니다.' },
+      { en: 'People who love running train themselves to land on the midfoot in order to run better. Some follow YouTube videos at home, while others take lessons at running coaching centers. Yet once they actually start running, their landing technique changes. A running shoe that uses LED lights to show, in real time, which part of the foot they are landing on with every stride could help them run better.', ko: '달리기를 좋아하는 분들은 더 잘 달리기 위해서 발바닥의 중간 부분으로 착지하는 훈련을 합니다. 집에서 Youtube 영상을 따라하기도 하고, 러닝코칭센터에서 교습을 받기도 합니다. 그렇지만, 직접 달리기 시작하면 착지법이 달라집니다. 달릴 때마다, 내가 어느 부위로 착지하는지를 LED 라이트로 실시간으로 알려주는 러닝화가 있다면 그들의 달리기에 도움이 될 수 있을 것입니다.' },
+      { en: 'We ask what everyday objects need in order to offer better, new experiences, and we build prototypes to demonstrate the effects firsthand. Beyond wearable products, our research aims to design everyday products such as lighting, clocks, and door handles so that they can provide new experiences.', ko: '일상에서 흔하게 사용되는 물건들이 더 나은, 새로운 경험을 제공해주기 위해서 무엇이 더 필요한지 질문을 던지고, 효과를 직접 보여줄 수 있도록 프로토타입으로 구현합니다. 웨어러블 제품뿐만 아니라, 조명, 시계, 문손잡이 등, 일상의 제품이 새로운 경험을 제공할 수 있는 디자인 연구를 목표로 합니다.' }
+    ] },
+  { id: 'accessibility', images: ['02_01.png', '02_02.png'], num: '02', title: 'Improving digitial accessibility for people with disabilities', text: 'We develop inclusive technologies that improve digital accessibility for people with disabilities.', textKo: '디지털 정보에 취약한 분들을 위한, 접근성을 개선할 수 있는 모든 기술과 디자인을 연구합니다.',
+    body: [
+      { en: 'Some people find it difficult to use smartphones or PCs because of physical challenges. Older adults may also struggle to order from a kiosk. We research all kinds of design that help these people access digital devices and digital information without difficulty.', ko: '신체 문제로 스마트폰이나 PC를 사용하는 것이 힘든 분들이 있습니다. 나이가 많으신 분들은 키오스크로 주문하는 것도 어려울 수 있습니다. 이런 분들이 디지털 기기나 디지털 정보에 접근하는 것에 어려움이 없도록 도와주는 모든 디자인을 연구합니다.' },
+      { en: 'Some people need to read text in braille. To read the text on their smartphones, they must carry a separate braille device weighing about 1 kg. These devices are also quite bulky, so they can\'t even be taken out on a subway or bus. For these users, we are conducting research to develop thin, lightweight braille displays. Our goal is to develop, within two to three years, a transparent braille display that can be attached to a smartphone and used like a screen protector.', ko: '점자로 글을 읽어야 하는 분들이 있습니다. 그 분들은 스마트폰의 텍스트를 읽기 위해서, 1kg 정도의 점자 디바이스를 따로 들고 다녔야 합니다. 크기도 제법 커서 지하철이나 버스에서는 꺼낼 수 조차 없습니다. 이런 분들을 위한, 얇고 가벼운 점자 디스플레이를 개발하는 연구를 수행하고 있습니다. 2, 3년 이내에, 스마트폰의 보호필름처럼, 스마트폰에 붙여서 사용할 수 있는 투명한 점자디스플레이를 개발하는 것이 목표입니다.' },
+      { en: 'Language can also be a barrier. The number of foreign workers employed in Korea, as well as international students who come here to study, continues to grow. The difficulties of not speaking Korean are not limited to the workplace or school. They may also face challenging moments at their own front door, hearing things like "I\'m here to read the gas meter" or "I\'m your next-door neighbor." A doorbell system capable of real-time interpretation could make their homes more comfortable.', ko: '언어도 장벽이 될 수 있습니다. 한국에서 일하는 외국인 노동자분들, 그리고 공부하기 위해 온 유학생들이 점점 더 많아지고 있습니다. 한국어에 힘든 것은 직장이나 학교뿐만이 아닐 것입니다. "가스 검침하러 왔습니다", "저 옆집 사람인데요"와 같이 집의 현관에서 힘든 순간을 마주할 수 도 있습니다. 동시 통역이 가능한 초인종 시스템이 그 분들의 집을 더 편안하게 만들어줄 수 있습니다.' },
+      { en: 'As AI technology advances, finding information has become easier than ever. Yet there are still people who struggle because of what may seem like minor barriers, such as language or disability. To help them, we conduct research that turns technology into design.', ko: 'AI 기술이 발전함에 따라, 우리는 정보를 쉽게 찾을 수 있게 되었습니다. 그러나, 여전히 사소한 문제 (언어, 장애) 때문에 어려움을 겪는 사람들이 있습니다. 이런 분들을 도와줄 수 있도록, 기술을 디자인으로 바꾸는 연구를 수행합니다.' }
+    ] },
+  { id: 'haptics', images: ['03_01.png', '03_02.png'], num: '03', title: 'Developing novel haptic technologies for everyday use', text: 'We develop novel haptic technologies that communicate information through touch and enrich everyday interactions.', textKo: '촉감으로 정보를 전달할 수 있는 방법을 고민하고, 일상에서 사용될 수 있는 인터랙션을 디자인합니다.',
+    body: [
+      { en: 'Without digital technology, we would still be reading words printed in ink on paper and hearing music only through live performances. Thanks to digital technology, visual and auditory information has become easily accessible. Tactile information, however, still cannot be conveyed through the digital world. When we buy clothes or a bed, we like to touch them before making a purchase. What kind of world would emerge if tactile information could also be delivered through computers?', ko: '디지털 기술이 없었다면, 저희는 아직 잉크로 찍어진 책으로 글을 읽고, 라이브 연주로만 음악을 들었을 것입니다. 디지털 덕분에 저희는 시각정보, 청각정보를 손쉽게 접할 수 있게 되었습니다. 그런데, 촉감정보는 여전히 디지털 세상을 통해 전달되지 않습니다. 저희는 옷을 사거나, 침대를 살 때, 직접 만져보고 구입하는 것을 좋아합니다. 만약, 촉감정보도 컴퓨터를 통해 전달될 수 있다면 어떤 세상이 만들어질까요?' },
+      { en: 'When buying a sofa, touch is extremely important: how the fabric feels, how soft it is when you press into it. These tactile qualities matter even more than the sofa\'s color or shape, which is why we visit offline stores. It would be wonderful if we could experience the feel of a sofa online. To help people make more accurate decisions, we research technologies and services that can reproduce tactile information digitally.', ko: '쇼파를 구입할 때, 촉감은 매우 중요합니다. 만져지는 느낌, 눌렀을 때의 푹신함. 쇼파의 컴러나 형태보다 이런 촉감이 더 중요합니다. 이 때문에 저희는 오프라인 매장에 방문합니다. 온라인으로 쇼파의 촉감을 전달 받을 수 있으면 좋겠습니다. 사람들이 더 정확한 판단을 할 수 있도록, 촉감 정보를 디지털 기술로 재현할 수 있는 기술과 서비스를 연구합니다.' },
+      { en: 'When playing games, we can feel very simple vibration feedback. But we cannot feel what it\'s like for a game character to swim through water or walk across a desert. A device that makes games more immersive would be a welcome addition.', ko: '게임을 할 때에도, 매우 간단한 진동 피드백은 느낌 수 있습니다. 그렇지만, 게임 캐릭터가 물에서 수영을 하는 느낌, 사막을 걷는 느낌을 우리는 느낄 수 없습니다. 게임을 더욱 몰입감있게 만들어주는 디바이스가 있다면 좋을 것 같습니다.' },
+      { en: 'In the future, when we think of a computer, it will feel more natural to picture VR or AR rather than a monitor, keyboard, and mouse. Unbelievably amazing scenes will unfold before our eyes, and adorable creatures may wander around us. With a VR headset, we can already see and hear such scenes today. Yet we cannot reach out and touch what we see in front of us. We develop technologies to reproduce the sensation of touching virtual objects with our hands.', ko: '우리는 미래에 컴퓨터를 떠올릴 때, 모니터, 키보드, 마우스가 아니라 VR 이나 AR을 떠올리는게 더 자연스럽게 될 것입니다. 저희의 눈 앞에 말도안되게 놀라운 광경이 펼쳐질 것이고, 엄청 귀여운 크리쳌가 돌아다닐 수 있습니다. VR 디바이스를 착용하면 이런 장면들을 눈으로 보고, 귀로 듣는 것은 지금도 가능합니다. 그런데, 눈 앞에 보이는 대상을 저희는 손으로 만져볼 수 없습니다. 가상의 물체를 손으로 만질 때의 촉감. 이 촉감을 재현하기 위한 기술들을 개발합니다.' }
+    ] }
+];
 
 const TAG_COLORS = { Award: '#E20031', Publication: '#E20031', Patent: '#E20031', Project: '#E20031', Talk: '#2F05FF', Activity: '#2F05FF', People: '#2F05FF', Notice: '#595959' };
 
@@ -693,12 +766,14 @@ class Component extends DCLogic {
     menuOpen: false,
     news: null, fileNews: [], pubs: [], patents: [], members: [],
     expanded: {},
+    copied: '',
     editorOpen: false, draft: null, editingId: null
   };
 
   componentDidMount() {
-    this._onHash = () => this.setState({ route: location.hash || '#/', menuOpen: false });
+    this._onHash = () => this.setState({ route: location.hash || '#/', menuOpen: false }, () => this.scrollToArea());
     window.addEventListener('hashchange', this._onHash);
+    this.scrollToArea();
     ['news', 'publications', 'patents', 'members'].forEach((name) => {
       fetch('data/' + name + '.json').then((r) => r.json()).then((json) => {
         if (name === 'news') {
@@ -712,6 +787,58 @@ class Component extends DCLogic {
     });
   }
   componentWillUnmount() { window.removeEventListener('hashchange', this._onHash); }
+
+  // Contact details are copied instead of linked, so a click does not hand the
+  // visitor off to whatever mail app the machine happens to have. "copied" holds
+  // the value that was last put on the clipboard, which is how the button knows
+  // to show its confirmation; it clears itself after a moment.
+  copyText(text) {
+    const t = String(text || '');
+    if (!t) return;
+    const done = () => {
+      this.setState({ copied: t });
+      window.setTimeout(() => this.setState((st) => (st.copied === t ? { copied: '' } : null)), 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).then(done, () => this.copyFallback(t, done));
+    } else {
+      this.copyFallback(t, done);
+    }
+  }
+
+  // execCommand('copy') is deprecated but still the only route when the page is
+  // not on https (a plain file:// preview, for instance), where navigator.clipboard
+  // is unavailable.
+  copyFallback(text, done) {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      done();
+    } catch (e) {}
+  }
+
+  // The three research areas live on one page (#/research). A card on the About
+  // page links to #/research/<id>, which opens that page scrolled to its section
+  // instead of to the top; the offset for the sticky header comes from the
+  // section's own scroll-margin-top.
+  scrollToArea() {
+    const p = this.parts();
+    if (p[0] !== 'research') return;
+    const id = p[1];
+    window.requestAnimationFrame(() => {
+      if (!id) { window.scrollTo(0, 0); return; }
+      const el = document.getElementById('research-' + id);
+      if (el) el.scrollIntoView(); else window.scrollTo(0, 0);
+    });
+  }
 
   persist(news) {
     this.setState({ news });
@@ -748,6 +875,28 @@ class Component extends DCLogic {
     const current = members.filter((m) => !isAlumni(m));
     const pubs = (this.state.pubs || []).slice().sort((a, b) => b.year - a.year);
     const patents = this.state.patents || [];
+
+    // --- Research directions -------------------------------------------------
+    // Each card on the About page links to #/research/<id>. The card and that
+    // page are built from the same entry, so editing RESEARCH_AREAS updates both.
+    const decorateArea = (a) => ({
+      ...a,
+      href: '#/research/' + a.id,
+      anchor: 'research-' + a.id,
+      hasTextKo: !!String(a.textKo || '').trim(),
+      // Two pictures per area, sitting under the rule. They live in about/ and
+      // are listed by file name; an area with none simply shows no image row.
+      images: (a.images || []).map((f) => ({ src: withFolder('about', f), alt: a.title || '' })),
+      hasImages: (a.images || []).length > 0,
+      // "body" is the long-form text under the rule: English and Korean
+      // alternating, one pair per paragraph. An empty list hides the whole block.
+      paras: (a.body || []).map((b) => ({
+        en: b.en || '',
+        ko: b.ko || '',
+        hasEn: !!String(b.en || '').trim(),
+        hasKo: !!String(b.ko || '').trim()
+      }))
+    });
 
     const navMain = [this.navItem('About', '#/about', '01'), this.navItem('Publications', '#/publications', '02'), this.navItem('Patents', '#/patents', '03')];
     const navPeople = [this.navItem('Director', '#/professor', '04'), this.navItem('Members', '#/members', '05'), this.navItem('Join Our Team', '#/join', '06')];
@@ -791,9 +940,22 @@ class Component extends DCLogic {
     //   Publications: YYYY_FirstThreeWordsOfTitle.png  (in publicationImage/)
     //                 (Korean-only papers fall back to YYYY_<id>.png)
     //   Members:      firstname_lastname.png           (in memberImage/)
-    const imgEl = (src, alt) => React.createElement('img', {
+    // A missing file leaves the striped placeholder frame in place, which is what
+    // the publication and member cards want. A profile photo is different: if the
+    // file is not there the whole photo column is dropped and the text takes the
+    // full width, so a person without a portrait does not get an empty box.
+    const dropPhotoColumn = (e) => {
+      const col = e.target.closest('[data-dml="photo-col"]');
+      if (!col) { e.target.style.display = 'none'; return; }
+      col.style.display = 'none';
+      const split = col.parentElement;
+      if (split && split.getAttribute('data-dml') === 'profile-split') {
+        split.style.gridTemplateColumns = 'minmax(0, 1fr)';
+      }
+    };
+    const imgEl = (src, alt, onError) => React.createElement('img', {
       src, alt: alt || '',
-      onError: (e) => { e.target.style.display = 'none'; },
+      onError: onError || ((e) => { e.target.style.display = 'none'; }),
       style: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }
     });
     const camelWords = (title, n) => String(title || '').split(/\s+/).filter(Boolean).slice(0, n)
@@ -865,7 +1027,7 @@ class Component extends DCLogic {
       const awards = awardList(m);
       return Object.assign({
         photoLabel: hasImg ? memberImgFile(m) : '',
-        photoImg: hasImg ? imgEl(memberImgSrc(m), m.name) : null
+        photoImg: hasImg ? imgEl(memberImgSrc(m), m.name, dropPhotoColumn) : null
       }, extra, {
         bio: richText(m.bio),
         education: (m.education || []).map(richText),
@@ -1023,7 +1185,11 @@ class Component extends DCLogic {
     if (page === 'members' && p[1]) {
       const m = members.find((x) => x.id === p[1]);
       if (m) {
-        const label = isAlumni(m) ? 'Alumni' : (GROUPS.find((g) => g[0] === m.group) || ['', ''])[1];
+        const g = GROUPS.find((x) => x[0] === m.group) || [];
+        const role = g[2] || g[1] || '';
+        // Alumni carry the position they held alongside the Alumni label
+        // ("Alumni · M.S. Student"); for everyone else the role stands alone.
+        const label = isAlumni(m) ? ['Alumni', role].filter(Boolean).join(' · ') : role;
         // Papers and patents are matched to a person by their exact "name", the
         // same string that appears in the authors / inventors lists.
         const mine = pubs.filter((pub) => (pub.authors || []).some((a) => a === m.name));
@@ -1031,9 +1197,12 @@ class Component extends DCLogic {
         member = decorateMember(m, {
           ...m,
           groupLabel: label,
-          subtitle: [m.nameKo, m.position].filter(Boolean).join(' · '),
+          // The line under the name is the Korean name only — the label above
+          // the name already carries the role.
+          subtitle: m.nameKo || '',
           email: m.email || '',
-          mailto: 'mailto:' + (m.email || ''),
+          copyEmail: () => this.copyText(m.email || ''),
+          emailCopied: !!m.email && this.state.copied === m.email,
           hasEmail: !!m.email,
           interests: m.interests || [],
           hasInterests: (m.interests || []).length > 0,
@@ -1068,11 +1237,16 @@ class Component extends DCLogic {
       isNewsIndex: page === 'news' && !p[1],
       isNewsDetail: page === 'news' && !!post,
       isAbout: page === 'about',
+      isResearch: page === 'research',
       isPublications: page === 'publications',
       isPatents: page === 'patents',
       isProfessor: page === 'professor',
       isMembers: page === 'members' && !p[1],
       isMemberDetail: page === 'members' && !!member,
+      copyProEmail: () => this.copyText(PRO_EMAIL),
+      copyProPhone: () => this.copyText(PRO_PHONE),
+      proEmailCopied: this.state.copied === PRO_EMAIL,
+      proPhoneCopied: this.state.copied === PRO_PHONE,
       isJoin: page === 'join',
 
       newsList: news.slice(0, 5).map(decorate),
@@ -1092,11 +1266,7 @@ class Component extends DCLogic {
 
       // Each research area may carry a Korean line ("textKo") printed under the
       // English one. Leave it empty and the card simply shows the English text.
-      researchAreas: [
-        { num: '01', title: 'Designing novel interactive devices and products', text: 'We design interactive devices and products that enhance people\'s everyday experiences.\n', textKo: '사람들의 일상생활, 그들의 경험을 새롭게 만들어주는 새로운 인터랙티브 제품을 디자인합니다.' },
-        { num: '02', title: 'Improving digitial accessibility for people with disabilities', text: 'We develop inclusive technologies that improve digital accessibility for people with disabilities.', textKo: '디지털 정보에 취약한 분들을 위한, 접근성을 개선할 수 있는 모든 기술과 디자인을 연구합니다.' },
-        { num: '03', title: 'Developing novel haptic technologies for everyday use', text: 'We develop novel haptic technologies that communicate information through touch and enrich everyday interactions.', textKo: '촉감으로 정보를 전달할 수 있는 방법을 고민하고, 일상에서 사용될 수 있는 인터랙션을 디자인합니다.' }
-      ].map((a) => ({ ...a, hasTextKo: !!String(a.textKo || '').trim() })),
+      researchAreas: RESEARCH_AREAS.map(decorateArea),
 
       // Featured publications on the About page: three papers picked out of
       // publications.json by id, so their titles, years, and DOI links stay in
@@ -1112,8 +1282,8 @@ class Component extends DCLogic {
       ].map((o) => ({ ...o, hasTextKo: !!String(o.textKo || '').trim() })),
       applySteps: [
         { num: '01', text: 'Send an email to the director, Hwan Kim, to request a meeting. Please include two or three time slots that work for you.', textKo: 'Director 김환에게 미팅을 요청하는 Email을 보내세요. 미팅이 가능한 2, 3가지 시간대를 함께 알려주세요.' },
-        { num: '02', text: 'Think about the kind of design you like and what you want to build. We will discuss this together at the meeting.', textKo: '어떤 디자인을 좋아하는지, 무엇을 만들고 싶은지 생각해주세요. 미팅에서 이를 함께 논의해보겠습니다.' },
-        { num: '03', text: '[Optional] Attach your CV, portfolio, or anything else that helps explain who you are.', textKo: '당신의 CV, 포트폴리오, 무엇이든 당신을 설명하기 위한 자료가 있다면 같이 첨부해주세요.' }
+        { num: '02', text: '[Optional] Attach your CV, portfolio, or anything else that helps explain who you are.', textKo: '[선택사항] 당신의 CV, 포트폴리오, 무엇이든 당신을 설명하기 위한 자료가 있다면 같이 첨부해주세요.' },
+        { num: '03', text: 'Think about the kind of design you like and what you want to build. We will discuss this together at the meeting.', textKo: '어떤 디자인을 좋아하는지, 무엇을 만들고 싶은지 생각해주세요. 미팅에서 이를 함께 논의해보겠습니다.' }
       ].map((st) => ({ ...st, hasTextKo: !!String(st.textKo || '').trim() })),
 
       categories: CATS,
