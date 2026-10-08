@@ -8,7 +8,11 @@
     "position": "Assistant Professor, Director",
     "email": "hwan.kim@sungshin.ac.kr",
     "since": "2023",
-    "interests": ["Human-Computer Interaction", "Haptic Interactions", "I/O Interfaces"],
+    "interests": [
+      "Human-Computer Interaction",
+      "Haptic Interactions",
+      "I/O Interfaces"
+    ],
     "bio": "Hwan Kim is an Assistant professor in the [Department of Service and Design Engineering](https://www.sungshin.ac.kr/serdesign/) at [Sungshin Women's University](https://www.sungshin.ac.kr/). He is a Human–Computer Interaction (HCI) researcher. He designs interactive technologies that support human cognition and everyday activities. His research spans wearable devices, VR/AR interfaces, digital accessibilities, and haptic technologies. His research combines emerging computing technologies with design to create interactive devices and products that enable new experiences and improve people's everyday lives.",
     "experience": [
       {
@@ -43,7 +47,10 @@
     "email": "inseo0927@naver.com",
     "since": "2024",
     "until": "2026",
-    "interests": ["Web Novel", "Quantitative Literary Analysis"],
+    "interests": [
+      "Web Novel",
+      "Quantitative Literary Analysis"
+    ],
     "bio": "",
     "experience": [],
     "now": "-",
@@ -64,7 +71,10 @@
     "email": "victoriadudms@gmail.com",
     "since": "2024",
     "until": "",
-    "interests": ["Accessibility", "Visually Impaired User"],
+    "interests": [
+      "Accessibility",
+      "Visually Impaired User"
+    ],
     "bio": "",
     "award & exhibition": "WideEye: 디자인코리아2024 전시 (WideEye: DesignKorea, 2024)",
     "experience": [],
@@ -84,13 +94,17 @@
     "email": "jhw269753@naver.com",
     "since": "2024",
     "until": "2027",
-    "interests": ["Haptic Interactions", "Human-Computer Interaction"],
+    "interests": [
+      "Haptic Interactions",
+      "Human-Computer Interaction"
+    ],
     "bio": "",
     "experience": [],
     "now": "Research Intern, CS, Korea University ",
     "education": [
       "B.A. in Department of History, Sungshin Women's University (2020-2027)",
-      "B.S. in Department of Service and Design Engineering, Sungshin Women's University (2020-2027)"],
+      "B.S. in Department of Service and Design Engineering, Sungshin Women's University (2020-2027)"
+    ],
     "photo": "heewon_jeong.png"
   },
   {
@@ -103,12 +117,18 @@
     "email": "siennachang1202@gmail.com",
     "since": "2024",
     "until": "2025",
-    "interests": ["Human-Computer Interaction", "Computer Science", "Haptic Interactions"],
+    "interests": [
+      "Human-Computer Interaction",
+      "Computer Science",
+      "Haptic Interactions"
+    ],
     "bio": "",
     "award & exhibition": "2024년 캠퍼스 유니버시아드 장려상 (Campus Patent Universiad 2024)",
     "experience": [],
     "now": "Grad. Programe in CS., Korea University",
-    "education": ["B.S. in Department of Business Administration, Sungshin Women's University (2020-2025)"],
+    "education": [
+      "B.S. in Department of Business Administration, Sungshin Women's University (2020-2025)"
+    ],
     "photo": "yunseo_chang.png"
   },
   {
@@ -121,11 +141,16 @@
     "email": "20201184@sungshin.ac.kr",
     "since": "2024",
     "until": "2025",
-    "interests": ["Interaction Design", "Design Research"],
+    "interests": [
+      "Interaction Design",
+      "Design Research"
+    ],
     "bio": "",
     "experience": [],
     "now": "UX Researcher, Babitalk",
-    "education": ["B.S. in Department of Biotechnology, Sungshin Women's University (2020-2026)"],
+    "education": [
+      "B.S. in Department of Biotechnology, Sungshin Women's University (2020-2026)"
+    ],
     "photo": "eunji_chun.png"
   },
   {
@@ -138,17 +163,21 @@
     "position": "M.S. Student",
     "email": "jhlee8568@gmail.com",
     "since": "2026",
-    "interests": ["Data Literacy", "Design Research"],
+    "interests": [
+      "Data Literacy",
+      "Design Research"
+    ],
     "bio": "",
     "experience": [
-      "UIUX Designer, Waywai (2024-2025)",
+      "UIUX Designer, YYY (2024-2025)",
       "Product Designer, Extriber (2019-2021)",
       "Motion Graphic Designer, Cutting Edge (2015-2016)",
       "Motion Graphic Designer, TIUM solutions (2013-2015)"
     ],
     "now": "",
     "education": [
-      "A.A. in Visual Communication Design, Kaywon University of Art & Design (2027-2019)"],
+      "A.A. in Visual Communication Design, Kaywon University of Art & Design (2017-2019)"
+    ],
     "photo": "jeehee_lee.png"
   }
 ]

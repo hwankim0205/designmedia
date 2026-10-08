@@ -1,0 +1,68 @@
+[
+  {
+    "id": "2024-trablah",
+    "date": "2024-11",
+    "title": "Trablah",
+    "titleKo": "",
+    "credit": [
+      "Heeju Na",
+      "Hwan Kim"
+    ],
+    "venue": "Design Korea 2024 (COEX, Seoul, South Korea)",
+    "description": "Trablah is an intercom system for foreign residents living in Korea. Many international students come to Korea to study, and many foreign workers come to earn a living. In face-to-face situations, they can usually manage to communicate somehow. However, it is often difficult for them to respond when someone at the door says, \"I'm here to read the gas meter,\" or \"Excuse me, I live downstairs.\" To address this, we designed Trablah, an intercom that translates conversations in real time.",
+    "descriptionKo": "트래블라는 한국에 거주중인 외국인분들을 위한 인터폰 시스템입니다. 한국에는 공부를 위해 방문한 유학생, 돈을 벌기 위해 거주중인 외국인 노동자 분들이 많이 있습니다. 이 분들은 대면으로는 어떻게든 의사소통을 할 수 있습니다. 그러나, 정작 현관문 앞에서 \"가스 검침하러 나왔습니다\" 또는 \"저기요, 아래집인데요\" 라는 말에 대답하기가 어렵습니다. 그래서, 언어를 실시간으로 번역해주는 인터폰 Trablah 를 디자인하였습니다.",
+    "video": "",
+    "image": "trablah.png"
+  },
+  {
+    "id": "2024-wideeye",
+    "date": "2024-11",
+    "title": "WideEye",
+    "titleKo": "",
+    "credit": [
+      "Yeoeun Kim",
+      "Hwan Kim"
+    ],
+    "venue": "Design Korea 2024 (COEX, Seoul, South Korea)",
+    "description": "People with glaucoma or cataracts experience visual field loss, in which part of their field of vision cannot be seen. Because of this condition, they frequently bump into obstacles such as desks and chairs. WideEye is designed to alert them to obstacles they encounter while walking. By automatically detecting the positions of nearby objects and indicating their locations with light, WideEye helps people with visual field loss walk safely.",
+    "descriptionKo": "녹내장, 백내장 환자분들은 시야의 일부분을 보지 못하는 시야결손 문제를 겪고 있습니다. 이 질환 때문에, 책상이나 의자와 같은 장애물에 부딪히는 일들을 많이 겪게 됩니다. WideEye 는 이 분들이 보행시 마주치는 장애물을 알려주기 위해 디자인되었습니다. 주변의 물건들의 위치를 자동으로 인식하고, 위치를 빛으로 알려줌으로써 시야결손환자분들의 안전한 보행을 돕습니다.",
+    "video": "",
+    "image": "wideeye.png"
+  },
+  {
+    "id": "2018-hapcube-siggraph",
+    "date": "2018-08",
+    "title": "HapCube: A Tactile Actuator Providing Tangential and Normal Pseudo-Force Feedback on a Fingertip",
+    "titleKo": "",
+    "credit": [
+      "Hwan Kim",
+      "HyeonBeom Yi",
+      "Chulwoo R. Park",
+      "Woohun Lee"
+    ],
+    "venue": "SIGGRAPH 2018 Emerging Technologies (Vancouver, Canada)",
+    "description": "When we touch an object, we can feel its elasticity, friction, and surface texture. HapCube is a device designed to reproduce all of these haptic sensations. Using this device, we created an exhibit that reproduces a variety of haptic sensations that can be experienced while playing VR games.",
+    "descriptionKo": "우리가 물건을 만질 때, 물체의 탄성력, 마찰력, 그리고 표면의 질감을 느낄 수 있습니다. HapCube 는 이 모든 촉감 정보를 재현하기 위한 디바이스입니다. 이 디바이스를 이용하여, VR 게임을 할 때 표현할 수 있는 다양한 촉감정보를 재현하는 전시물을 만들었습니다.",
+    "video": "https://vimeo.com/284213010",
+    "image": ""
+  },
+  {
+    "id": "2017-lumi-land",
+    "date": "2017-09",
+    "title": "Lumi Land: Design and implementation of UX-oriented playground-type exhibition contents",
+    "titleKo": "루미랜드: 놀이체험형 과학관 전시 콘텐츠",
+    "credit": [
+      "Chulwoo R. Park",
+      "Seungki Kim",
+      "Hwan Kim",
+      "Donghyeon Ko",
+      "Jiwoo Hong",
+      "Woohun Lee"
+    ],
+    "venue": "National Science Museum (Daejeon, South Korea)",
+    "description": "When visiting a science museum, we sometimes leave having understood the exhibits only through written text. For young children, for whom hands-on, physical experience is important, this approach can feel boring. Lumi Land was created in the hope that children would explore questions like \"Why does it light up like this?\" and \"Why does it move like this?\" on their own, experiencing them with their whole bodies as if playing on a playground. We hope children will first discover the fun of it, and encounter science along the way.",
+    "descriptionKo": "과학관을 방문할 때, 우리는 가끔 적혀있는 글자들로만 내용을 이해하고 돌아와야할 때가 있습니다. 직접 몸으로 체험하는 것이 중요한 어린아이들에게는 이런 방식이 지루하게 느껴질 수 있습니다. Lumi Land는 아이들이 놀이터에서 놀듯이, 직접 몸으로 체험하면서 \"왜 이렇게 빛이 나지?\", \"왜 이렇게 움직이지?\" 스스로 탐색해보길 바라며 만들어진 콘텐츠입니다. 아이들이 우선 재미를 먼저 느끼면서, 과학을 접하길 바랍니다.",
+    "video": "https://vimeo.com/238697166",
+    "image": ""
+  }
+]

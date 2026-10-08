@@ -76,6 +76,8 @@
   @media (max-width: 640px) {
     [data-dml="pub-thumb"] { display: none !important; }
     [data-dml="pub-card"] { grid-template-columns: minmax(0, 1fr) !important; }
+    [data-dml="ex-thumb"] { display: none !important; }
+    [data-dml="ex-card"] { grid-template-columns: minmax(0, 1fr) !important; }
   }
 </style>
 </helmet>
@@ -126,7 +128,8 @@
         </div>
           
           <h1 style="font-size: clamp(34px, 5.6vw, 52px); font-weight: 700; line-height: 1.04; letter-spacing: -0.02em; margin: 0 0 26px; text-wrap: pretty">Designing a new medium <br>for human-technology interaction</h1>
-          <p style="font-size: clamp(16px, 1.5vw, 20px); line-height: 1.55; color: #595959; margin: 0; max-width: 62ch; text-wrap: pretty; width: 787px; height: 54px">Design Media Lab explores this vision by designing, prototyping, and deploying novel interfaces for real-world use.</p>
+          <p style="font-size: clamp(16px, 1.5vw, 20px); line-height: 1.55; color: #595959; margin: 0; text-wrap: pretty;">DesignMediaLab explores this vision by designing, prototyping, and deploying novel interfaces for real-world use.</p>
+          <p style="font-size: clamp(16px, 1.5vw, 20px); line-height: 1.7; color: #595959; margin: 2px 0 0; text-wrap: pretty;">DesignMediaLab은 새로운 인터페이스를 디자인하고 실제로 구현함으로써 사용자들에게 유용한 미래가 무엇인지를 탐구합니다.</p>
           
         </section><div>
         <section style="padding: 0 0 96px;">
@@ -328,6 +331,41 @@
             </sc-for>
           </section>
         </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isExhibitions }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
+        <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 14px;">Exhibitions</h1>
+        <div style="border-top: 2px solid #000000;">
+          <sc-for list="{{ exhibitions }}" as="ex" hint-placeholder-count="4">
+            <article data-dml="ex-card" style="border-bottom: 1px solid #E5E5E5; padding: 26px 4px; display: grid; grid-template-columns: minmax(200px, 300px) minmax(0, 1fr); gap: 10px 28px; align-items: start;">
+              <div data-dml="ex-thumb" style="position: relative; width: 100%; max-width: 300px; aspect-ratio: {{ ex.thumbRatio }}; background-color: #FAFAFA; background-image: repeating-linear-gradient(135deg, #F0F0F0 0 8px, #FFFFFF 8px 16px); border: 1px solid #E5E5E5; overflow: hidden;">
+                <sc-if value="{{ ex.hasVideo }}" hint-placeholder-val="{{ false }}">
+                  <iframe src="{{ ex.videoSrc }}" title="{{ ex.titleMain }}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowFullScreen="{{ true }}" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block;"></iframe>
+                </sc-if>
+                <sc-if value="{{ ex.hasImage }}" hint-placeholder-val="{{ false }}">
+                  <img src="{{ ex.imageSrc }}" alt="{{ ex.titleMain }}" loading="lazy" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;">
+                </sc-if>
+              </div>
+              <div style="display: grid; gap: 6px; min-width: 0;">
+                <span style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959;">{{ ex.dateLabel }}</span>
+                <h3 style="font-size: clamp(18px, 2vw, 23px); font-weight: 700; line-height: 1.3; margin: 0; text-wrap: pretty;">{{ ex.titleMain }}</h3>
+                <sc-if value="{{ ex.hasSubTitle }}" hint-placeholder-val="{{ false }}">
+                  <p style="font-size: 15px; line-height: 1.45; color: #595959; margin: 0; text-wrap: pretty;">{{ ex.titleSub }}</p>
+                </sc-if>
+                <p style="font-size: 15px; line-height: 1.55; color: #000000; margin: 0;">{{ ex.creditList }}</p>
+                <p style="font-size: 15px; line-height: 1.55; color: #595959; margin: 0; text-wrap: pretty;">{{ ex.venue }}</p>
+                <sc-if value="{{ ex.hasDescription }}" hint-placeholder-val="{{ false }}">
+                  <p style="font-size: 15px; line-height: 1.65; color: #595959; margin: 10px 0 0; text-wrap: pretty;">{{ ex.description }}</p>
+                </sc-if>
+                <sc-if value="{{ ex.hasDescriptionKo }}" hint-placeholder-val="{{ false }}">
+                  <p style="font-size: 15px; line-height: 1.75; color: #595959; margin: 2px 0 0; text-wrap: pretty;">{{ ex.descriptionKo }}</p>
+                </sc-if>
+              </div>
+            </article>
+          </sc-for>
+        </div>
       </div>
     </sc-if>
 
@@ -597,12 +635,12 @@
       <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
         
         <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 28px; max-width: 24ch; text-wrap: pretty;">We are looking for people who like to make things and ask why.</h1>
-        <div style="font-size: 18px; line-height: 1.65; margin: 0 0 56px; text-wrap: pretty;">DesignMediaLab recruits undergraduate researchers, M.S. and Ph.D. students every semester. No single background is required — designers, engineers, and people from the humanities and social sciences all fit here. We're looking for someone who loves building their imagination with their own hands.<p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 20px 0 0;">DesignMediaLab은 매 학기 학부 연구생과 석·박사 과정 학생을 모집합니다. 특정한 전공 배경을 요구하지 않습니다 — 디자인, 공학, 인문학 및 사회과학을 전공한 분 모두 함께 연구할 수 있습니다. 우리는 자신의 상상을 직접 손으로 만들어내는 것을 좋아하는 사람을 찾고 있습니다.</p></div>
+        <div style="font-size: 18px; line-height: 1.65; margin: 0 0 56px; text-wrap: pretty;">DesignMediaLab recruits undergraduate researchers, M.S. and Ph.D. students every semester. No single background is required — designers, engineers, and people from the humanities and social sciences all fit here. We're looking for someone who loves building their imagination with their own hands.<p style="font-size: 18px; line-height: 1.65; margin: 6px 0 0;">If you are interested in our research topics, <a href="#/research" style="border-bottom: 2px solid #E20031;">click here</a>.</p><p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 20px 0 0;">DesignMediaLab은 매 학기 학부 연구생과 석·박사 과정 학생을 모집합니다. 특정한 전공 배경을 요구하지 않습니다 — 디자인, 공학, 인문학 및 사회과학을 전공한 분 모두 함께 연구할 수 있습니다. 우리는 자신의 상상을 직접 손으로 만들어내는 것을 좋아하는 사람을 찾고 있습니다.</p><p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 6px 0 0;">연구 주제에 관심이 있다면 <a href="#/research" style="border-bottom: 2px solid #E20031;">여기를 클릭</a>하세요.</p></div>
         <section style="border-top: 2px solid #000000; padding-top: 36px; margin: 0 0 20px;">
           <h2 style="font-size: 24px; font-weight: 700; margin: 0 0 18px;">Potential candidates</h2>
           <p style="font-size: 18px; line-height: 1.65; text-wrap: pretty; margin: 0;">DesignMediaLab focuses on research that brings design together with emerging technology. People who love making things with their own hands. People who love to draw. Maybe people who lose themselves in books or films. We believe that the people who make new and interesting things are the ones with a clear sense of what they love. We hope DesignMediaLab can be a playground where you get to build whatever that is.</p>
-          <p style="font-size: 18px; line-height: 1.75; text-wrap: pretty; margin: 12px 0 0;">DesignMediaLab은 디자인과 새로운 기술을 결합하는 연구에 초점을 맞추고 있습니다. 손으로 직접 무언가를 만드는 것을 좋아하는 사람. 그림 그리는 것을 좋아하는 사람. 어쩌면 책을 읽거나 영화를 보는 것에 빠져 있는 사람. 저희는 자신만의 취향이 확고한 사람들이 새롭고 재미있는 것을 만들 수 있다고 믿습니다. DesignMediaLab이 당신이 좋아하는 것을 마음껏 만들 수 있는 놀이터가 되었으면 좋겠습니다.</p>
-          <p style="font-size: 18px; line-height: 1.65; text-wrap: pretty; margin: 24px 0 0;">Whether you apply as an undergraduate researcher or as a graduate student, <strong style="font-weight: 700;">your major, your grades, and your academic background do not matter at all. What matters is having the kind of taste that lets you lose yourself in the work you love.</strong> If you want to design something and build it yourself, please email me.</p>
+          <p style="font-size: 18px; line-height: 1.65; text-wrap: pretty; margin: 12px 0 0;">Whether you apply as an undergraduate researcher or as a graduate student, <strong style="font-weight: 700;">your major, your grades, and your academic background do not matter at all. What matters is having the kind of taste that lets you lose yourself in the work you love.</strong> If you want to design something and build it yourself, please email me.</p>
+          <p style="font-size: 18px; line-height: 1.75; text-wrap: pretty; margin: 28px 0 0;">DesignMediaLab은 디자인과 새로운 기술을 결합하는 연구에 초점을 맞추고 있습니다. 손으로 직접 무언가를 만드는 것을 좋아하는 사람. 그림 그리는 것을 좋아하는 사람. 어쩌면 책을 읽거나 영화를 보는 것에 빠져 있는 사람. 저희는 자신만의 취향이 확고한 사람들이 새롭고 재미있는 것을 만들 수 있다고 믿습니다. DesignMediaLab이 당신이 좋아하는 것을 마음껏 만들 수 있는 놀이터가 되었으면 좋겠습니다.</p>
           <p style="font-size: 18px; line-height: 1.75; text-wrap: pretty; margin: 12px 0 0;">학부연구생으로 지원하든, 대학원생으로 지원하든, <strong style="font-weight: 700;">당신의 전공, 학점, 학력은 전혀 중요하지 않습니다. 좋아하는 일에 몰입할 수 있는 취향을 가진 사람이길 바랍니다.</strong> 직접 디자인을 만들어서 구현해보고 싶은 분은 저에게 Email로 문의해주세요.</p>
         </section>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: #E5E5E5; margin-bottom: 24px;">
@@ -701,7 +739,7 @@
       </div>
       <div style="display: grid; gap: 8px; align-content: start;">
         <a href="mailto:hwan.kim@sungshin.ac.kr" style="font-size: 13px; color: #595959;" style-hover="color: #E20031;">hwan.kim@sungshin.ac.kr</a>
-        <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; color: #595959; margin: 0;">© 2026. Design Media Lab. All Rights Reserved.</p>
+        <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; color: #595959; margin: 0;">© 2026. DesignMediaLab. All Rights Reserved.</p>
       </div>
     </div>
   </footer>
@@ -764,7 +802,7 @@ class Component extends DCLogic {
   state = {
     route: (typeof location !== 'undefined' && location.hash) || '#/',
     menuOpen: false,
-    news: null, fileNews: [], pubs: [], patents: [], members: [],
+    news: null, fileNews: [], pubs: [], patents: [], members: [], exhibitions: [],
     expanded: {},
     copied: '',
     editorOpen: false, draft: null, editingId: null
@@ -774,7 +812,7 @@ class Component extends DCLogic {
     this._onHash = () => this.setState({ route: location.hash || '#/', menuOpen: false }, () => this.scrollToArea());
     window.addEventListener('hashchange', this._onHash);
     this.scrollToArea();
-    ['news', 'publications', 'patents', 'members'].forEach((name) => {
+    ['news', 'publications', 'patents', 'members', 'exhibitions'].forEach((name) => {
       fetch('data/' + name + '.json').then((r) => r.json()).then((json) => {
         if (name === 'news') {
           let stored = null;
@@ -782,6 +820,7 @@ class Component extends DCLogic {
           this.setState({ fileNews: json, news: Array.isArray(stored) ? stored : json });
         } else if (name === 'publications') this.setState({ pubs: json });
         else if (name === 'patents') this.setState({ patents: json });
+        else if (name === 'exhibitions') this.setState({ exhibitions: json });
         else this.setState({ members: json });
       }).catch(() => {});
     });
@@ -854,9 +893,11 @@ class Component extends DCLogic {
     return { label, href, num, color: active ? '#E20031' : '#000000', bar: active ? '#E20031' : 'transparent' };
   }
 
+  // Newest first, by date alone. "pinned" no longer lifts a post to the top; it
+  // only puts the PINNED tag on it.
   sortedNews() {
     const list = (this.state.news || []).slice();
-    list.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || String(b.date).localeCompare(String(a.date)));
+    list.sort((a, b) => String(b.date).localeCompare(String(a.date)));
     return list;
   }
 
@@ -898,8 +939,8 @@ class Component extends DCLogic {
       }))
     });
 
-    const navMain = [this.navItem('About', '#/about', '01'), this.navItem('Publications', '#/publications', '02'), this.navItem('Patents', '#/patents', '03')];
-    const navPeople = [this.navItem('Director', '#/professor', '04'), this.navItem('Members', '#/members', '05'), this.navItem('Join Our Team', '#/join', '06')];
+    const navMain = [this.navItem('About', '#/about', '01'), this.navItem('Publications', '#/publications', '02'), this.navItem('Exhibitions', '#/exhibitions', '03'), this.navItem('Patents', '#/patents', '04')];
+    const navPeople = [this.navItem('Director', '#/professor', '05'), this.navItem('Members', '#/members', '06'), this.navItem('Join Our Team', '#/join', '07')];
 
     const fmtDate = (s) => {
       const m = String(s || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -910,7 +951,12 @@ class Component extends DCLogic {
       date: fmtDate(n.date),
       href: '#/news/' + n.id,
       tagColor: TAG_COLORS[n.category] || '#595959',
-      excerpt: String(n.body || '').slice(0, 180) + (String(n.body || '').length > 180 ? '…' : ''),
+      body: richText(n.body),
+      excerpt: (() => {
+        // The summary is plain text, so a [label](url) link shows as its label.
+        const plain = String(n.body || '').replace(/\[([^\]]+)\]\([^\s)]*\)/g, '$1');
+        return plain.slice(0, 180) + (plain.length > 180 ? '…' : '');
+      })(),
       // News index: a post opens in place instead of navigating to its own page.
       // "isOpen" swaps the trimmed excerpt for the full body; the detail route
       // still works if someone opens #/news/<id> directly.
@@ -977,24 +1023,24 @@ class Component extends DCLogic {
     const pubImgSrc = (pub) => withFolder('publicationImage', pubImgFile(pub));
     const memberImgSrc = (m) => withFolder('memberImage', memberImgFile(m));
     // --- Inline links in free text -------------------------------------------
-    // Bio text may contain markdown-style links: [Wonder Lab](https://…).
-    // They render as underlined links that open in a new tab; plain text and the
+    // Bio and news text may carry markdown-style links: [Wonder Lab](https://…)
+    // for an outside site, or [here](#/join) for a page of this site. External
+    // ones open in a new tab, in-site ones do not; plain text and the
     // "\n" line breaks in the JSON are left untouched.
     const richText = (text) => {
       const src = String(text || '');
-      const re = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+      const re = /\[([^\]]+)\]\((#\/[^\s)]*|https?:\/\/[^\s)]+)\)/g;
       const out = [];
       let last = 0;
       let m;
       while ((m = re.exec(src))) {
         if (m.index > last) out.push(src.slice(last, m.index));
-        out.push(React.createElement('a', {
+        const external = m[2].charAt(0) !== '#';
+        out.push(React.createElement('a', Object.assign({
           key: 'lnk' + m.index,
           href: m[2],
-          target: '_blank',
-          rel: 'noopener noreferrer',
           style: { borderBottom: '2px solid #E20031' }
-        }, m[1]));
+        }, external ? { target: '_blank', rel: 'noopener noreferrer' } : {}), m[1]));
         last = m.index + m[0].length;
       }
       if (last < src.length) out.push(src.slice(last));
@@ -1129,6 +1175,41 @@ class Component extends DCLogic {
       };
     };
 
+    // Exhibitions are stored with an ISO-ish "YYYY-MM" date so they sort, and
+    // shown as MM.YYYY. Credits are matched to members the same way paper
+    // authors are, so a name in the lab links to that person's page.
+    const fmtMonth = (d) => {
+      const m = String(d || '').match(/^(\d{4})-(\d{2})$/);
+      return m ? m[2] + '.' + m[1] : String(d || '');
+    };
+    const decorateExhibition = (ex) => ({
+      ...ex,
+      ...bilingualTitle(ex),
+      dateLabel: fmtMonth(ex.date),
+      creditList: personEls(ex.credit),
+      // "description" / "descriptionKo" are optional: an entry that has neither
+      // is listed with its credits and venue alone.
+      hasDescription: !!String(ex.description || '').trim(),
+      hasDescriptionKo: !!String(ex.descriptionKo || '').trim(),
+      // "video" takes a plain Vimeo page link; only the id is kept, so any
+      // tracking or one-time query string pasted with it is dropped. An entry
+      // without one keeps the empty picture frame.
+      ...(() => {
+        const id = (String(ex.video || '').match(/vimeo\.com\/(?:video\/)?(\d+)/) || [])[1];
+        // The frame holds a Vimeo player, a still picture from exhibitionImage/,
+        // or nothing at all, and takes the shape of whichever it is: 16:9 for the
+        // player, 5:3 for the pictures as they are supplied, 3:2 while empty.
+        const pic = String(ex.image || '').trim();
+        return {
+          videoSrc: id ? 'https://player.vimeo.com/video/' + id : '',
+          hasVideo: !!id,
+          imageSrc: !id && pic ? withFolder('exhibitionImage', pic) : '',
+          hasImage: !id && !!pic,
+          thumbRatio: id ? '16 / 9' : (pic ? '5 / 3' : '3 / 2')
+        };
+      })()
+    });
+
     const decoratePatent = (pat) => ({
       ...pat,
       ...bilingualTitle(pat),
@@ -1239,6 +1320,7 @@ class Component extends DCLogic {
       isAbout: page === 'about',
       isResearch: page === 'research',
       isPublications: page === 'publications',
+      isExhibitions: page === 'exhibitions',
       isPatents: page === 'patents',
       isProfessor: page === 'professor',
       isMembers: page === 'members' && !p[1],
@@ -1254,6 +1336,9 @@ class Component extends DCLogic {
       newsCount: String(news.length).padStart(2, '0'),
       post: post || {},
       pubGroups, pubCount: String(pubs.length).padStart(2, '0'),
+      exhibitions: (this.state.exhibitions || []).slice()
+        .sort((a, b) => String(b.date).localeCompare(String(a.date)))
+        .map(decorateExhibition),
       patents: patents.map(decoratePatent),
       patentCount: String(patents.length).padStart(2, '0'),
       professor: decorateMember(prof, { ...prof }),
@@ -1278,12 +1363,12 @@ class Component extends DCLogic {
         .map((pub) => ({ title: pub.title, year: String(pub.year || ''), href: pub.links.doi })),
       openings: [
         { status: 'Open', color: '#E20031', title: 'Undergraduate Researchers', text: 'If there\'s something you want to make, or if you\'d like to experience research firsthand, you\'re welcome to apply at any time. Get in touch by email, and we\'ll meet to define a research topic and design project that interests you — from there, you can join as an undergraduate researcher.', textKo: '만들고 싶은 것이 있다면, 연구를 경험해보고 싶다면 언제든 지원할 수 있습니다. E-mail로 문의를 주시면 미팅을 통해 관심있는 연구 주제 및 디자인 프로젝트를 설정한 다음, 학부연구생으로 조인할 수 있습니다.' },
-        { status: 'Open', color: '#E20031', title: 'M.S. / Ph.D. Students', text: 'I will support you in growing into an independent researcher capable of carrying out design research. If you are interested in combining emerging technology with design, please apply to the M.S. or Ph.D. program. If you are considering applying, I encourage you to talk with me beforehand — please email me to request a conversation.', textKo: '디자인 연구를 수행할 수 있는 \'독립적인 연구자\'로 성장할 수 있도록 도울 것입니다. 새로운 기술과 디자인을 결합하고자 하는 분들께서는 대학원 프로그램에 지원해주세요. 지원을 고민하는 분들께는 미리 저와 상담하기를 권장합니다. Email로 상담 요청을 해주세요.' }
+        { status: 'Open', color: '#E20031', title: 'M.S. / Ph.D. Students', text: 'I will support you in growing into an independent researcher capable of carrying out design research. If you are interested in combining emerging technology with design, please apply to the M.S. or Ph.D. program (this includes the combined B.S.–M.S. program). If you are considering applying, I encourage you to talk with me beforehand — please email me to request a conversation.', textKo: '디자인 연구를 수행할 수 있는 \'독립적인 연구자\'로 성장할 수 있도록 도울 것입니다. 새로운 기술과 디자인을 결합하고자 하는 분들께서는 대학원 프로그램에 지원해주세요 (학부-석사연계 프로그램에 관심이 있는 분들도 해당). 지원을 고민하는 분들께는 미리 저와 상담하기를 권장합니다. Email로 상담 요청을 해주세요.' }
       ].map((o) => ({ ...o, hasTextKo: !!String(o.textKo || '').trim() })),
       applySteps: [
         { num: '01', text: 'Send an email to the director, Hwan Kim, to request a meeting. Please include two or three time slots that work for you.', textKo: 'Director 김환에게 미팅을 요청하는 Email을 보내세요. 미팅이 가능한 2, 3가지 시간대를 함께 알려주세요.' },
         { num: '02', text: '[Optional] Attach your CV, portfolio, or anything else that helps explain who you are.', textKo: '[선택사항] 당신의 CV, 포트폴리오, 무엇이든 당신을 설명하기 위한 자료가 있다면 같이 첨부해주세요.' },
-        { num: '03', text: 'Think about the kind of design you like and what you want to build. We will discuss this together at the meeting.', textKo: '어떤 디자인을 좋아하는지, 무엇을 만들고 싶은지 생각해주세요. 미팅에서 이를 함께 논의해보겠습니다.' }
+        { num: '03', text: 'Think about the kind of design you like and what you want to build. We will discuss this together at the meeting.', textKo: '어떤 디자인을 좋아하는지, 무엇을 만들고 싶은지 생각해주세요. 미팅에서 이를 함께 이야기해보겠습니다.' }
       ].map((st) => ({ ...st, hasTextKo: !!String(st.textKo || '').trim() })),
 
       categories: CATS,

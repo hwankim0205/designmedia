@@ -1,0 +1,15 @@
+# Source files for the artwork, not used by the site (43MB + 28MB)
+*.psd
+*.ai
+*/raw/
+
+# Leftovers nothing references
+uploads/
+
+# The site loads the logos from assets/; these root copies are duplicates
+/logo_black.png
+/logo_white.png
+
+# Editor and tool settings, local to this machine
+.vscode/
+.claude/
