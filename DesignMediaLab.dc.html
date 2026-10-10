@@ -57,27 +57,55 @@
   a[data-dml="author-link"] { border-bottom: 2px solid transparent; }
   a[data-dml="author-link"]:hover { border-bottom-color: #E20031; }
   /* Profile layout: photo column capped at 300px, text column takes the rest.
-     Stacks into one column on narrow screens. */
+     Stacks into one column on narrow screens. The director's page splits its
+     text column in two — the name and title block, then everything below it — so
+     that the stacked order can lead with the name instead of the photograph.
+     A page that leaves those cells out simply fills the two columns as before. */
   [data-dml="profile-split"] {
     display: grid;
     grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
-    gap: clamp(28px, 4vw, 64px);
+    column-gap: clamp(28px, 4vw, 64px);
+    row-gap: 26px;
     align-items: start;
   }
+  [data-dml="profile-aside"] { grid-column: 1; grid-row: 1 / span 2; }
+  [data-dml="profile-head"] { grid-column: 2; grid-row: 1; }
+  [data-dml="profile-body"] { grid-column: 2; grid-row: 2; }
   @media (max-width: 800px) {
-    [data-dml="profile-split"] { grid-template-columns: minmax(0, 1fr); }
+    [data-dml="profile-split"] { grid-template-columns: minmax(0, 1fr); row-gap: 28px; }
+    [data-dml="profile-head"] { grid-column: 1; grid-row: 1; }
+    [data-dml="profile-aside"] { grid-column: 1; grid-row: 2; }
+    [data-dml="profile-body"] { grid-column: 1; grid-row: 3; }
   }
   @media (max-width: 880px) {
     [data-dml="nav-desktop"] { display: none !important; }
     [data-dml="nav-toggle"] { display: flex !important; }
   }
-  /* Phones: the publication thumbnail is dropped and the text takes the full
-     width. The !important is needed because the card sizes itself inline. */
+  /* Phones: a paper and an exhibition both keep their picture, full width,
+     slotted into the middle of the text rather than sitting beside it — above
+     the PDF / DOI / VIDEO buttons on a paper, above the description on an
+     exhibition. The !important is needed because each cell places itself
+     inline. An exhibition with neither a video nor a picture drops the empty
+     frame instead of showing a blank box. */
   @media (max-width: 640px) {
-    [data-dml="pub-thumb"] { display: none !important; }
     [data-dml="pub-card"] { grid-template-columns: minmax(0, 1fr) !important; }
-    [data-dml="ex-thumb"] { display: none !important; }
+    [data-dml="pub-head"] { grid-column: 1 !important; grid-row: 1 !important; }
+    [data-dml="pub-thumb"] { grid-column: 1 !important; grid-row: 2 !important; max-width: none !important; }
+    [data-dml="pub-body"] { grid-column: 1 !important; grid-row: 3 !important; }
     [data-dml="ex-card"] { grid-template-columns: minmax(0, 1fr) !important; }
+    [data-dml="ex-head"] { grid-column: 1 !important; grid-row: 1 !important; }
+    [data-dml="ex-thumb"] { grid-column: 1 !important; grid-row: 2 !important; max-width: none !important; }
+    [data-dml="ex-body"] { grid-column: 1 !important; grid-row: 3 !important; }
+    [data-ex-media="empty"] { display: none !important; }
+    /* Two people per row rather than one. The 210px minimum track only fits a
+       single column on a phone, so the count is pinned instead, and the column
+       gap tightens to leave the cards a little more room. */
+    [data-dml="people-grid"] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; column-gap: 16px !important; }
+    /* The home page news list drops its 110px date column, which left the
+       headline only a sliver of a phone screen; the date sits above the title
+       instead. The admin buttons follow it back into the single column. */
+    [data-dml="home-news"] { grid-template-columns: minmax(0, 1fr) !important; }
+    [data-dml="home-news-admin"] { grid-column: 1 !important; }
   }
 </style>
 </helmet>
@@ -133,7 +161,10 @@
           
         </section><div>
         <section style="padding: 0 0 96px;">
-          <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: flex-end; gap: 16px; width: 1189px; height: 50px">
+          <!-- Right-aligned row above the news list. The width has to track the
+               column rather than be pinned in pixels, or on a narrower window the
+               row overflows and carries "MORE" off the side of the screen. -->
+          <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: flex-end; gap: 16px; width: 100%; min-height: 50px">
             <a href="#/news" style="font-family: 'Archivo Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #595959; padding-bottom: 10px;" style-hover="color: #E20031;">MORE →</a>
             <sc-if value="{{ admin }}" hint-placeholder-val="{{ false }}">
               <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;">
@@ -146,14 +177,14 @@
 
           <div style="border-top: 2px solid #000000;">
             <sc-for list="{{ newsList }}" as="post" hint-placeholder-count="5">
-              <article style="padding: 26px 4px; display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 8px 24px; align-items: start;">
+              <article data-dml="home-news" style="padding: 26px 4px; display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 8px 24px; align-items: start;">
                 <span style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; padding-top: 4px;">{{ post.date }}</span>
                 <div style="display: grid; gap: 8px; min-width: 0;">
                   <a href="{{ post.href }}" style="font-size: clamp(19px, 2.1vw, 18px); font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; text-wrap: pretty" style-hover="color: #E20031;">{{ post.title }}</a>
                   <p style="font-size: 12px; line-height: 1.6; color: #595959; margin: 0; max-width: 100ch; text-wrap: pretty">{{ post.excerpt }}</p>
                 </div>
                 <sc-if value="{{ admin }}" hint-placeholder-val="{{ false }}">
-                  <div style="grid-column: 2; display: flex; gap: 8px; margin-top: 4px;">
+                  <div data-dml="home-news-admin" style="grid-column: 2; display: flex; gap: 8px; margin-top: 4px;">
                     <button onClick="{{ post.onEdit }}" style="background: none; border: 1px solid #E5E5E5; color: #000000; font-size: 12px; font-weight: 700; padding: 8px 14px; cursor: pointer;">Edit</button>
                     <button onClick="{{ post.onDelete }}" style="background: none; border: 1px solid #E5E5E5; color: #E20031; font-size: 12px; font-weight: 700; padding: 8px 14px; cursor: pointer;">Delete</button>
                   </div>
@@ -187,13 +218,8 @@
                   <span style="font-family: 'Archivo Mono', monospace; font-size: 11px; color: #E20031; letter-spacing: 0.08em;">PINNED</span>
                 </sc-if>
               </div>
-              <a href="{{ post.href }}" onClick="{{ post.onToggle }}" style="font-size: clamp(19px, 2.1vw, 18px); font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; text-wrap: pretty; cursor: pointer;" style-hover="color: #E20031;">{{ post.title }}</a>
-              <sc-if value="{{ post.isClosed }}" hint-placeholder-val="{{ true }}">
-                <p style="font-size: 12px; line-height: 1.6; color: #595959; margin: 0; max-width: 100ch; text-wrap: pretty;">{{ post.excerpt }}</p>
-              </sc-if>
-              <sc-if value="{{ post.isOpen }}" hint-placeholder-val="{{ false }}">
-                <p style="font-size: 15px; line-height: 1.7; color: #000000; margin: 0; max-width: 76ch; white-space: pre-wrap; text-wrap: pretty;">{{ post.body }}</p>
-              </sc-if>
+              <a href="{{ post.href }}" style="font-size: clamp(19px, 2.1vw, 18px); font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; text-wrap: pretty;" style-hover="color: #E20031;">{{ post.title }}</a>
+              <p style="font-size: 12px; line-height: 1.6; color: #595959; margin: 0; max-width: 100ch; text-wrap: pretty;">{{ post.excerpt }}</p>
               <sc-if value="{{ admin }}" hint-placeholder-val="{{ false }}">
                 <div style="display: flex; gap: 8px; margin-top: 4px;">
                   <button onClick="{{ post.onEdit }}" style="background: none; border: 1px solid #E5E5E5; color: #000000; font-size: 12px; font-weight: 700; padding: 8px 14px; cursor: pointer;">Edit</button>
@@ -293,17 +319,19 @@
               
             </div>
             <sc-for list="{{ group.items }}" as="pub" hint-placeholder-count="3">
-              <article data-dml="pub-card" data-pub-kind="{{ pub.typeKind }}" style="--pub-accent: {{ pub.typeColor }}; border-bottom: 1px solid #E5E5E5; padding: 26px 4px; display: grid; grid-template-columns: minmax(200px, 300px) minmax(0, 1fr); gap: 10px 28px; align-items: start;">
-                <div data-dml="pub-thumb" style="position: relative; width: 100%; max-width: 300px; aspect-ratio: 3 / 2; background-color: #FAFAFA; background-image: repeating-linear-gradient(135deg, #F0F0F0 0 8px, #FFFFFF 8px 16px); border: 1px solid #E5E5E5; overflow: hidden;">
+              <article data-dml="pub-card" data-pub-kind="{{ pub.typeKind }}" style="--pub-accent: {{ pub.typeColor }}; border-bottom: 1px solid #E5E5E5; padding: 26px 4px; display: grid; grid-template-columns: minmax(200px, 300px) minmax(0, 1fr); gap: 16px 28px; align-items: start;">
+                <div data-dml="pub-thumb" style="grid-column: 1; grid-row: 1 / span 2; position: relative; width: 100%; max-width: 300px; aspect-ratio: 3 / 2; background-color: #FAFAFA; background-image: repeating-linear-gradient(135deg, #F0F0F0 0 8px, #FFFFFF 8px 16px); border: 1px solid #E5E5E5; overflow: hidden;">
                   <span style="position: absolute; left: 12px; bottom: 10px; font-family: 'Archivo Mono', monospace; font-size: 10px; color: #595959;">{{ pub.thumbLabel }}</span>
                   {{ pub.thumbImg }}
                 </div>
-                <!-- One text column: the 60ch measure lives here, so the title, the
-                     optional Korean/English sub-title, authors, venue and the link
-                     row all wrap at exactly the same width. font-size is the title's
-                     size only so that "ch" resolves against it; every child sets its
+                <!-- The paper splits into two cells, so that the phone layout can
+                     slide the thumbnail in between the venue and the link row. The
+                     60ch measure lives on both, so the title, the optional
+                     Korean/English sub-title, authors, venue and the link row all
+                     wrap at exactly the same width. font-size is the title's size
+                     only so that "ch" resolves against it; every child sets its
                      own font-size. -->
-                <div style="display: grid; gap: 10px; align-content: start; font-size: clamp(18px, 2vw, 23px); max-width: 60ch;">
+                <div data-dml="pub-head" style="grid-column: 2; grid-row: 1; display: grid; gap: 10px; align-content: start; font-size: clamp(18px, 2vw, 23px); max-width: 60ch;">
                   <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                     <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FFFFFF; background: {{ pub.typeColor }}; padding: 4px 9px;">{{ pub.typeLabel }}</span>
                     <span style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959;">{{ pub.venueShort }}</span>
@@ -319,8 +347,10 @@
                   </div>
                   <p style="font-size: 15px; line-height: 1.55; color: #000000; margin: 0;">{{ pub.authorList }}</p>
                   <p style="font-size: 15px; line-height: 1.55; color: #595959; margin: 0; font-style: italic;">{{ pub.venue }}</p>
+                </div>
+                <div data-dml="pub-body" style="grid-column: 2; grid-row: 2; font-size: clamp(18px, 2vw, 23px); max-width: 60ch;">
                   <sc-if value="{{ pub.hasLinks }}" hint-placeholder-val="{{ false }}">
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;">
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                       <sc-for list="{{ pub.linkList }}" as="link" hint-placeholder-count="2">
                         <a href="{{ link.href }}" data-dml="pub-link" style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.08em; border: 1px solid #E5E5E5; padding: 7px 12px; color: #000000;">{{ link.label }}</a>
                       </sc-for>
@@ -339,8 +369,12 @@
         <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 14px;">Exhibitions</h1>
         <div style="border-top: 2px solid #000000;">
           <sc-for list="{{ exhibitions }}" as="ex" hint-placeholder-count="4">
-            <article data-dml="ex-card" style="border-bottom: 1px solid #E5E5E5; padding: 26px 4px; display: grid; grid-template-columns: minmax(200px, 300px) minmax(0, 1fr); gap: 10px 28px; align-items: start;">
-              <div data-dml="ex-thumb" style="position: relative; width: 100%; max-width: 300px; aspect-ratio: {{ ex.thumbRatio }}; background-color: #FAFAFA; background-image: repeating-linear-gradient(135deg, #F0F0F0 0 8px, #FFFFFF 8px 16px); border: 1px solid #E5E5E5; overflow: hidden;">
+            <!-- Three cells, so that the phone layout can slide the picture in
+                 between the credits and the description: the frame spans both
+                 rows of the left column, the credits sit top right and the
+                 description underneath them. -->
+            <article data-dml="ex-card" style="border-bottom: 1px solid #E5E5E5; padding: 26px 4px; display: grid; grid-template-columns: minmax(200px, 300px) minmax(0, 1fr); gap: 16px 28px; align-items: start;">
+              <div data-dml="ex-thumb" data-ex-media="{{ ex.thumbState }}" style="grid-column: 1; grid-row: 1 / span 2; position: relative; width: 100%; max-width: 300px; aspect-ratio: {{ ex.thumbRatio }}; background-color: #FAFAFA; background-image: repeating-linear-gradient(135deg, #F0F0F0 0 8px, #FFFFFF 8px 16px); border: 1px solid #E5E5E5; overflow: hidden;">
                 <sc-if value="{{ ex.hasVideo }}" hint-placeholder-val="{{ false }}">
                   <iframe src="{{ ex.videoSrc }}" title="{{ ex.titleMain }}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowFullScreen="{{ true }}" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block;"></iframe>
                 </sc-if>
@@ -348,7 +382,7 @@
                   <img src="{{ ex.imageSrc }}" alt="{{ ex.titleMain }}" loading="lazy" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;">
                 </sc-if>
               </div>
-              <div style="display: grid; gap: 6px; min-width: 0;">
+              <div data-dml="ex-head" style="grid-column: 2; grid-row: 1; display: grid; gap: 6px; min-width: 0;">
                 <span style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959;">{{ ex.dateLabel }}</span>
                 <h3 style="font-size: clamp(18px, 2vw, 23px); font-weight: 700; line-height: 1.3; margin: 0; text-wrap: pretty;">{{ ex.titleMain }}</h3>
                 <sc-if value="{{ ex.hasSubTitle }}" hint-placeholder-val="{{ false }}">
@@ -356,11 +390,13 @@
                 </sc-if>
                 <p style="font-size: 15px; line-height: 1.55; color: #000000; margin: 0;">{{ ex.creditList }}</p>
                 <p style="font-size: 15px; line-height: 1.55; color: #595959; margin: 0; text-wrap: pretty;">{{ ex.venue }}</p>
+              </div>
+              <div data-dml="ex-body" style="grid-column: 2; grid-row: 2; display: grid; gap: 8px; min-width: 0;">
                 <sc-if value="{{ ex.hasDescription }}" hint-placeholder-val="{{ false }}">
-                  <p style="font-size: 15px; line-height: 1.65; color: #595959; margin: 10px 0 0; text-wrap: pretty;">{{ ex.description }}</p>
+                  <p style="font-size: 15px; line-height: 1.65; color: #595959; margin: 0; text-wrap: pretty;">{{ ex.description }}</p>
                 </sc-if>
                 <sc-if value="{{ ex.hasDescriptionKo }}" hint-placeholder-val="{{ false }}">
-                  <p style="font-size: 15px; line-height: 1.75; color: #595959; margin: 2px 0 0; text-wrap: pretty;">{{ ex.descriptionKo }}</p>
+                  <p style="font-size: 15px; line-height: 1.75; color: #595959; margin: 0; text-wrap: pretty;">{{ ex.descriptionKo }}</p>
                 </sc-if>
               </div>
             </article>
@@ -401,7 +437,7 @@
     <sc-if value="{{ isProfessor }}" hint-placeholder-val="{{ false }}">
       <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
         <div data-dml="profile-split">
-          <div style="display: grid; gap: 20px; align-content: start; max-width: 300px;">
+          <div data-dml="profile-aside" style="display: grid; gap: 20px; align-content: start; max-width: 300px;">
             <div style="position: relative; overflow: hidden; aspect-ratio: 4 / 5; width: 100%; background-color: #FAFAFA; background-image: repeating-linear-gradient(135deg, #F0F0F0 0 8px, #FFFFFF 8px 16px); border: 1px solid #E5E5E5;">
               <span style="position: absolute; left: 16px; bottom: 16px; font-family: 'Archivo Mono', monospace; font-size: 11px; color: #595959;">{{ professor.photoLabel }}</span>
               {{ professor.photoImg }}
@@ -426,14 +462,14 @@
               <p style="font-size: 15px; line-height: 1.6; margin: 0;">#403, Prime Bldg.,<br>Donam Sujung Campus</p>
             </div>
           </div>
-          <div style="display: grid; gap: 26px; align-content: start;">
+          <div data-dml="profile-head">
+            <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #E20031; margin: 0 0 14px;">Director</p>
+            <h1 style="font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 8px; font-size: clamp(32px, 4.4vw,20px)">Hwan Kim</h1>
+            <p style="font-size: 14px; color: #595959; margin: 0">Assistant Professor<br>Department of Service and Design Engineering<br>Sungshin Women's University</p>
+          </div>
+          <div data-dml="profile-body" style="display: grid; gap: 26px; align-content: start;">
+            <p style="font-size: 18px; line-height: 1.7; margin: 0; max-width: 73ch; white-space: pre-line; text-wrap: pretty;">{{ professor.bio }}</p>
             <div>
-              <p style="font-family: 'Archivo Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #E20031; margin: 0 0 14px;">Director</p>
-              <h1 style="font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 8px; font-size: clamp(32px, 4.4vw,20px)">Hwan Kim</h1>
-              <p style="font-size: 14px; color: #595959; margin: 0">Assistant Professor<br>Department of Service and Design Engineering<br>Sungshin Women's University</p>
-            </div>
-            
-            <p style="font-size: 18px; line-height: 1.7; margin: 0; max-width: 73ch; white-space: pre-line; text-wrap: pretty;">{{ professor.bio }}</p><div>
               <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 0 0 12px;">Research interests</p>
               <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                 <sc-for list="{{ professor.interests }}" as="tag" hint-placeholder-count="4">
@@ -475,7 +511,7 @@
         <div>
           <section style="margin-bottom: 56px;">
             <div style="border-bottom: 2px solid #000000; margin-bottom: 28px;"></div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 32px 24px;">
+            <div data-dml="people-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 32px 24px;">
               <sc-for list="{{ memberList }}" as="m" hint-placeholder-count="8">
                 <a href="{{ m.href }}" style="display: grid; gap: 14px; align-content: start;" style-hover="color: #E20031;">
                   <div style="position: relative; overflow: hidden; aspect-ratio: 4 / 5; background-color: #FAFAFA; background-image: repeating-linear-gradient(135deg, #F0F0F0 0 8px, #FFFFFF 8px 16px); border: 1px solid #E5E5E5;">
@@ -495,7 +531,7 @@
             <section>
               <h2 style="font-size: 30px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 10px;">Alumni</h2>
               <div style="border-bottom: 2px solid #000000; margin-bottom: 28px;"></div>
-              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 28px 24px;">
+              <div data-dml="people-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 28px 24px;">
                 <sc-for list="{{ alumni }}" as="al" hint-placeholder-count="4">
                   <div style="display: grid; gap: 5px; align-content: start;">
                     <a href="{{ al.href }}" style="font-size: 17px; font-weight: 700; line-height: 1.2; justify-self: start;" style-hover="color: #E20031;">{{ al.name }}</a>
@@ -803,15 +839,14 @@ class Component extends DCLogic {
     route: (typeof location !== 'undefined' && location.hash) || '#/',
     menuOpen: false,
     news: null, fileNews: [], pubs: [], patents: [], members: [], exhibitions: [],
-    expanded: {},
     copied: '',
     editorOpen: false, draft: null, editingId: null
   };
 
   componentDidMount() {
-    this._onHash = () => this.setState({ route: location.hash || '#/', menuOpen: false }, () => this.scrollToArea());
+    this._onHash = () => this.setState({ route: location.hash || '#/', menuOpen: false }, () => this.scrollForRoute());
     window.addEventListener('hashchange', this._onHash);
-    this.scrollToArea();
+    this.scrollForRoute();
     ['news', 'publications', 'patents', 'members', 'exhibitions'].forEach((name) => {
       fetch('data/' + name + '.json').then((r) => r.json()).then((json) => {
         if (name === 'news') {
@@ -864,17 +899,16 @@ class Component extends DCLogic {
     } catch (e) {}
   }
 
-  // The three research areas live on one page (#/research). A card on the About
-  // page links to #/research/<id>, which opens that page scrolled to its section
-  // instead of to the top; the offset for the sticky header comes from the
-  // section's own scroll-margin-top.
-  scrollToArea() {
+  // Moving to another page starts it at the top, rather than keeping however far
+  // down the previous page had been scrolled. The one exception is #/research/<id>:
+  // the three research areas live on one page (#/research) and a card on the About
+  // page links straight to a section, which opens scrolled to that section; the
+  // offset for the sticky header comes from the section's own scroll-margin-top.
+  scrollForRoute() {
     const p = this.parts();
-    if (p[0] !== 'research') return;
-    const id = p[1];
+    const id = p[0] === 'research' ? p[1] : '';
     window.requestAnimationFrame(() => {
-      if (!id) { window.scrollTo(0, 0); return; }
-      const el = document.getElementById('research-' + id);
+      const el = id ? document.getElementById('research-' + id) : null;
       if (el) el.scrollIntoView(); else window.scrollTo(0, 0);
     });
   }
@@ -957,20 +991,6 @@ class Component extends DCLogic {
         const plain = String(n.body || '').replace(/\[([^\]]+)\]\([^\s)]*\)/g, '$1');
         return plain.slice(0, 180) + (plain.length > 180 ? '…' : '');
       })(),
-      // News index: a post opens in place instead of navigating to its own page.
-      // "isOpen" swaps the trimmed excerpt for the full body; the detail route
-      // still works if someone opens #/news/<id> directly.
-      isOpen: String(n.body || '').length > 180 && !!(this.state.expanded || {})[n.id],
-      isClosed: !(String(n.body || '').length > 180 && (this.state.expanded || {})[n.id]),
-      hasMore: String(n.body || '').length > 180,
-      onToggle: (e) => {
-        e.preventDefault();
-        this.setState((st) => {
-          const ex = { ...(st.expanded || {}) };
-          if (ex[n.id]) delete ex[n.id]; else ex[n.id] = true;
-          return { expanded: ex };
-        });
-      },
       onEdit: (e) => { e.preventDefault(); this.setState({ editorOpen: true, editingId: n.id, draft: { ...n } }); },
       onDelete: (e) => {
         e.preventDefault();
@@ -1205,7 +1225,9 @@ class Component extends DCLogic {
           hasVideo: !!id,
           imageSrc: !id && pic ? withFolder('exhibitionImage', pic) : '',
           hasImage: !id && !!pic,
-          thumbRatio: id ? '16 / 9' : (pic ? '5 / 3' : '3 / 2')
+          thumbRatio: id ? '16 / 9' : (pic ? '5 / 3' : '3 / 2'),
+          // Phones drop the frame altogether when there is nothing to put in it.
+          thumbState: id || pic ? 'media' : 'empty'
         };
       })()
     });

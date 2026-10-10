@@ -5,7 +5,7 @@
     "category": "Notice",
     "title": "[멤버모집] DesignMediaLab에서 새로운 멤버를 모집합니다",
     "body": "[멤버모집]\n새로운 디자인을 함께 만들어갈 분들을 찾고 있습니다. 현재 학부연구생을 모집하고 있습니다. 지원은 상시로 받고 있습니다. 학부-석사 연계 프로그램, 또는 석사과정에 관심이 있으신 분들도 연락을 주시면 지원 가능한 방법을 같이 이야기해볼 수 있습니다. 관심 있는 분은 hwan.kim@sungshin.ac.kr로 문의해 주세요.\n자세한 내용은 [여기](#/join)에서 확인해 주세요.",
-    "pinned": false
+    "pinned": true
   },
   {
     "id": "n-2026-09-30",
@@ -13,23 +13,23 @@
     "category": "Notice",
     "title": "[Rolling Recruitment] DesignMediaLab Is Recruiting New Members",
     "body": "[Rolling Recruitment]\nWe are looking for people to create new designs with us. We are currently recruiting undergraduate research assistants. Applications are accepted on a rolling basis. If you are interested, please send an inquiry to hwan.kim@sungshin.ac.kr.\nFor more details, see [here](#/join).",
-    "pinned": false
+    "pinned": true
   },
   {
     "id": "n-2026-09-17",
     "date": "2026-09-17",
     "category": "People",
     "title": "Heewon Jeong has been accepted to the graduate program at KAIST",
-    "body": "Heewon Jeong has been accepted to the graduate program in Industrial Design at KAIST. She will be moving on to her new environment starting in the spring semester of 2027. Congratulations on her achievement.",
-    "pinned": true
+    "body": "Heewon Jeong has been accepted to the graduate program in Department of Industrial Design at KAIST. She will be moving on to her new environment starting in the spring semester of 2027. Congratulations on her achievement.",
+    "pinned": false
   },
   {
     "id": "n-2026-09-01",
     "date": "2026-09-01",
     "category": "People",
     "title": "Jee Hee Lee has joined DesignMediaLab",
-    "body": "Jihee Lee has joined our lab as an M.S. student. She brings an impressive background in professional design practice, and we look forward to the design research she will take on here.",
-    "pinned": true
+    "body": "Jihee Lee has joined our lab as an M.S. student. She brings an impressive background in professional design practice, and we look forward to the design research she will take on here. Welcome aboard!",
+    "pinned": false
   },
   {
     "id": "n-2026-03-25",
@@ -37,6 +37,6 @@
     "category": "Publication",
     "title": "HapBraille Paper Published (SCIE Q1)",
     "body": "HapBraille: Designing a Non-Mechanical Braille Display Using Kilovolt-Range Electrovibration Feedback, first-authored by undergraduate researcher Heewon Jeong, has been published. The work was carried out over roughly a year starting in 2025, and appears in the International Journal of Human-Computer Interaction, an SCIE Q1 journal. Congratulations!",
-    "pinned": true
+    "pinned": false
   }
 ]
