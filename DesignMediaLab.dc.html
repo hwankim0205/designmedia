@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-C9PEBW3J6Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  // Pages are switched by the address hash (#/join, #/publications, …), which
+  // Analytics folds into a single page. Each page view is therefore sent by
+  // hand, with the hash route turned into a path (#/join → /join).
+  gtag('config', 'G-C9PEBW3J6Z', { send_page_view: false });
+  function dmlPageView() {
+    var path = '/' + location.hash.replace(/^#\/?/, '');
+    gtag('event', 'page_view', { page_location: location.origin + path, page_title: document.title });
+  }
+  window.addEventListener('hashchange', dmlPageView);
+  dmlPageView();
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
