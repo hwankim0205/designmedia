@@ -134,9 +134,9 @@
     border: none; background: none; cursor: pointer; font: inherit; font-size: 20px; line-height: 1; color: #595959;
   }
   [data-dml="sent-close"]:hover { color: #E20031; }
-  /* Only name, email and the send button show at first; the rest of the
-     form opens between them the first time either field is focused or the
-     button is pressed. */
+  /* Only name, email, affiliation and the send button show at first; the
+     meeting times open above the button the first time one of those fields
+     is focused or the button is pressed. */
   [data-dml="contact-more"] { display: grid; gap: 18px; }
   [data-dml="contact-more"]:not([data-open="1"]) { display: none; }
   [data-dml="contact-more"][data-open="1"] { animation: dml-contact-open 0.35s ease-out; }
@@ -205,16 +205,6 @@
   [data-dml="contact-slot"] input[type="date"]:not([data-filled="1"]) { color: #A6A6A6; }
   [data-dml="contact-slot"] input[type="date"]:not([data-filled="1"])::-webkit-datetime-edit { color: #A6A6A6; }
   [data-dml="contact-slot"] > span { font-family: 'Archivo Mono', monospace; font-size: 12px; color: #E20031; }
-  /* Name and email sit side by side, then stack on a phone. */
-  [data-dml="contact-row"] { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; }
-  /* Each label sits to the left of its own field on the same line. */
-  [data-dml="contact-row"] label,
-  [data-dml="contact-form"] label[data-dml="contact-inline"] { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; }
-  [data-dml="contact-row"] label > span,
-  [data-dml="contact-inline"] > span { margin-bottom: 0; white-space: nowrap; }
-  @media (max-width: 640px) {
-    [data-dml="contact-row"] { grid-template-columns: minmax(0, 1fr); }
-  }
   /* Meeting type options are toggle boxes rather than ticked checkboxes: the
      real checkbox is hidden (still focusable and announced), the label is
      the grey-bordered box, and a checked option turns red. */
@@ -230,28 +220,16 @@
   [data-dml="contact-checks"] label:hover { border-color: #A6A6A6; }
   [data-dml="contact-checks"] label:has(input:checked) { border-color: #E20031; background: #FFF1F4; color: #E20031; }
   [data-dml="contact-checks"] label:has(input:focus-visible) { outline: 2px solid #2F05FF; outline-offset: -1px; }
-  /* Attachments: the native file input is hidden and its label is the
-     button; the note beside it lists the chosen files once there are any. */
-  [data-dml="contact-file"] { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
-  [data-dml="contact-form"] [data-dml="contact-file"] label {
-    position: relative; display: inline-flex; align-items: center; height: 44px; box-sizing: border-box;
-    padding: 0 18px; border: 2px solid #000000; background: #FFFFFF; color: #000000;
-    font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap;
+  /* Name and email sit side by side, then stack on a phone. */
+  [data-dml="contact-row"] { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; }
+  /* Each label sits to the left of its own field on the same line. */
+  [data-dml="contact-row"] label,
+  [data-dml="contact-form"] label[data-dml="contact-inline"] { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; }
+  [data-dml="contact-row"] label > span,
+  [data-dml="contact-inline"] > span { margin-bottom: 0; white-space: nowrap; }
+  @media (max-width: 640px) {
+    [data-dml="contact-row"] { grid-template-columns: minmax(0, 1fr); }
   }
-  [data-dml="contact-file"] label:hover { border-color: #E20031; color: #E20031; }
-  [data-dml="contact-file"] label:has(input:focus-visible) { outline: 2px solid #2F05FF; outline-offset: 2px; }
-  [data-dml="contact-file"] input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
-  [data-dml="contact-file"] > span { font-size: 14px; color: #595959; min-width: 0; overflow-wrap: anywhere; }
-  /* The attached file is a chip with its own remove button. */
-  [data-dml="contact-file"] > [data-dml="file-chip"] {
-    display: inline-flex; align-items: center; gap: 6px; height: 32px; box-sizing: border-box;
-    padding: 0 4px 0 10px; border: 1px solid #E5E5E5; color: #000000;
-  }
-  [data-dml="file-chip"] button {
-    width: 24px; height: 24px; padding: 0; border: none; background: none; cursor: pointer;
-    font: inherit; font-size: 16px; line-height: 1; color: #595959;
-  }
-  [data-dml="file-chip"] button:hover { color: #E20031; }
   /* Home hero: soft glow bands along the top and bottom edges of 01.png.
      Each band is a wide radial gradient in the lab's red / blue that drifts
      sideways and breathes in opacity; the two run out of phase so the hero
@@ -563,7 +541,7 @@
                   <iframe src="{{ ex.videoSrc }}" title="{{ ex.titleMain }}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowFullScreen="{{ true }}" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block;"></iframe>
                 </sc-if>
                 <sc-if value="{{ ex.hasImage }}" hint-placeholder-val="{{ false }}">
-                  <img src="{{ ex.imageSrc }}" alt="{{ ex.titleMain }}" loading="lazy" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;">
+                  <img src="{{ ex.imageSrc }}" alt="{{ ex.titleMain }}" loading="lazy" onClick="{{ ex.openImage }}" style="cursor: zoom-in; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;">
                 </sc-if>
               </div>
               <div data-dml="ex-head" style="grid-column: 2; grid-row: 1; display: grid; gap: 6px; min-width: 0;">
@@ -854,8 +832,67 @@
     <sc-if value="{{ isJoin }}" hint-placeholder-val="{{ false }}">
       <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
         
-        <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 28px; max-width: 24ch; text-wrap: pretty;">We are looking for people who like to make things and ask why.</h1>
-        <div style="font-size: 18px; line-height: 1.65; margin: 0 0 56px; text-wrap: pretty;">DesignMediaLab recruits undergraduate researchers, M.S. and Ph.D. students every semester. No single background is required — designers, engineers, and people from the humanities and social sciences all fit here. We're looking for someone who loves building their imagination with their own hands.<p style="font-size: 18px; line-height: 1.65; margin: 6px 0 0;">If you are interested in our research topics, <a href="#/research" style="border-bottom: 2px solid #E20031;">click here</a>. For email inquiries, <a href="#/join/contact" onClick="{{ toContact }}" style="border-bottom: 2px solid #E20031;">click here</a>.</p><p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 20px 0 0;">DesignMediaLab은 매 학기 학부 연구생과 석·박사 과정 학생을 모집합니다. 특정한 전공 배경을 요구하지 않습니다 — 디자인, 공학, 인문학 및 사회과학을 전공한 분 모두 함께 연구할 수 있습니다. 우리는 자신의 상상을 직접 손으로 만들어내는 것을 좋아하는 사람을 찾고 있습니다.</p><p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 6px 0 0;">연구 주제에 관심이 있다면 <a href="#/research" style="border-bottom: 2px solid #E20031;">여기를 클릭</a>하세요. Email 문의는 <a href="#/join/contact" onClick="{{ toContact }}" style="border-bottom: 2px solid #E20031;">여기를 클릭</a>하세요.</p></div>
+        <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 28px; max-width: 24ch; text-wrap: pretty;">We are looking for people who love to make things.</h1>
+        <div style="font-size: 18px; line-height: 1.65; margin: 0; text-wrap: pretty;">DesignMediaLab recruits undergraduate researchers, M.S. and Ph.D. students every semester. No single background is required — designers, engineers, and people from the humanities and social sciences all fit here. We're looking for someone who loves building their imagination with their own hands.<p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 20px 0 0;">DesignMediaLab은 매 학기 학부 연구생과 석·박사 과정 학생을 모집합니다. 특정한 전공 배경을 요구하지 않습니다 — 디자인, 공학, 인문학 및 사회과학을 전공한 분 모두 함께 연구할 수 있습니다. 우리는 자신의 상상을 직접 손으로 만들어내는 것을 좋아하는 사람을 찾고 있습니다.</p></div>
+        <!-- The meeting request form sits right under the intro, whose
+             "email inquiries" links (#/join/contact) scroll to it. -->
+        <div id="join-contact" style="scroll-margin-top: 96px; margin: 0 0 56px;">
+          <sc-if value="{{ joinSent }}" hint-placeholder-val="{{ false }}">
+            <p id="join-sent" style="position: relative; scroll-margin-top: 96px; margin: 28px 0 0; padding: 14px 48px 14px 16px; border-left: 3px solid #2F05FF; background: #F5F3FF; font-size: 15px; line-height: 1.6;">Your request has been sent. We will reply by email soon.<br>미팅 요청이 전송되었습니다. 곧 Email로 답장드리겠습니다.<button type="button" data-dml="sent-close" onClick="{{ closeSent }}" aria-label="Close · 닫기">×</button></p>
+          </sc-if>
+          <!-- The site is static, so the form posts to FormSubmit, which forwards
+               every submission to the director's inbox.
+               The "email" field becomes the reply-to address of that mail. -->
+          <form data-dml="contact-form" action="https://formsubmit.co/hwan.kim@sungshin.ac.kr" method="POST">
+            <input type="hidden" name="_subject" value="DesignMediaLab Meeting Request">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_next" value="{{ contactNext }}">
+            <input type="text" name="_honey" style="display: none;" tabindex="-1" autocomplete="off">
+            <div style="display: grid; gap: 2px; padding-top: 24px; border-top: 1px solid #E5E5E5; text-align: center; font-size: 15px; color: #595959; text-wrap: pretty;">
+              <p style="line-height: 1.6; margin: 0;">We fund our members so they can focus entirely on design and research. Feel free to request a meeting.</p>
+              <p style="line-height: 1.7; margin: 0;">연구실 멤버로 조인하게 된다면, 걱정없이 디자인과 연구에만 매진할 수 있는 펀딩과 환경을 제공할 것입니다. 편하게 미팅을 요청해주세요.</p>
+              <p style="line-height: 1.7; margin: 0;">아래 내용을 채워서 보내주시면 연락드리겠습니다.</p>
+            </div>
+            <div data-dml="contact-row">
+              <label>
+                <span>Name · 이름</span>
+                <input type="text" name="Name" required onFocus="{{ openForm }}" placeholder="Sungshin Kim, 김성신">
+              </label>
+              <label>
+                <span>Email · 이메일</span>
+                <input type="email" name="email" required onFocus="{{ openForm }}" placeholder="sungshin.kim@sungshin.ac.kr">
+              </label>
+            </div>
+            <label data-dml="contact-inline">
+              <span>Affiliation · 소속</span>
+              <input type="text" name="Affiliation" onFocus="{{ openForm }}" placeholder="Dept. of Service and Design Engineering, Sungshin W's Univ., 성신여자대학교 서비스디자인공학과">
+            </label>
+            <div data-dml="contact-more" data-open="{{ formOpen }}">
+              <div data-dml="contact-when">
+                <fieldset data-dml="contact-times">
+                  <legend>Available times · 선호 미팅 시간</legend>
+                  <div data-dml="contact-slots">
+                    <div data-dml="contact-slot"><span>1</span><input type="date" name="Time 1 (date)" min="{{ todayISO }}" onChange="{{ markFilled }}"><select name="Time 1 (time)"><option value="">Time</option><option value="10:00">10:00</option><option value="11:00">11:00</option><option value="12:00">12:00</option><option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00">17:00</option><option value="18:00">18:00</option><option value="19:00">19:00</option></select><sc-if value="{{ plusAfter1 }}" hint-placeholder-val="{{ false }}"><button type="button" data-dml="contact-add" onClick="{{ addSlot }}" aria-label="Add another time · 시간 추가">+</button></sc-if></div>
+                    <sc-if value="{{ showSlot2 }}" hint-placeholder-val="{{ false }}">
+                      <div data-dml="contact-slot"><span>2</span><input type="date" name="Time 2 (date)" min="{{ todayISO }}" onChange="{{ markFilled }}"><select name="Time 2 (time)"><option value="">Time</option><option value="10:00">10:00</option><option value="11:00">11:00</option><option value="12:00">12:00</option><option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00">17:00</option><option value="18:00">18:00</option><option value="19:00">19:00</option></select><sc-if value="{{ plusAfter2 }}" hint-placeholder-val="{{ false }}"><button type="button" data-dml="contact-add" onClick="{{ addSlot }}" aria-label="Add another time · 시간 추가">+</button></sc-if></div>
+                    </sc-if>
+                    <sc-if value="{{ showSlot3 }}" hint-placeholder-val="{{ false }}">
+                      <div data-dml="contact-slot"><span>3</span><input type="date" name="Time 3 (date)" min="{{ todayISO }}" onChange="{{ markFilled }}"><select name="Time 3 (time)"><option value="">Time</option><option value="10:00">10:00</option><option value="11:00">11:00</option><option value="12:00">12:00</option><option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00">17:00</option><option value="18:00">18:00</option><option value="19:00">19:00</option></select></div>
+                    </sc-if>
+                  </div>
+                </fieldset>
+                <fieldset data-dml="contact-type">
+                  <legend>Meeting type · 선호 방식</legend>
+                  <div data-dml="contact-checks">
+                    <label><input type="checkbox" name="In-person meeting" value="Yes"> <span>In person</span></label>
+                    <label><input type="checkbox" name="Video meeting" value="Yes"> <span>Video call</span></label>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+            <button type="submit" onClick="{{ submitOrOpen }}" style="display: block; width: 100%; box-sizing: border-box; text-align: center; margin-top: 8px; background: #E20031; color: #FFFFFF; border: none; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 15px; padding: 14px 24px;" style-hover="background: #2F05FF; color: #FFFFFF;">Send request · 미팅 요청 보내기</button>
+          </form>
+        </div>
         <section style="border-top: 2px solid #000000; padding-top: 36px; margin: 0 0 20px;">
           <h2 style="font-size: 24px; font-weight: 700; margin: 0 0 18px;">Potential candidates</h2>
           <p style="font-size: 18px; line-height: 1.65; text-wrap: pretty; margin: 0;">DesignMediaLab focuses on research that brings design together with emerging technology. People who love making things with their own hands. People who love to draw. Maybe people who lose themselves in books or films. We believe that the people who make new and interesting things are the ones with a clear sense of what they love. We hope DesignMediaLab can be a playground where you get to build whatever that is.</p>
@@ -875,91 +912,19 @@
             </div>
           </sc-for>
         </div>
-        <div style="border-top: 2px solid #000000; padding: 36px 0 64px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
-          <div id="join-contact" style="scroll-margin-top: 96px;">
-            <h2 style="font-size: 24px; font-weight: 700; margin: 0 0 18px;">How to contact</h2>
-            <p style="font-size: 18px; line-height: 1.65; margin: 0; text-wrap: pretty;">If you join the lab, we provide funding through research assistantships and project support, so that you can focus entirely on design and research.</p>
-            <p style="font-size: 18px; line-height: 1.75; margin: 8px 0 24px; text-wrap: pretty;">연구실 멤버로 조인하게 된다면, 걱정없이 디자인과 연구에만 매진할 수 있는 펀딩과 환경을 제공할 것입니다. 편하게 미팅을 요청해주세요.</p>
-            <div style="display: grid; gap: 14px;">
-              <sc-for list="{{ applySteps }}" as="step" hint-placeholder-count="3">
-                <div style="display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px; align-items: start;">
-                  <span style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #E20031; padding-top: 3px;">{{ step.num }}</span>
-                  <div>
-                    <p style="font-size: 16px; font-weight: 500; line-height: 1.6; margin: 0; text-wrap: pretty;">{{ step.text }}</p>
-                    <sc-if value="{{ step.hasTextKo }}" hint-placeholder-val="{{ false }}">
-                      <p style="font-size: 16px; font-weight: 500; line-height: 1.7; margin: 6px 0 0; text-wrap: pretty;">{{ step.textKo }}</p>
-                    </sc-if>
-                  </div>
-                </div>
-              </sc-for>
-            </div>
-            <sc-if value="{{ joinSent }}" hint-placeholder-val="{{ false }}">
-              <p id="join-sent" style="position: relative; scroll-margin-top: 96px; margin: 28px 0 0; padding: 14px 48px 14px 16px; border-left: 3px solid #2F05FF; background: #F5F3FF; font-size: 15px; line-height: 1.6;">Your request has been sent. We will reply by email soon.<br>미팅 요청이 전송되었습니다. 곧 Email로 답장드리겠습니다.<button type="button" data-dml="sent-close" onClick="{{ closeSent }}" aria-label="Close · 닫기">×</button></p>
-            </sc-if>
-            <!-- The site is static, so the form posts to FormSubmit, which forwards
-                 every submission (attachments included) to the director's inbox.
-                 The "email" field becomes the reply-to address of that mail. -->
-            <form data-dml="contact-form" action="https://formsubmit.co/hwan.kim@sungshin.ac.kr" method="POST" enctype="multipart/form-data">
-              <input type="hidden" name="_subject" value="DesignMediaLab Meeting Request">
-              <input type="hidden" name="_template" value="table">
-              <input type="hidden" name="_next" value="{{ contactNext }}">
-              <input type="text" name="_honey" style="display: none;" tabindex="-1" autocomplete="off">
-              <h3 style="font-size: 16px; font-weight: 400; color: #E20031; margin: 0; padding-top: 24px; border-top: 1px solid #E5E5E5; text-align: center;">Meeting Request Form · 미팅 요청 작성</h3>
-              <div data-dml="contact-row">
-                <label>
-                  <span>Name · 이름</span>
-                  <input type="text" name="Name" required onFocus="{{ openForm }}" placeholder="Sungshin Kim, 김성신">
-                </label>
-                <label>
-                  <span>Email · 이메일</span>
-                  <input type="email" name="email" required onFocus="{{ openForm }}" placeholder="sungshin.kim@sungshin.ac.kr">
-                </label>
-              </div>
-              <div data-dml="contact-more" data-open="{{ formOpen }}">
-                <label data-dml="contact-inline">
-                  <span>Affiliation · 소속</span>
-                  <input type="text" name="Affiliation" placeholder="Sungshin W's Univ. 성신여자대학교">
-                </label>
-                <div data-dml="contact-when">
-                  <fieldset data-dml="contact-times">
-                    <legend>Available times · 미팅 가능한 시간</legend>
-                    <div data-dml="contact-slots">
-                      <div data-dml="contact-slot"><span>1</span><input type="date" name="Time 1 (date)" min="{{ todayISO }}" onChange="{{ markFilled }}"><select name="Time 1 (time)"><option value="">Time</option><option value="10:00">10:00</option><option value="11:00">11:00</option><option value="12:00">12:00</option><option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00">17:00</option><option value="18:00">18:00</option><option value="19:00">19:00</option></select><sc-if value="{{ plusAfter1 }}" hint-placeholder-val="{{ false }}"><button type="button" data-dml="contact-add" onClick="{{ addSlot }}" aria-label="Add another time · 시간 추가">+</button></sc-if></div>
-                      <sc-if value="{{ showSlot2 }}" hint-placeholder-val="{{ false }}">
-                        <div data-dml="contact-slot"><span>2</span><input type="date" name="Time 2 (date)" min="{{ todayISO }}" onChange="{{ markFilled }}"><select name="Time 2 (time)"><option value="">Time</option><option value="10:00">10:00</option><option value="11:00">11:00</option><option value="12:00">12:00</option><option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00">17:00</option><option value="18:00">18:00</option><option value="19:00">19:00</option></select><sc-if value="{{ plusAfter2 }}" hint-placeholder-val="{{ false }}"><button type="button" data-dml="contact-add" onClick="{{ addSlot }}" aria-label="Add another time · 시간 추가">+</button></sc-if></div>
-                      </sc-if>
-                      <sc-if value="{{ showSlot3 }}" hint-placeholder-val="{{ false }}">
-                        <div data-dml="contact-slot"><span>3</span><input type="date" name="Time 3 (date)" min="{{ todayISO }}" onChange="{{ markFilled }}"><select name="Time 3 (time)"><option value="">Time</option><option value="10:00">10:00</option><option value="11:00">11:00</option><option value="12:00">12:00</option><option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00">17:00</option><option value="18:00">18:00</option><option value="19:00">19:00</option></select></div>
-                      </sc-if>
-                    </div>
-                  </fieldset>
-                  <fieldset data-dml="contact-type">
-                    <legend>Meeting type · 미팅 방식</legend>
-                    <div data-dml="contact-checks">
-                      <label><input type="checkbox" name="In-person meeting" value="Yes"> <span>In person</span></label>
-                      <label><input type="checkbox" name="Video meeting" value="Yes"> <span>Video call</span></label>
-                    </div>
-                  </fieldset>
-                </div>
-                <div data-dml="contact-file">
-                  <label>Attach File · 파일 첨부<input type="file" name="attachment" accept=".pdf,.doc,.docx,.ppt,.pptx,.key,.hwp,.zip,.jpg,.jpeg,.png" onChange="{{ pickFiles }}"></label>
-                  <sc-if value="{{ noFiles }}" hint-placeholder-val="{{ true }}">
-                    <span style="line-height: 1.5;">[Optional] CV, Portfolio, etc. · CV, 포트폴리오 등 자료 업로드<br>Combine multiple files into one PDF or ZIP. · 여러 파일은 PDF 하나로 합치거나 ZIP으로 묶어 주세요.</span>
-                  </sc-if>
-                  <sc-for list="{{ pickedFiles }}" as="file" hint-placeholder-count="0">
-                    <span data-dml="file-chip">{{ file.name }}<button type="button" onClick="{{ file.onRemove }}" aria-label="Remove file · 파일 삭제">×</button></span>
-                  </sc-for>
-                </div>
-              </div>
-              <button type="submit" onClick="{{ submitOrOpen }}" style="display: block; width: 100%; box-sizing: border-box; text-align: center; margin-top: 8px; background: #E20031; color: #FFFFFF; border: none; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 15px; padding: 14px 24px;" style-hover="background: #2F05FF; color: #FFFFFF;">Send request · 미팅 요청 보내기</button>
-            </form>
-            <p style="font-size: 13px; line-height: 1.6; color: #595959; margin: 10px 0 0; text-align: center;">#403, Prime Bldg. 성신여자대학교 프라임관 403호</p>
-          </div>
-        </div>
       </div>
     </sc-if>
 
   </main>
+
+  <!-- Full-size view of an exhibition picture. Clicking anywhere, the close
+       button or pressing Esc closes it. -->
+  <sc-if value="{{ lightboxOpen }}" hint-placeholder-val="{{ false }}">
+    <div data-dml="lightbox" onClick="{{ closeImage }}" role="dialog" aria-modal="true" aria-label="{{ lightboxAlt }}" style="position: fixed; inset: 0; z-index: 120; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; padding: 56px 24px; cursor: zoom-out;">
+      <img src="{{ lightboxSrc }}" alt="{{ lightboxAlt }}" style="display: block; max-width: 100%; max-height: 100%; object-fit: contain; box-shadow: 0 10px 40px rgba(0,0,0,0.4);">
+      <button type="button" onClick="{{ closeImage }}" aria-label="Close · 닫기" style="position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; padding: 0; border: none; background: none; color: #FFFFFF; font-size: 30px; line-height: 1; cursor: pointer;">×</button>
+    </div>
+  </sc-if>
 
   <sc-if value="{{ editorOpen }}" hint-placeholder-val="{{ false }}">
     <div style="position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.45); display: flex; align-items: flex-start; justify-content: center; padding: 24px; overflow: auto;">
@@ -1085,13 +1050,15 @@ class Component extends DCLogic {
     copied: '',
     editorOpen: false, draft: null, editingId: null,
     slotCount: 1,
-    files: [],
-    formOpen: false
+    formOpen: false,
+    lightbox: null
   };
 
   componentDidMount() {
     this._onHash = () => this.setState({ route: location.hash || '#/', menuOpen: false }, () => this.scrollForRoute());
     window.addEventListener('hashchange', this._onHash);
+    this._onKey = (e) => { if (e.key === 'Escape' && this.state.lightbox) this.setState({ lightbox: null }); };
+    window.addEventListener('keydown', this._onKey);
     this.scrollForRoute();
     ['news', 'publications', 'patents', 'members', 'exhibitions'].forEach((name) => {
       fetch('data/' + name + '.json').then((r) => r.json()).then((json) => {
@@ -1106,7 +1073,10 @@ class Component extends DCLogic {
       }).catch(() => {});
     });
   }
-  componentWillUnmount() { window.removeEventListener('hashchange', this._onHash); }
+  componentWillUnmount() {
+    window.removeEventListener('hashchange', this._onHash);
+    window.removeEventListener('keydown', this._onKey);
+  }
 
   // Contact details are copied instead of linked, so a click does not hand the
   // visitor off to whatever mail app the machine happens to have. "copied" holds
@@ -1150,7 +1120,7 @@ class Component extends DCLogic {
   // the three research areas live on one page (#/research) and a card on the About
   // page links straight to a section, which opens scrolled to that section; the
   // offset for the sticky header comes from the section's own scroll-margin-top.
-  // #/join/contact works the same way, opening the Join page at "How to contact".
+  // #/join/contact works the same way, opening the Join page at its meeting form.
   scrollForRoute() {
     const p = this.parts();
     const id = (p[0] === 'research' || p[0] === 'join') && p[1] ? p[0] + '-' + p[1] : '';
@@ -1158,17 +1128,6 @@ class Component extends DCLogic {
       const el = id ? document.getElementById(id) : null;
       if (el) el.scrollIntoView(); else window.scrollTo(0, 0);
     });
-  }
-
-  // Keeps the attachment input's file list in step with this.state.files.
-  setFiles(files) {
-    const input = document.querySelector('[data-dml="contact-file"] input[type="file"]');
-    if (input && typeof DataTransfer !== 'undefined') {
-      const dt = new DataTransfer();
-      files.forEach((f) => dt.items.add(f));
-      input.files = dt.files;
-    }
-    this.setState({ files });
   }
 
   persist(news) {
@@ -1482,6 +1441,8 @@ class Component extends DCLogic {
           videoSrc: id ? 'https://player.vimeo.com/video/' + id : '',
           hasVideo: !!id,
           imageSrc: !id && pic ? withFolder('exhibitionImage', pic) : '',
+          // Clicking the picture opens it full size over the page.
+          openImage: () => this.setState({ lightbox: { src: withFolder('exhibitionImage', pic), alt: bilingualTitle(ex).titleMain } }),
           hasImage: !id && !!pic,
           thumbRatio: id ? '16 / 9' : (pic ? '5 / 3' : '3 / 2'),
           // Phones drop the frame altogether when there is nothing to put in it.
@@ -1592,9 +1553,6 @@ class Component extends DCLogic {
       menuOpen: this.state.menuOpen,
       toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
       closeMenu: () => this.setState({ menuOpen: false }),
-      // Clicking the "How to contact" link again once the address already is
-      // #/join/contact fires no hashchange, so the scroll is redone by hand.
-      toContact: () => { if (location.hash === '#/join/contact') this.scrollForRoute(); },
       navMain, navPeople, navAll: navMain.concat(navPeople),
 
       isHome: page === '',
@@ -1613,6 +1571,10 @@ class Component extends DCLogic {
       proEmailCopied: this.state.copied === PRO_EMAIL,
       proPhoneCopied: this.state.copied === PRO_PHONE,
       isJoin: page === 'join',
+      lightboxOpen: !!this.state.lightbox,
+      lightboxSrc: (this.state.lightbox || {}).src || '',
+      lightboxAlt: (this.state.lightbox || {}).alt || '',
+      closeImage: () => this.setState({ lightbox: null }),
       showSlot2: this.state.slotCount >= 2,
       showSlot3: this.state.slotCount >= 3,
       plusAfter1: this.state.slotCount === 1,
@@ -1620,8 +1582,6 @@ class Component extends DCLogic {
       // Earliest pickable meeting date: today, in the visitor's own time zone.
       // Earlier days are greyed out in the picker and fail validation if typed.
       todayISO: (() => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); })(),
-      // The file note shows what was picked, or the hint while nothing is.
-      // One attachment: picking another file replaces the current one.
       formOpen: this.state.formOpen ? '1' : '',
       // Closing the "request sent" note drops /sent from the address without a
       // new history entry or a scroll, so a reload does not bring it back.
@@ -1629,12 +1589,6 @@ class Component extends DCLogic {
       openForm: () => { if (!this.state.formOpen) this.setState({ formOpen: true }); },
       // Before the form has opened, the send button only opens it.
       submitOrOpen: (e) => { if (!this.state.formOpen) { e.preventDefault(); this.setState({ formOpen: true }); } },
-      pickFiles: (e) => this.setFiles([...(e.target.files || [])].slice(0, 1)),
-      noFiles: !this.state.files.length,
-      pickedFiles: this.state.files.map((f, i) => ({
-        name: f.name,
-        onRemove: () => this.setFiles(this.state.files.filter((_, j) => j !== i))
-      })),
       markFilled: (e) => { e.target.setAttribute('data-filled', e.target.value ? '1' : ''); },
       addSlot: () => this.setState((st) => ({ slotCount: Math.min(3, st.slotCount + 1) })),
       // FormSubmit sends the visitor back here after a submission, where the
@@ -1676,11 +1630,6 @@ class Component extends DCLogic {
         { status: 'Open', color: '#E20031', title: 'Undergraduate Researchers', text: 'If there\'s something you want to make, or if you\'d like to experience research firsthand, you\'re welcome to apply at any time. Get in touch by email, and we\'ll meet to define a research topic and design project that interests you — from there, you can join as an undergraduate researcher.', textKo: '만들고 싶은 것이 있다면, 연구를 경험해보고 싶다면 언제든 지원할 수 있습니다. E-mail로 문의를 주시면 미팅을 통해 관심있는 연구 주제 및 디자인 프로젝트를 설정한 다음, 학부연구생으로 조인할 수 있습니다.' },
         { status: 'Open', color: '#E20031', title: 'M.S. / Ph.D. Students', text: 'I will support you in growing into an independent researcher capable of carrying out design research. If you are interested in combining emerging technology with design, please apply to the M.S. or Ph.D. program (this includes the combined B.S.–M.S. program). If you are considering applying, I encourage you to talk with me beforehand — please email me to request a conversation.', textKo: '디자인 연구를 수행할 수 있는 \'독립적인 연구자\'로 성장할 수 있도록 도울 것입니다. 새로운 기술과 디자인을 결합하고자 하는 분들께서는 대학원 프로그램에 지원해주세요 (학부-석사연계 프로그램에 관심이 있는 분들도 해당). 지원을 고민하는 분들께는 미리 저와 상담하기를 권장합니다. Email로 상담 요청을 해주세요.' }
       ].map((o) => ({ ...o, hasTextKo: !!String(o.textKo || '').trim() })),
-      applySteps: [
-        { num: '01', text: 'Send an email to the director, Hwan Kim, to request a meeting. Please include two or three time slots that work for you.', textKo: 'Director 김환에게 미팅을 요청하는 Email을 보내세요. 미팅이 가능한 2, 3가지 시간대를 함께 알려주세요.' },
-        { num: '02', text: '[Optional] Attach your CV, portfolio, or anything else that helps explain who you are.', textKo: '[선택사항] 당신의 CV, 포트폴리오, 무엇이든 당신을 설명하기 위한 자료가 있다면 같이 첨부해주세요.' },
-        { num: '03', text: 'Think about the kind of design you like and what you want to build. We will discuss this together at the meeting.', textKo: '어떤 디자인을 좋아하는지, 무엇을 만들고 싶은지 생각해주세요. 미팅에서 이를 함께 이야기해보겠습니다.' }
-      ].map((st) => ({ ...st, hasTextKo: !!String(st.textKo || '').trim() })),
 
       categories: CATS,
       editorOpen: this.state.editorOpen,
