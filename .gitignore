@@ -13,3 +13,6 @@ uploads/
 # Editor and tool settings, local to this machine
 .vscode/
 .claude/
+
+# Photoshop export of the member photo sheet, not used by the site
+memberImage/img_members.png

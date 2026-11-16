@@ -99,6 +99,24 @@
     [data-dml="nav-desktop"] { display: none !important; }
     [data-dml="nav-toggle"] { display: flex !important; }
   }
+  /* English / Korean switch. On About (and its research pages), Exhibitions
+     and Join Our Team the body text written in both languages marks each
+     version with data-l="en" or data-l="ko", and only the one chosen in the
+     page's switch is shown. Titles, headings, labels and buttons are untagged
+     and never change. */
+  [data-lang="en"] [data-l="ko"],
+  [data-lang="ko"] [data-l="en"] { display: none !important; }
+  /* The switch sits at the right end of the page title's row, level with the
+     title's first line. */
+  [data-dml="title-row"] { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+  [data-dml="title-row"] > h1 { min-width: 0; }
+  [data-dml="lang-toggle"] { display: flex; flex: 0 0 auto; border: 1px solid #E5E5E5; margin-top: clamp(4px, 1.1vw, 14px); }
+  [data-dml="lang-toggle"] button {
+    padding: 6px 10px; border: none; background: #FFFFFF; color: #595959; cursor: pointer;
+    font-family: 'Archivo Mono', monospace; font-size: 12px; letter-spacing: 0.06em; line-height: 1;
+  }
+  [data-dml="lang-toggle"] button:hover { color: #E20031; }
+  [data-dml="lang-toggle"] button[aria-pressed="true"] { background: #000000; color: #FFFFFF; }
   /* Phones: a paper and an exhibition both keep their picture, full width,
      slotted into the middle of the text rather than sitting beside it — above
      the PDF / DOI / VIDEO buttons on a paper, above the description on an
@@ -269,7 +287,7 @@
   }
 </style>
 </helmet>
-<div style="font-family: 'Interstate', 'Archivo', Helvetica, Arial, sans-serif; font-weight: 400; color: #000000; background: #FFFFFF; min-height: 100vh; display: flex; flex-direction: column;">
+<div data-lang="{{ lang }}" style="font-family: 'Interstate', 'Archivo', Helvetica, Arial, sans-serif; font-weight: 400; color: #000000; background: #FFFFFF; min-height: 100vh; display: flex; flex-direction: column;">
 
   <header style="position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid #E5E5E5;">
     <div style="max-width: 1240px; margin: 0 auto; padding: 0 24px; height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
@@ -409,9 +427,15 @@
     <sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
       <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
         
-        <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 32px; max-width: 26ch; text-wrap: pretty;">We prototype new interactive media to support everyday life.</h1>
+        <div data-dml="title-row">
+          <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 32px; max-width: 26ch; text-wrap: pretty;">We prototype new interactive media to support everyday life.</h1>
+          <div data-dml="lang-toggle" role="group" aria-label="Language · 언어">
+            <button type="button" onClick="{{ setLangEn }}" aria-pressed="{{ langEnPressed }}">EN</button>
+            <button type="button" onClick="{{ setLangKo }}" aria-pressed="{{ langKoPressed }}">KR</button>
+          </div>
+        </div>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px;">
-          <div style="font-size: 18px; line-height: 1.65; margin: 0; text-wrap: pretty;">DesignMediaLab is a research group in the <a href="https://www.sungshin.ac.kr/serdesign/" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">Department of Service and Design Engineering</a> at <a href="https://www.sungshin.ac.kr/" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">Sungshin Women's University</a>.&nbsp;<br><span style="text-wrap-mode: initial;">We envision a future where people can benefit from emerging technologies in their everyday lives. To make this possible, we design ways for new technologies to meaningfully support people in real-world contexts.</span><p>While there are many possible approaches, our research focuses on three key directions:</p><p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 20px 0 0;">DesignMediaLab 은 <a href="https://www.sungshin.ac.kr/" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">성신여자대학교</a> <a href="https://www.sungshin.ac.kr/serdesign/" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">서비스디자인공학과</a>의 디자인 연구실입니다. 우리는 새로운 기술들을 사람들의 일상생활에 녹이기 위한 인터랙티브 디자인을 고민합니다. 이를 위해, 우리는 기술들을 사람들이 의미있게 사용할 수 있는 형태로 디자인하고, 실제로 사용할 수 있음을 보이기 위해 프로토타입으로 만듭니다. DesignMediaLab에는 미래에 사용될 수 있는 기술을 직접 디자인으로 만드는 사람들이 모여있습니다.</p><p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 16px 0 0;">수 많은 방법들이 있겠지만, 우리는 지금 아래 3가지 주제에 집중하고 있습니다.</p></div>
+          <div style="font-size: 18px; line-height: 1.65; margin: 0; text-wrap: pretty;"><div data-l="en">DesignMediaLab is a research group in the <a href="https://www.sungshin.ac.kr/serdesign/" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">Department of Service and Design Engineering</a> at <a href="https://www.sungshin.ac.kr/" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">Sungshin Women's University</a>.&nbsp;<br><span style="text-wrap-mode: initial;">We envision a future where people can benefit from emerging technologies in their everyday lives. To make this possible, we design ways for new technologies to meaningfully support people in real-world contexts.</span><p>While there are many possible approaches, our research focuses on three key directions:</p></div><div data-l="ko"><p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 0;">DesignMediaLab 은 <a href="https://www.sungshin.ac.kr/" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">성신여자대학교</a> <a href="https://www.sungshin.ac.kr/serdesign/" target="_blank" rel="noopener noreferrer" style="border-bottom: 2px solid #E20031;">서비스디자인공학과</a>의 디자인 연구실입니다. 우리는 새로운 기술들을 사람들의 일상생활에 녹이기 위한 인터랙티브 디자인을 고민합니다. 이를 위해, 우리는 기술들을 사람들이 의미있게 사용할 수 있는 형태로 디자인하고, 실제로 사용할 수 있음을 보이기 위해 프로토타입으로 만듭니다. DesignMediaLab에는 미래에 사용될 수 있는 기술을 직접 디자인으로 만드는 사람들이 모여있습니다.</p><p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 16px 0 0;">수 많은 방법들이 있겠지만, 우리는 지금 아래 3가지 주제에 집중하고 있습니다.</p></div></div>
           
         </div>
         <p style="font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #595959; margin: 56px 0 14px;">Research areas</p>
@@ -420,10 +444,8 @@
             <a href="{{ area.href }}" style="display: block; background: #FFFFFF; padding: 32px 26px 40px; color: inherit;" style-hover="color: #E20031;">
               <p style="font-family: 'Archivo Mono', monospace; font-size: 14px; color: #E20031; margin: 0 0 18px">{{ area.num }}</p>
               <div style="box-sizing: border-box; display: flex; flex-direction: column; gap: 12px"><h3 style="font-size: 22px; font-weight: 700; line-height: 1.25; margin: 0 0 14px; text-wrap: pretty">{{ area.title }}</h3></div>
-              <p style="font-size: 15px; line-height: 1.65; color: #595959; margin: 0; text-wrap: pretty;">{{ area.text }}</p>
-              <sc-if value="{{ area.hasTextKo }}" hint-placeholder-val="{{ false }}">
-                <p style="font-size: 15px; line-height: 1.75; color: #595959; margin: 12px 0 0; text-wrap: pretty;">{{ area.textKo }}</p>
-              </sc-if>
+              <p data-l="en" style="font-size: 15px; line-height: 1.65; color: #595959; margin: 0; text-wrap: pretty;">{{ area.text }}</p>
+              <p data-l="ko" style="font-size: 15px; line-height: 1.75; color: #595959; margin: 0; text-wrap: pretty;">{{ area.textKoShow }}</p>
               <span style="display: inline-block; margin-top: 22px; font-family: 'Archivo Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #E20031;">Read more →</span>
             </a>
           </sc-for>
@@ -439,15 +461,19 @@
 
     <sc-if value="{{ isResearch }}" hint-placeholder-val="{{ false }}">
       <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
-        <a href="#/about" style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; letter-spacing: 0.06em;" style-hover="color: #E20031;">← ABOUT</a>
+        <div data-dml="title-row" style="align-items: center;">
+          <a href="#/about" style="font-family: 'Archivo Mono', monospace; font-size: 12px; color: #595959; letter-spacing: 0.06em;" style-hover="color: #E20031;">← ABOUT</a>
+          <div data-dml="lang-toggle" role="group" aria-label="Language · 언어" style="margin-top: 0;">
+            <button type="button" onClick="{{ setLangEn }}" aria-pressed="{{ langEnPressed }}">EN</button>
+            <button type="button" onClick="{{ setLangKo }}" aria-pressed="{{ langKoPressed }}">KR</button>
+          </div>
+        </div>
         <sc-for list="{{ researchAreas }}" as="area" hint-placeholder-count="3">
           <article id="{{ area.anchor }}" style="padding-top: 44px; scroll-margin-top: 96px;">
             <p style="font-family: 'Archivo Mono', monospace; font-size: 14px; color: #E20031; margin: 0 0 14px;">{{ area.num }}</p>
             <h2 style="font-size: clamp(26px, 3.4vw, 38px); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 24px; text-wrap: pretty;">{{ area.title }}</h2>
-            <p style="font-size: 18px; line-height: 1.65; margin: 0; text-wrap: pretty;">{{ area.text }}</p>
-            <sc-if value="{{ area.hasTextKo }}" hint-placeholder-val="{{ false }}">
-              <p style="font-size: 18px; line-height: 1.75; margin: 2px 0 0; text-wrap: pretty;">{{ area.textKo }}</p>
-            </sc-if>
+            <p data-l="en" style="font-size: 18px; line-height: 1.65; margin: 0; text-wrap: pretty;">{{ area.text }}</p>
+            <p data-l="ko" style="font-size: 18px; line-height: 1.75; margin: 0; text-wrap: pretty;">{{ area.textKoShow }}</p>
             <div style="border-top: 1px solid #E5E5E5; margin-top: 36px;"></div>
             <sc-if value="{{ area.hasImages }}" hint-placeholder-val="{{ true }}">
               <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 36px;">
@@ -457,12 +483,8 @@
               </div>
             </sc-if>
             <sc-for list="{{ area.paras }}" as="para" hint-placeholder-count="2">
-              <sc-if value="{{ para.hasEn }}" hint-placeholder-val="{{ true }}">
-                <p style="font-size: 18px; line-height: 1.65; color: #595959; margin: 30px 0 0; text-wrap: pretty;">{{ para.en }}</p>
-              </sc-if>
-              <sc-if value="{{ para.hasKo }}" hint-placeholder-val="{{ true }}">
-                <p style="font-size: 18px; line-height: 1.75; color: #595959; margin: 2px 0 0; text-wrap: pretty;">{{ para.ko }}</p>
-              </sc-if>
+              <p data-l="en" style="font-size: 18px; line-height: 1.65; color: #595959; margin: 30px 0 0; text-wrap: pretty;">{{ para.enShow }}</p>
+              <p data-l="ko" style="font-size: 18px; line-height: 1.75; color: #595959; margin: 30px 0 0; text-wrap: pretty;">{{ para.koShow }}</p>
             </sc-for>
           </article>
         </sc-for>
@@ -528,7 +550,13 @@
 
     <sc-if value="{{ isExhibitions }}" hint-placeholder-val="{{ false }}">
       <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
-        <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 14px;">Exhibitions</h1>
+        <div data-dml="title-row">
+          <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 14px;">Exhibitions</h1>
+          <div data-dml="lang-toggle" role="group" aria-label="Language · 언어">
+            <button type="button" onClick="{{ setLangEn }}" aria-pressed="{{ langEnPressed }}">EN</button>
+            <button type="button" onClick="{{ setLangKo }}" aria-pressed="{{ langKoPressed }}">KR</button>
+          </div>
+        </div>
         <div style="border-top: 2px solid #000000;">
           <sc-for list="{{ exhibitions }}" as="ex" hint-placeholder-count="4">
             <!-- Three cells, so that the phone layout can slide the picture in
@@ -554,11 +582,9 @@
                 <p style="font-size: 15px; line-height: 1.55; color: #595959; margin: 0; text-wrap: pretty;">{{ ex.venue }}</p>
               </div>
               <div data-dml="ex-body" style="grid-column: 2; grid-row: 2; display: grid; gap: 8px; min-width: 0;">
-                <sc-if value="{{ ex.hasDescription }}" hint-placeholder-val="{{ false }}">
-                  <p style="font-size: 15px; line-height: 1.65; color: #595959; margin: 0; text-wrap: pretty;">{{ ex.description }}</p>
-                </sc-if>
-                <sc-if value="{{ ex.hasDescriptionKo }}" hint-placeholder-val="{{ false }}">
-                  <p style="font-size: 15px; line-height: 1.75; color: #595959; margin: 0; text-wrap: pretty;">{{ ex.descriptionKo }}</p>
+                <sc-if value="{{ ex.hasAnyDescription }}" hint-placeholder-val="{{ false }}">
+                  <p data-l="en" style="font-size: 15px; line-height: 1.65; color: #595959; margin: 0; text-wrap: pretty;">{{ ex.descEnShow }}</p>
+                  <p data-l="ko" style="font-size: 15px; line-height: 1.75; color: #595959; margin: 0; text-wrap: pretty;">{{ ex.descKoShow }}</p>
                 </sc-if>
               </div>
             </article>
@@ -832,26 +858,53 @@
     <sc-if value="{{ isJoin }}" hint-placeholder-val="{{ false }}">
       <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
         
-        <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 28px; max-width: 24ch; text-wrap: pretty;">We are looking for people who love to make things.</h1>
-        <div style="font-size: 18px; line-height: 1.65; margin: 0; text-wrap: pretty;">DesignMediaLab recruits undergraduate researchers, M.S. and Ph.D. students every semester. No single background is required — designers, engineers, and people from the humanities and social sciences all fit here. We're looking for someone who loves building their imagination with their own hands.<p style="font-size: 18px; line-height: 1.75; color: #000000; margin: 20px 0 0;">DesignMediaLab은 매 학기 학부 연구생과 석·박사 과정 학생을 모집합니다. 특정한 전공 배경을 요구하지 않습니다 — 디자인, 공학, 인문학 및 사회과학을 전공한 분 모두 함께 연구할 수 있습니다. 우리는 자신의 상상을 직접 손으로 만들어내는 것을 좋아하는 사람을 찾고 있습니다.</p></div>
-        <!-- The meeting request form sits right under the intro, whose
-             "email inquiries" links (#/join/contact) scroll to it. -->
-        <div id="join-contact" style="scroll-margin-top: 96px; margin: 0 0 56px;">
+        <div data-dml="title-row">
+          <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 28px; max-width: 24ch; text-wrap: pretty;">We are looking for people who love to make things.</h1>
+          <div data-dml="lang-toggle" role="group" aria-label="Language · 언어">
+            <button type="button" onClick="{{ setLangEn }}" aria-pressed="{{ langEnPressed }}">EN</button>
+            <button type="button" onClick="{{ setLangKo }}" aria-pressed="{{ langKoPressed }}">KR</button>
+          </div>
+        </div>
+        <div style="font-size: 18px; line-height: 1.65; margin: 0; text-wrap: pretty;"><p data-l="en" style="margin: 0;">DesignMediaLab recruits undergraduate researchers, M.S. and Ph.D. students every semester. No single background is required — designers, engineers, and people from the humanities and social sciences all fit here. We're looking for someone who loves building their imagination with their own hands.</p><p data-l="ko" style="font-size: 18px; line-height: 1.75; color: #000000; margin: 0;">DesignMediaLab은 매 학기 학부 연구생과 석·박사 과정 학생을 모집합니다. 특정한 전공 배경을 요구하지 않습니다 — 디자인, 공학, 인문학 및 사회과학을 전공한 분 모두 함께 연구할 수 있습니다. 우리는 자신의 상상을 직접 손으로 만들어내는 것을 좋아하는 사람을 찾고 있습니다.</p></div>
+        <section style="border-top: 2px solid #000000; padding-top: 36px; margin: 56px 0 20px;">
+          <h2 style="font-size: 24px; font-weight: 700; margin: 0 0 18px;">Potential candidates</h2>
+          <div data-l="en">
+          <p style="font-size: 18px; line-height: 1.65; text-wrap: pretty; margin: 0;">DesignMediaLab focuses on research that brings design together with emerging technology. People who love making things with their own hands. People who love to draw. Maybe people who lose themselves in books or films. We believe that the people who make new and interesting things are the ones with a clear sense of what they love. We hope DesignMediaLab can be a playground where you get to build whatever that is.</p>
+          <p style="font-size: 18px; line-height: 1.65; text-wrap: pretty; margin: 12px 0 0;">Whether you apply as an undergraduate researcher or as a graduate student, <strong style="font-weight: 700;">your major, your grades, and your academic background do not matter at all. What matters is having the kind of taste that lets you lose yourself in the work you love.</strong> If you want to design something and build it yourself, please email me.</p>
+          </div>
+          <div data-l="ko">
+          <p style="font-size: 18px; line-height: 1.75; text-wrap: pretty; margin: 0;">DesignMediaLab은 디자인과 새로운 기술을 결합하는 연구에 초점을 맞추고 있습니다. 손으로 직접 무언가를 만드는 것을 좋아하는 사람. 그림 그리는 것을 좋아하는 사람. 어쩌면 책을 읽거나 영화를 보는 것에 빠져 있는 사람. 저희는 자신만의 취향이 확고한 사람들이 새롭고 재미있는 것을 만들 수 있다고 믿습니다. DesignMediaLab이 당신이 좋아하는 것을 마음껏 만들 수 있는 놀이터가 되었으면 좋겠습니다.</p>
+          <p style="font-size: 18px; line-height: 1.75; text-wrap: pretty; margin: 12px 0 0;">학부연구생으로 지원하든, 대학원생으로 지원하든, <strong style="font-weight: 700;">당신의 전공, 학점, 학력은 전혀 중요하지 않습니다. 좋아하는 일에 몰입할 수 있는 취향을 가진 사람이길 바랍니다.</strong> 직접 디자인을 만들어서 구현해보고 싶은 분은 저에게 Email로 문의해주세요.</p>
+          </div>
+        </section>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: #E5E5E5; margin-bottom: 24px;">
+          <sc-for list="{{ openings }}" as="job" hint-placeholder-count="3">
+            <div style="background: #FFFFFF; padding: 14px 26px 16px; display: grid; gap: 14px; align-content: start;">
+              <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FFFFFF; background: {{ job.color }}; padding: 4px 9px; justify-self: start;">{{ job.status }}</span>
+              <h3 style="font-size: 21px; font-weight: 700; line-height: 1.25; margin: 0;">{{ job.title }}</h3>
+              <p data-l="en" style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0; text-wrap: pretty;">{{ job.text }}</p>
+              <p data-l="ko" style="font-size: 15px; line-height: 1.75; color: #595959; margin: 0; text-wrap: pretty;">{{ job.textKoShow }}</p>
+            </div>
+          </sc-for>
+        </div>
+        <!-- The meeting request form closes the page, below the openings;
+             links to #/join/contact scroll to it. -->
+        <div id="join-contact" style="scroll-margin-top: 96px; margin: 40px 0 0; border-top: 2px solid #000000; padding-top: 36px;">
+          <h2 style="font-size: 24px; font-weight: 700; margin: 0 0 18px;">Meeting Request</h2>
           <sc-if value="{{ joinSent }}" hint-placeholder-val="{{ false }}">
-            <p id="join-sent" style="position: relative; scroll-margin-top: 96px; margin: 28px 0 0; padding: 14px 48px 14px 16px; border-left: 3px solid #2F05FF; background: #F5F3FF; font-size: 15px; line-height: 1.6;">Your request has been sent. We will reply by email soon.<br>미팅 요청이 전송되었습니다. 곧 Email로 답장드리겠습니다.<button type="button" data-dml="sent-close" onClick="{{ closeSent }}" aria-label="Close · 닫기">×</button></p>
+            <p id="join-sent" style="position: relative; scroll-margin-top: 96px; margin: 0 0 18px; padding: 14px 48px 14px 16px; border-left: 3px solid #2F05FF; background: #F5F3FF; font-size: 15px; line-height: 1.6;"><span data-l="en">Your request has been sent. We will reply by email soon.</span><span data-l="ko">미팅 요청이 전송되었습니다. 곧 Email로 답장드리겠습니다.</span><button type="button" data-dml="sent-close" onClick="{{ closeSent }}" aria-label="Close · 닫기">×</button></p>
           </sc-if>
           <!-- The site is static, so the form posts to FormSubmit, which forwards
                every submission to the director's inbox.
                The "email" field becomes the reply-to address of that mail. -->
-          <form data-dml="contact-form" action="https://formsubmit.co/hwan.kim@sungshin.ac.kr" method="POST">
+          <form data-dml="contact-form" action="https://formsubmit.co/hwan.kim@sungshin.ac.kr" method="POST" style="margin-top: 0;">
             <input type="hidden" name="_subject" value="DesignMediaLab Meeting Request">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_next" value="{{ contactNext }}">
             <input type="text" name="_honey" style="display: none;" tabindex="-1" autocomplete="off">
-            <div style="display: grid; gap: 2px; padding-top: 24px; border-top: 1px solid #E5E5E5; text-align: center; font-size: 15px; color: #595959; text-wrap: pretty;">
-              <p style="line-height: 1.6; margin: 0;">We fund our members so they can focus entirely on design and research. Feel free to request a meeting.</p>
-              <p style="line-height: 1.7; margin: 0;">연구실 멤버로 조인하게 된다면, 걱정없이 디자인과 연구에만 매진할 수 있는 펀딩과 환경을 제공할 것입니다. 편하게 미팅을 요청해주세요.</p>
-              <p style="line-height: 1.7; margin: 0;">아래 내용을 채워서 보내주시면 연락드리겠습니다.</p>
+            <div style="font-size: 18px; text-wrap: pretty;">
+              <p data-l="en" style="line-height: 1.65; margin: 0;">If you join our lab, we will provide the funding and environment you need to focus fully on your design and research without worry. Please feel free to request a meeting. Just fill out the form below, and I will get back to you shortly.</p>
+              <p data-l="ko" style="line-height: 1.75; margin: 0;">연구실 멤버로 조인하게 된다면, 걱정없이 디자인과 연구에만 매진할 수 있는 펀딩과 환경을 제공할 것입니다. 편하게 미팅을 요청해주세요. 아래 내용을 채워서 보내주시면 제가 곧 연락드리겠습니다.</p>
             </div>
             <div data-dml="contact-row">
               <label>
@@ -890,27 +943,8 @@
                 </fieldset>
               </div>
             </div>
-            <button type="submit" onClick="{{ submitOrOpen }}" style="display: block; width: 100%; box-sizing: border-box; text-align: center; margin-top: 8px; background: #E20031; color: #FFFFFF; border: none; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 15px; padding: 14px 24px;" style-hover="background: #2F05FF; color: #FFFFFF;">Send request · 미팅 요청 보내기</button>
+            <button type="submit" onClick="{{ submitOrOpen }}" style="display: block; width: 100%; box-sizing: border-box; text-align: center; margin-top: 8px; background: #E20031; color: #FFFFFF; border: none; border-radius: 999px; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 15px; padding: 14px 24px;" style-hover="background: #2F05FF; color: #FFFFFF;">Send request · 미팅 요청 보내기</button>
           </form>
-        </div>
-        <section style="border-top: 2px solid #000000; padding-top: 36px; margin: 0 0 20px;">
-          <h2 style="font-size: 24px; font-weight: 700; margin: 0 0 18px;">Potential candidates</h2>
-          <p style="font-size: 18px; line-height: 1.65; text-wrap: pretty; margin: 0;">DesignMediaLab focuses on research that brings design together with emerging technology. People who love making things with their own hands. People who love to draw. Maybe people who lose themselves in books or films. We believe that the people who make new and interesting things are the ones with a clear sense of what they love. We hope DesignMediaLab can be a playground where you get to build whatever that is.</p>
-          <p style="font-size: 18px; line-height: 1.65; text-wrap: pretty; margin: 12px 0 0;">Whether you apply as an undergraduate researcher or as a graduate student, <strong style="font-weight: 700;">your major, your grades, and your academic background do not matter at all. What matters is having the kind of taste that lets you lose yourself in the work you love.</strong> If you want to design something and build it yourself, please email me.</p>
-          <p style="font-size: 18px; line-height: 1.75; text-wrap: pretty; margin: 28px 0 0;">DesignMediaLab은 디자인과 새로운 기술을 결합하는 연구에 초점을 맞추고 있습니다. 손으로 직접 무언가를 만드는 것을 좋아하는 사람. 그림 그리는 것을 좋아하는 사람. 어쩌면 책을 읽거나 영화를 보는 것에 빠져 있는 사람. 저희는 자신만의 취향이 확고한 사람들이 새롭고 재미있는 것을 만들 수 있다고 믿습니다. DesignMediaLab이 당신이 좋아하는 것을 마음껏 만들 수 있는 놀이터가 되었으면 좋겠습니다.</p>
-          <p style="font-size: 18px; line-height: 1.75; text-wrap: pretty; margin: 12px 0 0;">학부연구생으로 지원하든, 대학원생으로 지원하든, <strong style="font-weight: 700;">당신의 전공, 학점, 학력은 전혀 중요하지 않습니다. 좋아하는 일에 몰입할 수 있는 취향을 가진 사람이길 바랍니다.</strong> 직접 디자인을 만들어서 구현해보고 싶은 분은 저에게 Email로 문의해주세요.</p>
-        </section>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: #E5E5E5; margin-bottom: 24px;">
-          <sc-for list="{{ openings }}" as="job" hint-placeholder-count="3">
-            <div style="background: #FFFFFF; padding: 14px 26px 16px; display: grid; gap: 14px; align-content: start;">
-              <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FFFFFF; background: {{ job.color }}; padding: 4px 9px; justify-self: start;">{{ job.status }}</span>
-              <h3 style="font-size: 21px; font-weight: 700; line-height: 1.25; margin: 0;">{{ job.title }}</h3>
-              <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0; text-wrap: pretty;">{{ job.text }}</p>
-              <sc-if value="{{ job.hasTextKo }}" hint-placeholder-val="{{ false }}">
-                <p style="font-size: 15px; line-height: 1.75; color: #595959; margin: 0; text-wrap: pretty;">{{ job.textKo }}</p>
-              </sc-if>
-            </div>
-          </sc-for>
         </div>
       </div>
     </sc-if>
@@ -992,6 +1026,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;adminMode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Board&quot;}}">
 const NEWS_KEY = 'dml_news_board_v1';
+const LANG_KEY = 'dml_lang';
 // [key, heading on the Members page, label on one person's page]. The heading
 // names a group, so it is plural; a detail page describes one person.
 // The director's contact details, shown on the Director page. They are copied
@@ -1051,6 +1086,12 @@ class Component extends DCLogic {
     editorOpen: false, draft: null, editingId: null,
     slotCount: 1,
     formOpen: false,
+    // Language of the bilingual pages: the visitor's last choice, or English.
+    lang: (() => {
+      let saved = null;
+      try { saved = localStorage.getItem(LANG_KEY); } catch (e) {}
+      return saved === 'ko' ? 'ko' : 'en';
+    })(),
     lightbox: null
   };
 
@@ -1130,6 +1171,14 @@ class Component extends DCLogic {
     });
   }
 
+  // Only the visible text changes with the switch. The page's own language
+  // setting is left alone: setting it to Korean makes the browser pick Korean
+  // fallback fonts, which changed how the English text looked.
+  setLang(lang) {
+    this.setState({ lang });
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+  }
+
   persist(news) {
     this.setState({ news });
     try { localStorage.setItem(NEWS_KEY, JSON.stringify(news)); } catch (e) {}
@@ -1176,6 +1225,8 @@ class Component extends DCLogic {
       href: '#/research/' + a.id,
       anchor: 'research-' + a.id,
       hasTextKo: !!String(a.textKo || '').trim(),
+      // In Korean the card falls back to the English line when no Korean exists.
+      textKoShow: String(a.textKo || '').trim() || a.text,
       // Two pictures per area, sitting under the rule. They live in about/ and
       // are listed by file name; an area with none simply shows no image row.
       images: (a.images || []).map((f) => ({ src: withFolder('about', f), alt: a.title || '' })),
@@ -1186,7 +1237,10 @@ class Component extends DCLogic {
         en: b.en || '',
         ko: b.ko || '',
         hasEn: !!String(b.en || '').trim(),
-        hasKo: !!String(b.ko || '').trim()
+        hasKo: !!String(b.ko || '').trim(),
+        // One language at a time, falling back to the other when one is empty.
+        enShow: String(b.en || '').trim() || b.ko || '',
+        koShow: String(b.ko || '').trim() || b.en || ''
       }))
     });
 
@@ -1428,6 +1482,11 @@ class Component extends DCLogic {
       // is listed with its credits and venue alone.
       hasDescription: !!String(ex.description || '').trim(),
       hasDescriptionKo: !!String(ex.descriptionKo || '').trim(),
+      // Each language shows its own description, falling back to the other
+      // language when one is missing.
+      hasAnyDescription: !!String(ex.description || ex.descriptionKo || '').trim(),
+      descEnShow: String(ex.description || '').trim() || ex.descriptionKo || '',
+      descKoShow: String(ex.descriptionKo || '').trim() || ex.description || '',
       // "video" takes a plain Vimeo page link; only the id is kept, so any
       // tracking or one-time query string pasted with it is dropped. An entry
       // without one keeps the empty picture frame.
@@ -1487,7 +1546,7 @@ class Component extends DCLogic {
         || String(a.name || '').localeCompare(String(b.name || '')))
       .map((m) => {
         const degree = String(m.degree || DEGREE_BY_GROUP[m.group] || '').trim();
-        const years = [m.since, m.until].filter(Boolean).join('-');
+        const years = [m.since, m.until].filter(Boolean).join('–');
         return {
           id: m.id,
           name: m.name,
@@ -1571,6 +1630,11 @@ class Component extends DCLogic {
       proEmailCopied: this.state.copied === PRO_EMAIL,
       proPhoneCopied: this.state.copied === PRO_PHONE,
       isJoin: page === 'join',
+      lang: this.state.lang,
+      setLangEn: () => this.setLang('en'),
+      setLangKo: () => this.setLang('ko'),
+      langEnPressed: this.state.lang === 'en' ? 'true' : 'false',
+      langKoPressed: this.state.lang === 'ko' ? 'true' : 'false',
       lightboxOpen: !!this.state.lightbox,
       lightboxSrc: (this.state.lightbox || {}).src || '',
       lightboxAlt: (this.state.lightbox || {}).alt || '',
@@ -1629,7 +1693,7 @@ class Component extends DCLogic {
       openings: [
         { status: 'Open', color: '#E20031', title: 'Undergraduate Researchers', text: 'If there\'s something you want to make, or if you\'d like to experience research firsthand, you\'re welcome to apply at any time. Get in touch by email, and we\'ll meet to define a research topic and design project that interests you — from there, you can join as an undergraduate researcher.', textKo: '만들고 싶은 것이 있다면, 연구를 경험해보고 싶다면 언제든 지원할 수 있습니다. E-mail로 문의를 주시면 미팅을 통해 관심있는 연구 주제 및 디자인 프로젝트를 설정한 다음, 학부연구생으로 조인할 수 있습니다.' },
         { status: 'Open', color: '#E20031', title: 'M.S. / Ph.D. Students', text: 'I will support you in growing into an independent researcher capable of carrying out design research. If you are interested in combining emerging technology with design, please apply to the M.S. or Ph.D. program (this includes the combined B.S.–M.S. program). If you are considering applying, I encourage you to talk with me beforehand — please email me to request a conversation.', textKo: '디자인 연구를 수행할 수 있는 \'독립적인 연구자\'로 성장할 수 있도록 도울 것입니다. 새로운 기술과 디자인을 결합하고자 하는 분들께서는 대학원 프로그램에 지원해주세요 (학부-석사연계 프로그램에 관심이 있는 분들도 해당). 지원을 고민하는 분들께는 미리 저와 상담하기를 권장합니다. Email로 상담 요청을 해주세요.' }
-      ].map((o) => ({ ...o, hasTextKo: !!String(o.textKo || '').trim() })),
+      ].map((o) => ({ ...o, hasTextKo: !!String(o.textKo || '').trim(), textKoShow: String(o.textKo || '').trim() || o.text })),
 
       categories: CATS,
       editorOpen: this.state.editorOpen,

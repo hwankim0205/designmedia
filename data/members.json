@@ -16,23 +16,23 @@
     "bio": "Hwan Kim is an Assistant professor in the [Department of Service and Design Engineering](https://www.sungshin.ac.kr/serdesign/) at [Sungshin Women's University](https://www.sungshin.ac.kr/). He is a Human–Computer Interaction (HCI) researcher. He designs interactive technologies that support human cognition and everyday activities. His research spans wearable devices, VR/AR interfaces, digital accessibilities, and haptic technologies. His research combines emerging computing technologies with design to create interactive devices and products that enable new experiences and improve people's everyday lives.",
     "experience": [
       {
-        "role": "Assistant Professor (Sep. 2023 — Present)",
+        "role": "Assistant Professor (Sep. 2023 – Present)",
         "org": "Department of Service and Design Engineering, Sungshin Women's University (Seoul, Republic of Korea)"
       },
       {
-        "role": "Research Assistant Professor (Sep. 2021 — Aug. 2023)",
+        "role": "Research Assistant Professor (Sep. 2021 – Aug. 2023)",
         "org": "Department of Interior Architecture Design, Hanyang University (Seoul, Republic of Korea)"
       },
       {
-        "role": "Senior Designer (Mar. 2019 — Aug. 2021)",
+        "role": "Senior Designer (Mar. 2019 – Aug. 2021)",
         "org": "Wearable UX part, Samsung Electronics (Seoul, Republic of Korea)"
       }
     ],
     "now": "",
     "education": [
-      "Ph.D. in Industrial Design, KAIST (Mar. 2013 — Feb. 2019)",
-      "M.S. in Industrial Design, KAIST (Mar. 2011 — Feb. 2013)",
-      "B.S. in Industrial Design, KAIST (Mar. 2006 — Feb. 2011)"
+      "Ph.D. in Industrial Design, KAIST (Mar. 2013 – Feb. 2019)",
+      "M.S. in Industrial Design, KAIST (Mar. 2011 – Feb. 2013)",
+      "B.S. in Industrial Design, KAIST (Mar. 2006 – Feb. 2011)"
     ],
     "photo": "hwan_kim.png"
   },
@@ -55,8 +55,8 @@
     "experience": [],
     "now": "-",
     "education": [
-      "M.S. in Department of Service and Design Engineering, Sungshin Women's University (2024-2026)",
-      "M.A. in Department of Industrial Design, Sungshin Women's University (2019-2024)"
+      "M.S. in Department of Service and Design Engineering, Sungshin Women's University (2024–2026)",
+      "M.A. in Department of Industrial Design, Sungshin Women's University (2019–2024)"
     ],
     "photo": "inseo_kim.png"
   },
@@ -80,7 +80,7 @@
     "experience": [],
     "now": "",
     "education": [
-      "B.S. in Department of Service and Design Engineering, Sungshin Women's University (2020-2024)"
+      "B.S. in Department of Service and Design Engineering, Sungshin Women's University (2020–2024)"
     ],
     "photo": "yeoeun_kim.png"
   },
@@ -102,8 +102,8 @@
     "experience": [],
     "now": "Research Intern, CS, Korea University ",
     "education": [
-      "B.A. in Department of History, Sungshin Women's University (2020-2027)",
-      "B.S. in Department of Service and Design Engineering, Sungshin Women's University (2020-2027)"
+      "B.A. in Department of History, Sungshin Women's University (2020–2027)",
+      "B.S. in Department of Service and Design Engineering, Sungshin Women's University (2020–2027)"
     ],
     "photo": "heewon_jeong.png"
   },
@@ -127,7 +127,7 @@
     "experience": [],
     "now": "Grad. Programe in CS., Korea University",
     "education": [
-      "B.S. in Department of Business Administration, Sungshin Women's University (2020-2025)"
+      "B.S. in Department of Business Administration, Sungshin Women's University (2020–2025)"
     ],
     "photo": "yunseo_chang.png"
   },
@@ -149,7 +149,7 @@
     "experience": [],
     "now": "UX Researcher, Babitalk",
     "education": [
-      "B.S. in Department of Biotechnology, Sungshin Women's University (2020-2026)"
+      "B.S. in Department of Biotechnology, Sungshin Women's University (2020–2026)"
     ],
     "photo": "eunji_chun.png"
   },
@@ -169,15 +169,95 @@
     ],
     "bio": "",
     "experience": [
-      "UIUX Designer, YYY (2024-2025)",
-      "Product Designer, Extriber (2019-2021)",
-      "Motion Graphic Designer, Cutting Edge (2015-2016)",
-      "Motion Graphic Designer, TIUM solutions (2013-2015)"
+      "UIUX Designer, YYY (2024–2025)",
+      "Product Designer, Extriber (2019–2021)",
+      "Motion Graphic Designer, Cutting Edge (2015–2016)",
+      "Motion Graphic Designer, TIUM solutions (2013–2015)"
     ],
     "now": "",
     "education": [
-      "A.A. in Visual Communication Design, Kaywon University of Art & Design (2017-2019)"
+      "A.A. in Visual Communication Design, Kaywon University of Art & Design (2017–2019)"
     ],
     "photo": "jeehee_lee.png"
+  },
+  {
+    "id": "07",
+    "name": "Yedam Kang",
+    "nameKo": "강예담",
+    "group": "undergrad",
+    "status": "undergraduate student",
+    "position": "Undergraduate Researcher",
+    "email": "oliivviiakang@gmail.com",
+    "since": "2026",
+    "interests": [
+      "Data Mining",
+      "Applied Statistics"
+    ],
+    "bio": "",
+    "now": "",
+    "education": [
+      "Department of Service and Design Engineering, Sungshin Women's University (2023–Present)"
+    ],
+    "photo": "yedam_kang.png"
+  },
+  {
+    "id": "08",
+    "name": "Insoo Won",
+    "nameKo": "원인수",
+    "group": "undergrad",
+    "status": "undergraduate student",
+    "position": "Undergraduate Researcher",
+    "email": "woninsoo4@gmail.com",
+    "since": "2026",
+    "interests": [
+      "Accessibility",
+      "Human-Computer Interaction"
+    ],
+    "bio": "",
+    "now": "",
+    "education": [
+      "Department of Design, Sungshin Women's University (2024–Present)"
+    ],
+    "photo": "insoo_won.png"
+  },
+  {
+    "id": "09",
+    "name": "Daye Kang",
+    "nameKo": "강다예",
+    "group": "undergrad",
+    "status": "undergraduate student",
+    "position": "Undergraduate Researcher",
+    "email": "daiek423@gmail.com",
+    "since": "2026",
+    "interests": [
+      "UX/UI",
+      "IoT"
+    ],
+    "bio": "",
+    "now": "",
+    "education": [
+      "Department of Service and Design Engineering, Sungshin Women's University (2025–Present)"
+    ],
+    "photo": "daye_kang.png"
+  },
+  {
+    "id": "10",
+    "name": "Euyone Won",
+    "nameKo": "원유연",
+    "group": "undergrad",
+    "status": "undergraduate student",
+    "position": "Undergraduate Researcher",
+    "email": "ianwon20@naver.com",
+    "since": "2026",
+    "interests": [
+      "User Experience",
+      "Product Design"
+    ],
+    "bio": "",
+    "now": "",
+    "education": [
+      "Department of Service and Design Engineering, Sungshin Women's University (2025–Present)"
+    ],
+    "photo": "euyone_won.png"
   }
 ]
