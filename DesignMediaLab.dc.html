@@ -692,7 +692,9 @@
     </sc-if>
 
     <sc-if value="{{ isMembers }}" hint-placeholder-val="{{ false }}">
-      <div style="padding: clamp(40px, 6vw, 80px) 0 96px;">
+      <!-- Narrower than the other pages so the grid holds four people per row
+           at the card width the full-width page gave (4 × 219px + 3 × 24px). -->
+      <div style="padding: clamp(40px, 6vw, 80px) 0 96px; max-width: 949px; margin: 0 auto;">
         
         <h1 style="font-size: clamp(30px, 4.4vw, 54px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 14px;">Members</h1>
         
