@@ -568,6 +568,9 @@
                 <sc-if value="{{ ex.hasVideo }}" hint-placeholder-val="{{ false }}">
                   <iframe src="{{ ex.videoSrc }}" title="{{ ex.titleMain }}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowFullScreen="{{ true }}" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block;"></iframe>
                 </sc-if>
+                <sc-if value="{{ ex.hasClip }}" hint-placeholder-val="{{ false }}">
+                  <video src="{{ ex.clipSrc }}" autoPlay="{{ true }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" preload="metadata" aria-label="{{ ex.titleMain }}" onClick="{{ ex.openClip }}" style="cursor: zoom-in; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;"></video>
+                </sc-if>
                 <sc-if value="{{ ex.hasImage }}" hint-placeholder-val="{{ false }}">
                   <img src="{{ ex.imageSrc }}" alt="{{ ex.titleMain }}" loading="lazy" onClick="{{ ex.openImage }}" style="cursor: zoom-in; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;">
                 </sc-if>
@@ -953,11 +956,16 @@
 
   </main>
 
-  <!-- Full-size view of an exhibition picture. Clicking anywhere, the close
-       button or pressing Esc closes it. -->
+  <!-- Full-size view of an exhibition picture or video. Clicking outside the
+       video, the close button or pressing Esc closes it. -->
   <sc-if value="{{ lightboxOpen }}" hint-placeholder-val="{{ false }}">
     <div data-dml="lightbox" onClick="{{ closeImage }}" role="dialog" aria-modal="true" aria-label="{{ lightboxAlt }}" style="position: fixed; inset: 0; z-index: 120; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; padding: 56px 24px; cursor: zoom-out;">
-      <img src="{{ lightboxSrc }}" alt="{{ lightboxAlt }}" style="display: block; max-width: 100%; max-height: 100%; object-fit: contain; box-shadow: 0 10px 40px rgba(0,0,0,0.4);">
+      <sc-if value="{{ lightboxIsVideo }}" hint-placeholder-val="{{ false }}">
+        <video src="{{ lightboxSrc }}" aria-label="{{ lightboxAlt }}" autoPlay="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" controls="{{ true }}" onClick="{{ keepOpen }}" style="display: block; max-width: 100%; max-height: 100%; object-fit: contain; box-shadow: 0 10px 40px rgba(0,0,0,0.4); cursor: default;"></video>
+      </sc-if>
+      <sc-if value="{{ lightboxIsImage }}" hint-placeholder-val="{{ false }}">
+        <img src="{{ lightboxSrc }}" alt="{{ lightboxAlt }}" style="display: block; max-width: 100%; max-height: 100%; object-fit: contain; box-shadow: 0 10px 40px rgba(0,0,0,0.4);">
+      </sc-if>
       <button type="button" onClick="{{ closeImage }}" aria-label="Close · 닫기" style="position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; padding: 0; border: none; background: none; color: #FFFFFF; font-size: 30px; line-height: 1; cursor: pointer;">×</button>
     </div>
   </sc-if>
@@ -1381,12 +1389,14 @@ class Component extends DCLogic {
     // Korean one ("titleKo"). When both exist the Korean title is the headline
     // and the English one is printed underneath as a sub-title; when only one of
     // them is filled in, that one is simply used on its own.
-    const bilingualTitle = (item) => {
+    // Korean leads by default; Exhibitions pass enFirst to lead with English.
+    const bilingualTitle = (item, enFirst) => {
       const ko = String(item.titleKo || '').trim();
       const en = String(item.title || '').trim();
+      const first = enFirst ? en || ko : ko || en;
       return {
-        titleMain: ko || en,
-        titleSub: ko && en ? en : '',
+        titleMain: first,
+        titleSub: ko && en ? (first === en ? ko : en) : '',
         hasSubTitle: !!(ko && en)
       };
     };
@@ -1477,7 +1487,7 @@ class Component extends DCLogic {
     };
     const decorateExhibition = (ex) => ({
       ...ex,
-      ...bilingualTitle(ex),
+      ...bilingualTitle(ex, true),
       dateLabel: fmtMonth(ex.date),
       creditList: personEls(ex.credit),
       // "description" / "descriptionKo" are optional: an entry that has neither
@@ -1494,20 +1504,28 @@ class Component extends DCLogic {
       // without one keeps the empty picture frame.
       ...(() => {
         const id = (String(ex.video || '').match(/vimeo\.com\/(?:video\/)?(\d+)/) || [])[1];
-        // The frame holds a Vimeo player, a still picture from exhibitionImage/,
-        // or nothing at all, and takes the shape of whichever it is: 16:9 for the
-        // player, 5:3 for the pictures as they are supplied, 3:2 while empty.
-        const pic = String(ex.image || '').trim();
+        // "video" can instead name a video file in exhibitionImage/ (e.g.
+        // "jinggeomdol.mp4"); it plays silently on a loop in the frame, and a
+        // click opens it full size with sound and controls.
+        const clip = !id && /\.(mp4|webm|mov)$/i.test(String(ex.video || '').trim()) ? String(ex.video).trim() : '';
+        // The frame holds a Vimeo player, a video file, a still picture from
+        // exhibitionImage/, or nothing at all, and takes the shape of whichever
+        // it is: 16:9 for the player and video files, 5:3 for the pictures as
+        // they are supplied, 3:2 while empty.
+        const pic = clip ? '' : String(ex.image || '').trim();
         return {
           videoSrc: id ? 'https://player.vimeo.com/video/' + id : '',
           hasVideo: !!id,
+          clipSrc: clip ? withFolder('exhibitionImage', clip) : '',
+          hasClip: !!clip,
+          openClip: () => this.setState({ lightbox: { src: withFolder('exhibitionImage', clip), alt: bilingualTitle(ex, true).titleMain, video: true } }),
           imageSrc: !id && pic ? withFolder('exhibitionImage', pic) : '',
           // Clicking the picture opens it full size over the page.
-          openImage: () => this.setState({ lightbox: { src: withFolder('exhibitionImage', pic), alt: bilingualTitle(ex).titleMain } }),
+          openImage: () => this.setState({ lightbox: { src: withFolder('exhibitionImage', pic), alt: bilingualTitle(ex, true).titleMain } }),
           hasImage: !id && !!pic,
-          thumbRatio: id ? '16 / 9' : (pic ? '5 / 3' : '3 / 2'),
+          thumbRatio: id || clip ? '16 / 9' : (pic ? '5 / 3' : '3 / 2'),
           // Phones drop the frame altogether when there is nothing to put in it.
-          thumbState: id || pic ? 'media' : 'empty'
+          thumbState: id || clip || pic ? 'media' : 'empty'
         };
       })()
     });
@@ -1640,6 +1658,10 @@ class Component extends DCLogic {
       lightboxOpen: !!this.state.lightbox,
       lightboxSrc: (this.state.lightbox || {}).src || '',
       lightboxAlt: (this.state.lightbox || {}).alt || '',
+      lightboxIsVideo: !!(this.state.lightbox && this.state.lightbox.video),
+      lightboxIsImage: !!(this.state.lightbox && !this.state.lightbox.video),
+      // Clicks on the video's own controls must not close the overlay.
+      keepOpen: (e) => e.stopPropagation(),
       closeImage: () => this.setState({ lightbox: null }),
       showSlot2: this.state.slotCount >= 2,
       showSlot3: this.state.slotCount >= 3,

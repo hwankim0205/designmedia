@@ -1,5 +1,20 @@
 [
   {
+    "id": "2026-jinggeomdol",
+    "date": "2026-11",
+    "title": "Jinggeomdol",
+    "titleKo": "징검돌",
+    "credit": [
+      "Jee Hee Lee",
+      "Hwan Kim"
+    ],
+    "venue": "Design Korea 2026 (COEX, Seoul, South Korea)",
+    "description": "Jinggeomdol is a family-mediated mobile nudge service designed to increase health checkup rates. Around 30–40% of parents still skip their annual health checkups, which leads to cancer being detected late. Jinggeomdol started from a simple finding: when family members look after their parents' health checkups, checkup rates actually go up. The service is designed to make it easy for adult children to keep track of their parents' checkups. Jinggeomdol is being developed together with Chung-Ang University Hospital, Dong-A University Hospital, the Catholic University of Korea Hospital, and Konkuk University Medical Center.",
+    "descriptionKo": "징검돌은 건강검진의 검진률을 높이기 위한 가족중재 모바일 넛지 서비스입니다. 약 30-40% 의 부모님들은 여전히 매년 건강검진을 받지 않아, 암을 늦게 발견하게 됩니다. 징검돌은 '가족이 부모님의 건강검진을 챙기면 검진률이 실제로 높아짐'으로부터 출발하였습니다. 징검돌은 자녀가 부모님의 건강검진을 쉽게 챙길 수 있도록 디자인된 서비스입니다. 징검돌은 중앙대학교병원, 동아대학교병원, 가톨릭대학교병원, 건국대학교병원과 함께 만들어가고 있습니다.",
+    "video": "jinggeomdol.mp4",
+    "image": ""
+  },
+  {
     "id": "2024-trablah",
     "date": "2024-11",
     "title": "Trablah",
