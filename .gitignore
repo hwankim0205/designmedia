@@ -16,3 +16,7 @@ uploads/
 
 # Photoshop export of the member photo sheet, not used by the site
 memberImage/img_members.png
+
+# Video originals; the site embeds them from Vimeo instead
+*.mp4
+*.mov
